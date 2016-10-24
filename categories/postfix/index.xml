@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Postfix on RickyNews</title>
+    <link>http://www.rickynews.com/categories/postfix/</link>
+    <description>Recent content in Postfix on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 05 Dec 2015 13:39:22 +0700</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/postfix/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>EmailをPostfix &#43; AmazonSES経由で配信する</title>
+      <link>http://www.rickynews.com/blog/2015/12/05/postfix-with-amazon-ses/</link>
+      <pubDate>Sat, 05 Dec 2015 13:39:22 +0700</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2015/12/05/postfix-with-amazon-ses/</guid>
+      <description>
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20151220/postfix.jpg&#34; alt=&#34;postfix&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;「このローカル環境ではメールの大量配信などが検証出来ないです」などのフレーズは割と昔にはありました。
+しかしもう時代も変わって、AmazonがSESという従量課金型のメール配信サーバを用意してあり、
+さらに非常に無料枠が大きいため、誰でも簡単にメールの大量配信を実装出来るようになりました。&lt;/p&gt;
+
+&lt;h2 id=&#34;amazonsesで申請&#34;&gt;AmazonSESで申請&lt;/h2&gt;
+
+&lt;p&gt;既存のAWSアカウント上でサービスを開始すればOKです。
+DNSをRoute53で管理してあれば、DKIMのレコードも勝手に連動して追加してくれるので、余計な作業は不要です。
+（SPFの代替）&lt;/p&gt;
+
+&lt;p&gt;１点注意点は、登録当初はSandboxモードになり、メールを外部のドメインに好き勝手送れないので要注意です。
+例えば、ses_test@rickynews.comというドメインを送信元と指定する場合、${anyname}@rickynews.comしか送信が出来ません。
+同一ドメインだけではローカルホストから送るのと大差ないので、すぐにAmazonに申請します。
+通常であれば2~3日程度でレスポンスが返ってきて承認が来ます。&lt;/p&gt;
+
+&lt;h2 id=&#34;ローカルpostfix経由でamazonsesにリレーする&#34;&gt;ローカルPostfix経由でAmazonSESにリレーする&lt;/h2&gt;
+
+&lt;p&gt;プログラム上からも以下のようにして直接smtpドライバーを利用してSES側へ接続できますが、都度認証接続に行くため非常に遅いです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;smtp = [
+    &#39;host&#39;      =&amp;gt; &#39;email-smtp.us-east-1.amazonaws.com&#39;,
+    &#39;port&#39;      =&amp;gt; 587,
+    &#39;username&#39;  =&amp;gt; &#39;${ses_user}&#39;,
+    &#39;password&#39;  =&amp;gt; &#39;${ses_password}&#39;,
+    &#39;timeout&#39;   =&amp;gt; 1,
+    &#39;starttls&#39;  =&amp;gt; true,
+    &#39;newline&#39; =&amp;gt; &amp;quot;\r\n&amp;quot;,
+];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;これを回避する今のところのベストプラクティスは、ローカルのPostfixに一旦メールのキューを投げてしまい、
+Postfix経由側でAmazonSESにリレーして送信します&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;h2 id=&#34;postfix-amazonses&#34;&gt;Postfix + AmazonSES&lt;/h2&gt;
+
+&lt;p&gt;以下のようにインストールします。CentOS7のPostfix単体ではSESの認証に利用するCyrus SASLが入っていないため、
+一緒にインストールします&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ yum install postfix cyrus-sasl-plain
+$ cd /etc/postfix
+$ vim main.cf
+---------
+# Added
+relayhost = email-smtp.us-east-1.amazonaws.com:587
+smtp_sasl_auth_enable = yes
+smtp_sasl_security_options = noanonymous
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_use_tls = yes
+smtp_tls_security_level = encrypt
+smtp_tls_note_starttls_offer = yes
+smtp_tls_CAfile = /etc/ssl/certs/ca-bundle.crt
+---------
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ログイン用のアカウント情報を作成し、Hash化します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ vim sasl_passwd &amp;amp;&amp;amp; postmap hash:sasl_passwd
+---------
+email-smtp.us-east-1.amazonaws.com:${ses_user} 587:${ses_password}
+---------
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;あとは再起動で、完了です&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ service postfix restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;もし何か問題があれば/var/log/mail に吐き出されるのでそちらを確認します。&lt;/p&gt;
+
+&lt;h2 id=&#34;完了&#34;&gt;完了&lt;/h2&gt;
+
+&lt;p&gt;これでアプリケーション側はただローカルホストのPostfixにキューを投げて完了するので、フロント側から待ちはほぼ無くなります。
+全てを一式Vagrant環境に準備出来れば、vagrant upとするだけでバーチャルに完全なメール機能も含めて用意することが出来るようになります。&lt;/p&gt;
+
+&lt;p&gt;手動でゼロからSendmailサーバを立て、管理していた時代が懐かしいです。もう一生やることはないですね。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

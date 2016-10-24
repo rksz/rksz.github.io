@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rsync Network on RickyNews</title>
+    <link>http://www.rickynews.com/categories/rsync-network/</link>
+    <description>Recent content in Rsync Network on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 23 Jun 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/rsync-network/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>寄稿: データ転送とサービス期日と費用の関係</title>
+      <link>http://www.rickynews.com/blog/2014/06/23/data-transfer-and-cost/</link>
+      <pubDate>Mon, 23 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2014/06/23/data-transfer-and-cost/</guid>
+      <description>&lt;p&gt;私(@rksz)が株式会社オークファンの技術ブログの2014/6/18の記事に寄稿いたしました。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&#34;http://tech.aucfan.com/data_transfer_and_cost/&#34;&gt;データ転送とサービス期日と費用の関係
+&lt;a href=&#34;http://tech.aucfan.com/data_transfer_and_cost/&#34;&gt;http://tech.aucfan.com/data_transfer_and_cost/&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;今後こちらにも記事を記載予定です。乞うご期待下さい。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

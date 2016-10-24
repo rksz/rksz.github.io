@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vim Bash Hack on RickyNews</title>
+    <link>http://www.rickynews.com/categories/vim-bash-hack/</link>
+    <description>Recent content in Vim Bash Hack on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 14 May 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/vim-bash-hack/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Vimの生産性を一撃で高めるシンプルなテクニック</title>
+      <link>http://www.rickynews.com/blog/2014/05/14/vim-speedup-strategy/</link>
+      <pubDate>Wed, 14 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2014/05/14/vim-speedup-strategy/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://atnd.org/events/45072&#34; target=&#34;_blank&#34;&gt;Vim Advent Calendar 2013&lt;/a&gt;の168日目の記事です。&lt;/p&gt;
+
+&lt;p&gt;Vimプラグインの組み込みなど、日々Vimによる開発速度の向上を研究されている方も
+多いかと思います。そんな開発効率を一撃で高められるテクニックがあるので紹介。&lt;/p&gt;
+
+&lt;p&gt;それはズバリ、&lt;strong&gt;OSのキーリピート速度を高める&lt;/strong&gt;です。&lt;/p&gt;
+
+&lt;p&gt;非常にシンプルですが、破壊力がすごいです。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20140517/vim-movie.gif&#34; alt=&#34;vim sample&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;普段の&lt;code&gt;webhjkl&lt;/code&gt;がこの通り。パラグラフ単位移動コマンド&lt;code&gt;{&lt;/code&gt; &lt;code&gt;}&lt;/code&gt;でやるとすごい速度。&lt;br /&gt;
+単語単位でも超高速で移動できます。&lt;/p&gt;
+
+&lt;p&gt;もちろん通常のvimに限らず、tmuxのvisual mode(vi互換)であってもBashのカーソル移動であってもリモート接続先のVimであっても全てが高速になります。なぜならボタンを押し続ける動作はほぼキーリピートによるコマンド送出だからです。&lt;/p&gt;
+
+&lt;p&gt;Bashの場合は単語移動では以前は&lt;code&gt;Esc + f&lt;/code&gt;を利用しておりましたが、すっかり使わなくなりました。
+もちろん&lt;code&gt;less&lt;/code&gt; &lt;code&gt;more&lt;/code&gt;などの各種コマンドも高速になりますので、&lt;code&gt;grep&lt;/code&gt;と組み合わせ技の時も効果抜群です。&lt;/p&gt;
+
+&lt;p&gt;キーリピートの調整でMacの場合は&lt;a href=&#34;https://pqrs.org/osx/karabiner/index.html.ja&#34; target=&#34;_blank&#34;&gt;KeyRemap4MacBook(現: Karabiner)&lt;/a&gt;を利用します。インストールしてキーリピートの速度調節をするだけ。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20140517/keyremap.png&#34; alt=&#34;keyremap&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;個人的には&lt;code&gt;Key Repeat&lt;/code&gt;はデフォルトの83msから13msまで下げ、&lt;code&gt;Delay Until Repeat&lt;/code&gt;は500msから200msまで下げて運用中。この辺りは好みの設定で良いです。&lt;/p&gt;
+
+&lt;p&gt;一度慣れるともう元のスピードには戻れません。
+vimでは各種コマンドの移動するよりも、キー押しっぱなしのほうが早く移動できるケースも増えます。
+普段鍛えたコマンド力とプラスアルファになれば、まさにすさまじい相乗効果です。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.amazon.co.jp/gp/product/4048916599/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=4048916599&amp;linkCode=as2&amp;tag=recommend7150-22&#34;&gt;実践Vim 思考のスピードで編集しよう!&lt;/a&gt;&lt;img src=&#34;http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&amp;l=as2&amp;o=9&amp;a=4048916599&#34; width=&#34;1&#34; height=&#34;1&#34; border=&#34;0&#34; alt=&#34;&#34; style=&#34;border:none !important; margin:0px !important;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

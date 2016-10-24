@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Casestudy Network on RickyNews</title>
+    <link>http://www.rickynews.com/categories/casestudy-network/</link>
+    <description>Recent content in Casestudy Network on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 07 Jun 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/casestudy-network/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>CaseStudy - 構築した別ネットワークマシンをどのように社内で疎通するか</title>
+      <link>http://www.rickynews.com/blog/2014/06/07/cs-how-to-test-different-segment/</link>
+      <pubDate>Sat, 07 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2014/06/07/cs-how-to-test-different-segment/</guid>
+      <description>
+
+&lt;p&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20140607/casestudy1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;本日よりCaseStudyシリーズを開始します。
+「このような状況下の中でどのようにして解決するか」を中心に解説します。&lt;/p&gt;
+
+&lt;p&gt;経験者にとってはあたり前のことを共有し、初学者の理解を助け、
+また、経験者にとっては他手法を学ぶことでより効率よく作業することも学べるようなコンテンツにしてゆきたいと思います。
+特にインフラまで含めた知識は暗黙知となりやすいと思いますので、実例をきっかけに、インフラ知識の理解も
+深まると幸いです。&lt;/p&gt;
+
+&lt;h3 id=&#34;問題-構成した別ネットワークマシンを検証したい&#34;&gt;問題: 構成した別ネットワークマシンを検証したい&lt;/h3&gt;
+
+&lt;p&gt;データセンタに設置予定のマシンを社内で構築した。
+  ネットワーク設定を含めて構築しており、サーバをデータセンタに持って行ってLANケーブルを差し込むと動く所まで構築したい。
+  なお、データセンタのセグメントは&lt;code&gt;192.168.40.0/24&lt;/code&gt;、社内環境のセグメントは&lt;code&gt;192.168.100.0/24&lt;/code&gt;となっている。
+  データセンタの設置作業の時間は限られており、予めこのネットワークが接続出来るか確認したい。インストールOSはRHELを利用する。&lt;/p&gt;
+
+&lt;h3 id=&#34;解決&#34;&gt;解決&lt;/h3&gt;
+
+&lt;p&gt;今回のケースのポイントをシンプルに考えると、「リモートから該当サーバになんとか接続出来ること」がメインとして上がる。
+  一旦リモートから接続さえ出来てしまえば、あとはどうにでもなる。(もちろんネットワークの設定すら変更可能)
+  さてそのなんとか接続出来ることを確認すればどうすればよいか？&lt;/p&gt;
+
+&lt;p&gt;一番のポイントは「&lt;strong&gt;同一サブネットの通信は直接やり取りしあう&lt;/strong&gt;」という原則を思い出すことです。&lt;/p&gt;
+
+&lt;p&gt;ルーティングというものは意外と厄介で、気をつけないポイントは多いです。
+  自分でVPNを構築したとして、双方に正しいルーティングがないと正常に通信がやりとり出来ません。
+  今回のケースであれば、データセンタ側のルータが&lt;code&gt;192.168.100.0/24&lt;/code&gt;のルーティング設定されていないと、当然全く通信することが出来ません。
+  とりあえず疎通出来ればOKという原則に立ち返れば、ある程度適当でも色々可能です。&lt;/p&gt;
+
+&lt;h3 id=&#34;社内環境でのテスト&#34;&gt;社内環境でのテスト&lt;/h3&gt;
+
+&lt;p&gt;社内で予め&lt;code&gt;/etc/sysconfig/network-scripts/ifcfg-em2&lt;/code&gt;を編集し、&lt;code&gt;192.168.40.100&lt;/code&gt;としてセットアップします。
+  その後このIPアドレス自体がとりあえず外からpingが通るか検証したいとします。
+  ただし社内のセグメントは&lt;code&gt;192.168.100.0&lt;/code&gt;で、勝手に&lt;code&gt;192.168.40.0/24&lt;/code&gt;へのルーティングはルータにかかれています。どうすれば良いでしょうか？&lt;/p&gt;
+
+&lt;p&gt;答えは簡単で、以下のようにするだけでOKです。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;設置対象のIPアドレスを設定して、社内のスイッチに接続する&lt;/li&gt;
+&lt;li&gt;自分のPCのIPアドレスを適当に&lt;code&gt;192.168.40.bbb/24&lt;/code&gt;と設定する。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;こうすることで、社内の&lt;code&gt;192.168.100.0/24&lt;/code&gt;のHubを利用しながら、擬似的に接続することを検証可能です。&lt;/p&gt;
+
+&lt;p&gt;まずルーティングをする際に、対象のIPアドレスが自分のサブネットに所属しているか調査します。
+  自分のARPテーブル(IP/Macアドレスの対照表)に存在しない場合、ブロードキャストしどこにマシンがあるかレスポンスしてもらいます。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;同一サブネットと判断した場合、ブロードキャストパケットを流す&lt;/li&gt;
+&lt;li&gt;ブロードキャストパケットが届く範囲は同一サブネット(ルータを超えない)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;という原則のもと、通信を試みます。ブロードキャストし、スイッチに挿され適当に名乗っている40セグメント同士がやりとりするという仕組みです。
+  社内に接続していた新規設置のサーバがブロードキャストパケットを受信し、「これは自分のIPアドレスです。macアドレスです。」とレスポンスします。  その後めでたく、双方のARPテーブルにMacアドレスが記録され、イーサネットを通じ直接通信をし合います。&lt;/p&gt;
+
+&lt;p&gt;スイッチ自体はL2と呼ばれる通り、IPアドレスなどは処理しません。Macアドレスのみを利用し、データのやりとりを行います。
+  なので、接続対象のPCのMacアドレスさえ分ければ通信が可能になります。&lt;/p&gt;
+
+&lt;h3 id=&#34;データセンタでの設置&#34;&gt;データセンタでの設置&lt;/h3&gt;
+
+&lt;p&gt;ここまで疎通が確認出来れば、あとは簡単です。持って行って接続だけすればOKです。&lt;/p&gt;
+
+&lt;p&gt;VPN越しに直接通信出来ないケースがあっても問題ありません。セグメントとサブネットさえ一致していれば、
+  データセンタの別マシンにログインしたのちに、そこから横から入ることが出来る可能性が非常に高いです。
+  その後、ゆっくり設定を見直し、通信できるようにFIXすれば良いです。&lt;/p&gt;
+
+&lt;p&gt;設置したあとに、「同一セグメントの他のマシンに接続出来るかだけを最低限確認する」というタスクであれば、
+  直接通信が社内に向かって届かないなどのケースがあっても、あたふたすることはなくなります。&lt;/p&gt;
+
+&lt;h3 id=&#34;最後に&#34;&gt;最後に&lt;/h3&gt;
+
+&lt;p&gt;もちろん準備して一発で接続できることにこしたことはありません。ただ、色々なテクニックを利用して、
+  時間が無い時に代替テクニックを知っていることは大きなアドバンテージです。&lt;/p&gt;
+
+&lt;p&gt;「30秒だけデータセンタに入り込める。その間にリモートから接続出来る環境を用意してほしい」など、
+  会社からミッション・インポッシブル並みの要求が無いとも言えません。是非エンジニアとして準備をしておきましょう。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

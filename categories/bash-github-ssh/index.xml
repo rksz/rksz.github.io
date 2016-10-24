@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bash Github Ssh on RickyNews</title>
+    <link>http://www.rickynews.com/categories/bash-github-ssh/</link>
+    <description>Recent content in Bash Github Ssh on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 25 May 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/bash-github-ssh/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Githubアカウントを利用して簡単にSSH接続設定を共有</title>
+      <link>http://www.rickynews.com/blog/2014/05/25/github-ssh-public-key/</link>
+      <pubDate>Sun, 25 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2014/05/25/github-ssh-public-key/</guid>
+      <description>&lt;p&gt;技術評論社から出版されている&lt;a href=&#34;http://www.amazon.co.jp/gp/product/B00K1J5GOU/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=B00K1J5GOU&amp;linkCode=as2&amp;tag=recommend7150-22&#34;&gt;Software Design 2014年6月号&lt;/a&gt;&lt;img src=&#34;http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&amp;l=as2&amp;o=9&amp;a=B00K1J5GOU&#34; width=&#34;1&#34; height=&#34;1&#34; border=&#34;0&#34; alt=&#34;&#34; style=&#34;border:none !important; margin:0px !important;&#34; /&gt;
+を遅れましたが読みました。
+毎度のことながら本の密度は高いなと脱帽します。
+書物であればハードウェアからソフトウェアまで幅広く情報が飛び込んできます。
+ネットで情報収集をしているとどうしても自分の知っている枠内の情報に偏ってしまいがちで、意識しないといけないです。&lt;/p&gt;
+
+&lt;p&gt;前置きはさておき、その中でssh接続で面白い箇所があったので紹介。&lt;/p&gt;
+
+&lt;p&gt;Githubのアカウトの公開鍵は以下でpublicアクセス出来ることはご存知でしょうか？&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;https://github.com/${USER_ID}.keys
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この内容をcurlで取得して、そのままリダイレクトしてauthorized_keysに登録すれば簡単にsshの接続を許可することが可能です。
+共同プロジェクトなどで他の方と作業されることもあると思いますが、SSHの公開鍵の共有は簡単。
+一言、&lt;strong&gt;「Githubのアカウトを教えて下さい」&lt;/strong&gt;これだけでOK。&lt;/p&gt;
+
+&lt;p&gt;基本的なことですが、sshの公開鍵(id_rsa.pub)と秘密鍵(id_rsa)のペアは使い回しが可能です。
+同じ公開鍵を許可されているサーバには同じ秘密鍵を利用してssh接続すると同様にアクセスが可能です。
+その原理を分からず、毎回個別にssh-keygenで鍵を作成していた若かりし頃が私にもありました。
+もちろん共有すればするだけセキュリティ強度は落ちますので、そのトレードオフを念頭に入れる必要はあります。&lt;/p&gt;
+
+&lt;p&gt;先ほどの雑誌のRettyさんの事例にもありましたが、基本的にsshの公開鍵の許可設定は使い捨てのイメージが良いです。
+意外と一度登録されたauthorized_keysは削除したり点検される方は少ないと思います。
+そこがセキュリティの穴になるケースが多く、都度新しく刷新してリフレッシュする運用のほうがシンプルで強度も高いです。&lt;/p&gt;
+
+&lt;p&gt;さて本題に戻りまして、ハッカソンなど一刻の猶予も争うようなケースの場合は以下のようにコマンドを叩いてサクっとターミナルで登録してみます。
+for文でスペースで区切ってアカウントを列挙していきます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20140525/ssh-key-add.gif&#34; alt=&#34;vim sample&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;余談ですが、zshを利用するとfor文入力も簡単に出来るので便利です。&lt;code&gt;do&lt;/code&gt;や&lt;code&gt;done&lt;/code&gt;などが不要で直感的に入力が可能。&lt;/p&gt;
+
+&lt;p&gt;この一連の操作さえ覚えていれば、どんなパソコンでもあっという間に設定可能です。
+人の離席した瞬間にパソコンのターミナルから一行叩き込むなどくれぐれもなさらないように！&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.amazon.co.jp/gp/product/B00K1J5GOU/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;camp=247&amp;creative=1211&amp;creativeASIN=B00K1J5GOU&amp;linkCode=as2&amp;tag=recommend7150-22&#34;&gt;Software Design (ソフトウェア デザイン) 2014年 06月号 [雑誌]&lt;/a&gt;&lt;img src=&#34;http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&amp;l=as2&amp;o=9&amp;a=B00K1J5GOU&#34; width=&#34;1&#34; height=&#34;1&#34; border=&#34;0&#34; alt=&#34;&#34; style=&#34;border:none !important; margin:0px !important;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

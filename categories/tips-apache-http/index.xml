@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tips Apache Http on RickyNews</title>
+    <link>http://www.rickynews.com/categories/tips-apache-http/</link>
+    <description>Recent content in Tips Apache Http on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 10 Jun 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/tips-apache-http/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Hostsを設定しないで簡単にVirtualHostを検証する</title>
+      <link>http://www.rickynews.com/blog/2014/06/10/easy-virtualhost-check/</link>
+      <pubDate>Tue, 10 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2014/06/10/easy-virtualhost-check/</guid>
+      <description>
+
+&lt;p style=&#39;text-align: center; margin-top:0px; font-size: small;&#39;&gt;
+  &lt;img src=&#34;http://www.rickynews.com/images/articles/20140610/nohosts.jpg&#34; alt=&#34;&#34;&gt;&lt;br /&gt;
+  Credit: &lt;a href=&#34;https://www.flickr.com/photos/aigle_dore/&#34;&gt;Moyan Brenn&lt;/a&gt;
+  &lt;/p&gt;
+
+&lt;p&gt;ステージング環境などで、クライアント側にHostsを設定して新環境の操作テストするケースも多いかと思います。&lt;/p&gt;
+
+&lt;p&gt;Windowsであれば、&lt;code&gt;C:¥Windows¥System32¥drivers¥etc¥hosts&lt;/code&gt;、Linux系マシンであれば、&lt;code&gt;/etc/hosts&lt;/code&gt;です。
+  もちろん上記を管理するために、&lt;a href=&#34;http://softwarefactory.jp/ja/products/hostsfilemanager/&#34;&gt;Hosts Files Manager&lt;/a&gt;や
+  &lt;a href=&#34;http://www.redwinder.com/macapp/hoster/&#34;&gt;Hoster&lt;/a&gt;といったアプリを利用して効率的に作業されているかと思います。&lt;/p&gt;
+
+&lt;p&gt;ただし、サーバの数が膨大になってくると上記の設定をするのもなかなかコストが増えてきます。
+  たとえば、特定ドメイン(myapp.mistdev.com)に対し、30台のマシンが待機しており、それをそれぞれについて検証したい場合など
+  30台を別々にHostsを切り替えてやるべきでしょうか？多くの場合は必要ないはずです。
+  テスト目的がブラウザで閲覧出来るUI/UXの検証以外であれば、うまくhostsを設定して、wget/curlしたのちgrep等などで達成できます。&lt;/p&gt;
+
+&lt;p&gt;その方法はどうしたらよいでしょうか？&lt;/p&gt;
+
+&lt;h2 id=&#34;virtualhostはhostヘッダーだけ見ている&#34;&gt;VirtualHostはHostヘッダーだけ見ている&lt;/h2&gt;
+
+&lt;p&gt;既に結論が出ていますが、httpリクエストの&lt;code&gt;Host&lt;/code&gt;の所だけをみて管理しています。仮に以下のURLアクセスすると、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; http://myapp.mistdev.com/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;hostsまたはDNS経由で名前解決を行い、下記のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; http://192.168.33.101/ (Host:myapp.mistev.com)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;それをサーバ側(apache等)が受信を行い、VirtualHostで分類して、各DocumentRootの中身を返すという仕組みです。&lt;/p&gt;
+
+&lt;p&gt;主にブラウザから名前解決して利用するhttpではIPという仕組みをあまり意識しない方も多いと思います。
+  しかし、結局TCP/IPのルールの上で動いていることが理解できると思います。
+  また、VirtualHostを処理するサーバからしてみても、クライアント側から80アクセスを受信したが、
+  対応するhost名がない場合ので適当に一番上のWeb設定もレスポンスするという実装の仕組みも理解出来る気がします。&lt;/p&gt;
+
+&lt;h2 id=&#34;curl経由でアクセスする&#34;&gt;curl経由でアクセスする&lt;/h2&gt;
+
+&lt;p&gt;このルールがわかれば簡単です。Curlコマンドにはヘッダ付与オプションHがあるのでそれを利用するだけです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ curl -H &amp;quot;Host:myapp.mistev.com&amp;quot; http://192.168.33.101/
+$ curl -H &amp;quot;Host:myapp.mistev.com&amp;quot; http://192.168.33.102/
+$ curl -H &amp;quot;Host:myapp.mistev.com&amp;quot; http://192.168.33.103/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こうすることで、同一ドメインで違うIPのマシンを簡単に調査可能です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ curl -H &amp;quot;Host:myapp.mistev.com&amp;quot; http://192.168.33.101/ \
+    | grep &amp;quot;someletter&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;grepをパイプして、文字列の出現の調査も簡単です。&lt;/p&gt;
+
+&lt;h2 id=&#34;サーバごとのスピードを調査する&#34;&gt;サーバごとのスピードを調査する&lt;/h2&gt;
+
+&lt;p&gt;curlのオプションを組み合わせることで各サーバのスピードを調査することも容易です。
+  基本的なcurlの速度調査方法は以下です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ curl -s -o /dev/null http://myapp.mistdev.com \
+    -w &amp;quot;status: %{http_code}, time: %{time_total}\n&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;-s&lt;/code&gt;にてsilentモード、&lt;code&gt;-o&lt;/code&gt;にて出力先を指定(今回は/dev/nullで出力しない)、&lt;code&gt;-w&lt;/code&gt;にて特定の形式でアウトプットが出来ます。&lt;/p&gt;
+
+&lt;p&gt;今回の技を利用すれば、for文などと組み合わせて簡単に出来ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ for ip in 101 102 103 104
+$ do
+$ curl -H &amp;quot;Host:myapp.mistev.com&amp;quot; http://192.168.33.${ip}/ \
+       -s -o /dev/null -w &amp;quot;status: %{http_code}, time: %{time_total}\n&amp;quot;
+$ done
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;curlにはその他色々なoptionがあるので、活用出来ます。是非効率のよい検証を。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

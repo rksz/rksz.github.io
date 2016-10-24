@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://www.rickynews.com/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="http://www.rickynews.com/favicon.png">
+    <title>読みやすいテキスト議事録を書くテクニック | RickyNews</title>
+    
+    <script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-46051188-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<meta property="og:title" content="読みやすいテキスト議事録を書くテクニック | RickyNews" />
+<meta property="og:url"   content="http://www.rickynews.com/blog/2015/10/25/good-memo/" />
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="http://www.rickynews.com" class="navbar-brand">
+            <span class="visible_pc">
+              <img src="http://www.rickynews.com/images/logo.jpg" alt="logo" />
+            </span>
+            <span class="visible_sp">
+              RickyNews
+            </span>
+          </a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="http://www.rickynews.com/post">Archive</a></li>
+<li><a href="http://www.rickynews.com/atom.xml">RSS</a></li>
+<li><a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml">Feedly</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">読みやすいテキスト議事録を書くテクニック</h1>
+      <p class="text-muted">Oct 25, 2015</p>
+
+    </div>
+    <div class="post-content">
+      
+
+<p><center><img src="http://www.rickynews.com/images/articles/20151025/sky.jpg" alt="sky" /></center></p>
+
+<p>テキストでのメモは書く人多いと思いますが、書き方は千差万別です。
+この辺りは「業界スタンダードの方法」というのは無いのかな？とは感じます。エンジニア寄りの人間であれば、Markdown形式で書く人も多いかなとは感じます。</p>
+
+<p>日本語の場合、ずばりそのメモの書き方で割と綺麗に書ける方法があるので、その秘密のテクニックをご紹介。</p>
+
+<h2 id="markdownをそのまま貼り付けてしまう残念な人たち">Markdownをそのまま貼り付けてしまう残念な人たち</h2>
+
+<p>Markdownは素晴らしいフォーマットです。
+ドキュメントを簡単に直感的に構造化できます。
+まさにこのブログも今Markdownフォーマットで書いています。</p>
+
+<p>しかしながら、最近周りのエンジニアで見かけるのが、この生のMarkdown形式で、直接メールなどにテキストを添付して送付する人たちです。</p>
+
+<pre><code># 開発グループ
+## 本日の作業予定
++ 仕様書作成
++ MTG1件
+  - 定例MTG
+
+## 障害になっていること
++ 予期せぬ障害対応で時間が取られてしまいプロジェクトが遅れた
+
+# 営業グループ
+## 本日の作業予定
++ 仕様書作成
++ MTG1件
+  - 定例MTG
+...
+</code></pre>
+
+<p>こんな文書、受信した側が読む気がすると思って送っているのでしょうか。私は読まずに即アーカイブ行きです。MarkdownをMarkdownとしてプレビューが無い環境で見るのが前提であれば、やはり見やすいテキストのフォーマットで送るのが丁寧な仕事の対応といえます。</p>
+
+<h2 id="書き方サンプル">書き方サンプル</h2>
+
+<p>私がよく使っているサンプルを書いてみましたので、以下に記載。見たそのままです。</p>
+
+<pre><code>＜メモについて現状の問題＞
+　■そもそもの問題点
+　　・プレーンテキストで見やすく書くのが難しい
+　　・たまにHTMLなどを使ってリッチテキストで書いている人がいる
+　　　⇒ 手っ取り早く綺麗には書ける
+　　　⇒ しかし、テキストとしてコピペすると構造化情報が失われてしまう
+　■Markdown問題
+　　・エンジニアはよくMarkdownで書いている
+　　・そのMarkdownをそのままメールに貼り付け、送付している人が多い
+　　・そもそも生のMarkdownは直接テキストのまま読むことを前提としていない
+
+＜良い書き方＞
+　■ヴィジュアル面で見やすい
+　■書きやすい
+　■グルーピングし易い
+</code></pre>
+
+<p>PowerPointのようなリスト表記で、さらに字下げ出来る仕組みが経験的に綺麗に書けます。これを、以下の組み合わせで表現します。</p>
+
+<ul>
+<li>Level1: ＜＞</li>
+<li>Level2: ■</li>
+<li>Level3: ・</li>
+<li>Level4: ⇒</li>
+</ul>
+
+<p>半角スペースを連結して利用すると、環境によっては崩れてしまうので、全角スペースをインデントとして活用します。全角スペースもかなり便利です。</p>
+
+<h2 id="秘密のテクニック">秘密のテクニック</h2>
+
+<p>簡単に構造化するテクニックがあります。それはGoogleIMEなどの辞書機能の活用です。</p>
+
+<table>
+<thead>
+<tr>
+<th>変換元文字</th>
+<th>変換先</th>
+<th>備考</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>＜</td>
+<td>＜＞</td>
+<td>-</td>
+</tr>
+
+<tr>
+<td>ｓ(全角)</td>
+<td>[全角スペース]■</td>
+<td>しかく</td>
+</tr>
+
+<tr>
+<td>・(全角)</td>
+<td>[全角スペース][全角スペース]・</td>
+<td>-</td>
+</tr>
+
+<tr>
+<td>ｙ(全角)</td>
+<td>[全角スペース][全角スペース][全角スペース]⇒</td>
+<td>やじるし</td>
+</tr>
+</tbody>
+</table>
+
+<p>これを準備しておけば超簡単に構造化したドキュメントを書くことが出来ます。
+パワーポイント上でしか成し得なかったテクニックが、メモ帳で簡単に再現が可能です。</p>
+
+<p>このテクニックを使うことで、構造化された文書をバンバン書けるようになり、
+羨望の眼差しを手に入れられることでしょう。</p>
+
+<h2 id="最後に">最後に</h2>
+
+<p>私の秘密のテクニックを紹介してしまいました。
+もし皆様も良いテクニックがあれば、<a href="https://twitter.com/rksz">私のTwitter宛</a>までこっそりご紹介下さい。</p>
+
+<p><a rel="nofollow" href="http://www.amazon.co.jp/gp/product/4478490279/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4478490279&linkCode=as2&tag=recommend7150-22">考える技術・書く技術―問題解決力を伸ばすピラミッド原則</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4478490279" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></p>
+
+      <div class="sharing" style="text-align: right;">
+        <a href="http://b.hatena.ne.jp/entry/http://www.rickynews.com/blog/2015/10/25/good-memo/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+        <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.rickynews.com/blog/2015/10/25/good-memo/" data-via="" data-counturl="http://www.rickynews.com/blog/2015/10/25/good-memo/" >Tweet</a>
+        
+        <div class="fb-like" data-layout="button_count" style="line-height:0.5;"></div>
+      </div>
+    </div>
+
+
+    <div class="post-footer">
+      <a href="http://www.rickynews.com/post" class="btn btn-primary btn-block btn-lg">View All 76 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4 sidebar">
+    <section>
+
+  <h3 style="margin-top: 0px">RickyNews</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+  Tech News & Music
+    <a href='http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml'  target='blank'><img id='feedlyFollow' src='http://s3.feedly.com/img/follows/feedly-follow-rectangle-flat-small_2x.png' alt='follow us in feedly' width='66' height='20' style="border: none;"></a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+
+  <h3 style="margin-top: 0px">Author</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+    <a href="https://twitter.com/rksz" target="_blank" style="text-decoration: none;">@rksz</a><br />
+    Ho Chi Minh City & Tokyo
+  </div>
+
+</section>
+
+
+<section>
+  <h3>Popular Posts</h3>
+      <script language="javascript" type="text/javascript" src="http://b.hatena.ne.jp/js/widget.js" charset="utf-8"></script>
+      <script language="javascript" type="text/javascript">
+Hatena.BookmarkWidget.url   = "www.rickynews.com";
+Hatena.BookmarkWidget.sort  = "count";
+Hatena.BookmarkWidget.width = 0;
+Hatena.BookmarkWidget.num   = 5;
+Hatena.BookmarkWidget.theme = "hatenadiary";
+Hatena.BookmarkWidget.load();
+      </script>
+</section>
+
+
+<section>
+  <h3>Amazon</h3>
+  <ul>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/4781701973/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4781701973&linkCode=as2&tag=recommend7150-22">ハッカーの学校 - IPUSIRON</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4781701973" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/4478026548/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4478026548&linkCode=as2&tag=recommend7150-22">シフト――2035年、米国最高情報機関が予測する驚愕の未来</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4478026548" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00MB2STXK/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00MB2STXK&linkCode=as2&tag=recommend7150-22">プログラマの考え方がおもしろいほど身につく本　問題解決能力を鍛えよう！ (アスキー書籍)</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00MB2STXK" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/B0126I117E/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B0126I117E&linkCode=as2&tag=recommend7150-22">ヴァージン・ウェイ　Ｒ・ブランソンのリーダーシップを磨く教室</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B0126I117E" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00GSHI04M/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00GSHI04M&linkCode=as2&tag=recommend7150-22">闘うプログラマー［新装版］　ビル・ゲイツの野望を担った男達</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00GSHI04M" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+  </ul>
+</section>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          &copy; 2016.
+RickyNews
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <script src="http://www.rickynews.com/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+  </body>
+</html>
+

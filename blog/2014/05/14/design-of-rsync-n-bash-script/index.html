@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://www.rickynews.com/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="http://www.rickynews.com/favicon.png">
+    <title>Ryncが絡むBashスクリプトの設計方針 | RickyNews</title>
+    
+    <script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-46051188-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<meta property="og:title" content="Ryncが絡むBashスクリプトの設計方針 | RickyNews" />
+<meta property="og:url"   content="http://www.rickynews.com/blog/2014/05/14/design-of-rsync-n-bash-script/" />
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="http://www.rickynews.com" class="navbar-brand">
+            <span class="visible_pc">
+              <img src="http://www.rickynews.com/images/logo.jpg" alt="logo" />
+            </span>
+            <span class="visible_sp">
+              RickyNews
+            </span>
+          </a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="http://www.rickynews.com/post">Archive</a></li>
+<li><a href="http://www.rickynews.com/atom.xml">RSS</a></li>
+<li><a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml">Feedly</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">Ryncが絡むBashスクリプトの設計方針</h1>
+      <p class="text-muted">May 14, 2014</p>
+
+    </div>
+    <div class="post-content">
+      
+
+<p>バッチ処理を行うスクリプトを作成するときには、rsyncなどを利用して
+  異なるサーバ間で通信をして処理するものも多かと思います。
+  (むしろそれが出来るからこそBash/Shell Scriptを利用するかと思いますが・・・)</p>
+
+<p>意外とBashスクリプトのTipsは無かったりして、それぞれ我流でやられており、
+  普段LLアプリケーションのみ作っている人が書いしたものを見ると、
+  たまにOopsと叫びたくなってしまうこともあります笑。</p>
+
+<h3 id="個人的なポイントは以下3点">個人的なポイントは以下3点。</h3>
+
+<ol>
+<li>データを配置するな、取得せよ</li>
+<li>秘密鍵もちゃんと用意せよ</li>
+<li>接続先変更に柔軟性を持たせる</li>
+</ol>
+
+<h3 id="1-データを配置するな-取得せよ">1. データを配置するな、取得せよ</h3>
+
+<p>リモートサーバ上で処理されたファイルをWebサーバへ配置し、ユーザへ公開したい。</p>
+
+<pre><code class="language-sh">$ REMOTE_SERVER=&quot;192.168.33.12&quot;
+$ sync_files=$@
+$ rsync -av $sync_files $REMOTE_SERVER:/var/www/html/myapp/htdocs/assets/upfiles
+</code></pre>
+
+<p>まずパッとみて、リモートファイルのPATH変更に弱すぎますし、データを受け取るタイミングを選べません。
+  フロント開発者Webアプリ側のフォルダ変更をしたくなった場合、いちいちこのバッチまで考えていなければならない
+  なんて面倒くさすぎます。そしてデータを受け取るタイミングをWebサーバごとに変えたいとしても
+  作業コストが大きくなってしまいます。</p>
+
+<pre><code class="language-sh">$ ln -s /var/www/html/myapp/htdocs/pdf /var/www/html/myapp/htdocs/assets/upfiles
+</code></pre>
+
+<p>こんな風に勝手にシンボリックリンクを貼って、とりあえず動けばいいやで無理やり解決する人が出てくる可能性もあります。笑。</p>
+
+<p>重要なのがスコープ範囲を狭めることです。意外とアプリ開発では意識出来たりしますが、ShellScriptになった途端に
+  スッポ抜けてしまいがちです。今回の例でいえば、Rsyncのデータ配置バッチはWebアプリケーション側に設置すべきです。</p>
+
+<pre><code class="language-sh">$ REMOTE_PATH=&quot;192.168.33.13:/path/to/sync/dir&quot;
+$ rsync -av $REMOTE_PATH ./
+</code></pre>
+
+<p>だいぶスッキリしました。Webアプリ側のパス変更の作業がWebアプリ側のサーバを内部だけで完結出来ます。
+  自分が欲しいものは自分が欲しいタイミングで取りに行くという状態になり、</p>
+
+<pre><code class="language-php">&lt;?php
+if ($update_user_data) {
+  exec('./fetch_data.sh');
+}
+</code></pre>
+
+<p>アプリケーション側でも自由にデータを取ってくる処理を好きなタイミングでKickすることが出来ます。</p>
+
+<p>もちろんREMOTE側のPATHが変わった時には対応しなければならないことに変わりはありませんが、
+  フロント開発者が自分の範囲だけは自由に変更出来るのは非常に強みです。</p>
+
+<h3 id="2-秘密鍵もちゃんと用意せよ">2. 秘密鍵もちゃんと用意せよ</h3>
+
+<p>gitからバッチファイルを取得して、いざ実行！そしてsshで弾かれる or パスワードを求められるシーンが多いかなと思います。
+  そこから手動でssh-copy-idなど実行して都度設置者にauthorized_keys設定させるのは少々不親切です。</p>
+
+<p>vagrantなどでローカル仮想環境を作って作業していたとして、そんなワンタイムのssh公開鍵のauthorized_keys設定を勝手に追加する
+  人が出てくる場合、目もあてられないかと・・・思います。</p>
+
+<pre><code class="language-sh">$ ssh-keygen -f id_rsa_mybatch
+</code></pre>
+
+<p>なので、バッチ専用の鍵をssh-keygenコマンドで用意してやります。<code>-f</code>オプションで新しいファイル名のものを作成可能です。</p>
+
+<p>あとは任意のサーバ側にこの作成したsshキーの秘密鍵に対する公開鍵の許可設定をすればOKです。
+  バッチ側で接続する場合には以下のようにsshのidentityファイル指定をして、通信します。</p>
+
+<pre><code class="language-sh">$ rsync -e &quot;ssh -i /root/.ssh/id_rsa_mybatch&quot; -av $REMOTE_PATH ./
+</code></pre>
+
+<p>この鍵の公開鍵さえ登録しておけば、どれだけサーバが増えたとしても公開鍵の許可設定追加の必要は一切ありません。
+  プロジェクトさえ持ってこれれば、いきなり通信できることが保証されます。
+  バッチスクリプトのサーバ移動も容易になりますし、非常にメリット多いです。</p>
+
+<p>セキュリティに関してはある程度トレードオフにはなります。とはいえ、authorized_keysに登録するユーザを特定の権限の弱いユーザにすれば
+  良かったりと工夫する余地はあります。</p>
+
+<h3 id="3-接続先変更に柔軟性を持たせる">3. 接続先変更に柔軟性を持たせる</h3>
+
+<p>上のサンプルでも記載しておりますが、バッチ側にIPをベタで書くケースも多いと思います。</p>
+
+<pre><code>REMOTE_SERVER=&quot;192.168.33.12&quot;
+</code></pre>
+
+<p>もちろん利用頻度や設備の大きさによっては、上記で問題ないケースは多いです。(むしろ殆ど？)
+  とはいえ、サーバの移動が頻繁に行われるケースなどは考える余地はあります。</p>
+
+<p>おすすめのTipsとしては</p>
+
+<ol>
+<li>引数としてIP/RemoteHostを指定出来るようにする</li>
+<li>名前解決出来るhosts名にする</li>
+</ol>
+
+<p>1つ目のものはシンプルです。</p>
+
+<pre><code class="language-sh">$ ./batch_script.sh 192.168.33.12
+</code></pre>
+
+<p>このようにして引数としてIP(host名)を与えます。rsyncで相互にデータをコピーさせたいときなどは有効です。
+  もちろんこれにより、大切な引数が1つ失われてしまうため、引数無しで実行できるようなShell Scriptに対して組み込む程度が
+  実際の活用方法として良いかな？とは感じます。</p>
+
+<p>そして、2番目のですが、IPを直接書くのではなくhost名で記載に変更します。</p>
+
+<pre><code>#REMOTE_SERVER=&quot;192.168.33.12&quot;
+REMOTE_SERVER=&quot;srv01.mistdev.com&quot;
+</code></pre>
+
+<p>こうすることにより、バッチスクリプト自体を書き換えなくても外部から接続先サーバを変更することが出来ます。
+  host名自体は/etc/hostsに書いてもよいですし、内部DNSへ書いてもよいかと思います。
+  スクリプトを書き換えなくてもよいというのは結構重要で、Ops側の人間としても安心感はあります。
+  だいたいソースコードに変更があったタイミングで障害が発生するので、そのリスクを少しでも減らせます。</p>
+
+<p>この書き方での注意点が1つだけあります。sshの場合は接続先ホストのfingerprintをみており、このままでは単純に/etc/hosts側等でサーバのIP変更すると</p>
+
+<pre><code>$ ssh srv01.mistdev.com
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the ECDSA key sent by the remote host is
+</code></pre>
+
+<p>のようにエラーが出てしまいます。
+  (man-in-the-middle attackとアラートを親切にだしており、もちろんこれは重要な挙動ではあります。)
+  こうなってしまうと、<code>ssh-keygen -R</code>で律儀にサーバのknown_hostsを削除しなければなりません。</p>
+
+<p>これを防ぐ方法が1点あり、StrictHostKeyChecking及びUserKnownHostsFileをオフにします。</p>
+
+<pre><code>$ ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null srv01.mistdev.com
+</code></pre>
+
+<p>常にKnowHostsを無視し、新しいssh接続をする状態となります。
+  UserKnownHostsFileだけの場合だと「The authenticity of host &lsquo;[192.168.33.12]:22 ([192.168.33.12]:22)&rsquo; can&rsquo;t be established.」と通常の確認が出てくるため
+  それをStrictHostKeyCheckingで無視させます。</p>
+
+<p>この設定を追加することで、自由にリモートサーバを変更出来るようになります。
+  memo: <a href="http://siguniang.wordpress.com/2014/02/28/get-rid-of-openssh-warning-message/" target="_blank">Siguniang&rsquo;s Blog: OpenSSHの警告メッセージを黙らせる</a></p>
+
+<h3 id="最後に補足">最後に補足！</h3>
+
+<p>上記の設計方針はもちろん規模や状況やサイズ感によって異なります。
+  完全にPrivateなサーバ群に対しては、ある程度セキュリティを下げて利便性を追加したり、
+  グローバルのみの接続であればsshの接続にてfingerprint checkの無視などは出来ないかと思います。
+  それを加味した上で、リスクと利便性のバランスを理解して組み立てることが重要かと思います。</p>
+
+      <div class="sharing" style="text-align: right;">
+        <a href="http://b.hatena.ne.jp/entry/http://www.rickynews.com/blog/2014/05/14/design-of-rsync-n-bash-script/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+        <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.rickynews.com/blog/2014/05/14/design-of-rsync-n-bash-script/" data-via="" data-counturl="http://www.rickynews.com/blog/2014/05/14/design-of-rsync-n-bash-script/" >Tweet</a>
+        
+        <div class="fb-like" data-layout="button_count" style="line-height:0.5;"></div>
+      </div>
+    </div>
+
+
+    <div class="post-footer">
+      <a href="http://www.rickynews.com/post" class="btn btn-primary btn-block btn-lg">View All 76 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4 sidebar">
+    <section>
+
+  <h3 style="margin-top: 0px">RickyNews</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+  Tech News & Music
+    <a href='http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml'  target='blank'><img id='feedlyFollow' src='http://s3.feedly.com/img/follows/feedly-follow-rectangle-flat-small_2x.png' alt='follow us in feedly' width='66' height='20' style="border: none;"></a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+
+  <h3 style="margin-top: 0px">Author</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+    <a href="https://twitter.com/rksz" target="_blank" style="text-decoration: none;">@rksz</a><br />
+    Ho Chi Minh City & Tokyo
+  </div>
+
+</section>
+
+
+<section>
+  <h3>Popular Posts</h3>
+      <script language="javascript" type="text/javascript" src="http://b.hatena.ne.jp/js/widget.js" charset="utf-8"></script>
+      <script language="javascript" type="text/javascript">
+Hatena.BookmarkWidget.url   = "www.rickynews.com";
+Hatena.BookmarkWidget.sort  = "count";
+Hatena.BookmarkWidget.width = 0;
+Hatena.BookmarkWidget.num   = 5;
+Hatena.BookmarkWidget.theme = "hatenadiary";
+Hatena.BookmarkWidget.load();
+      </script>
+</section>
+
+
+<section>
+  <h3>Amazon</h3>
+  <ul>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/4781701973/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4781701973&linkCode=as2&tag=recommend7150-22">ハッカーの学校 - IPUSIRON</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4781701973" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/4478026548/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4478026548&linkCode=as2&tag=recommend7150-22">シフト――2035年、米国最高情報機関が予測する驚愕の未来</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4478026548" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00MB2STXK/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00MB2STXK&linkCode=as2&tag=recommend7150-22">プログラマの考え方がおもしろいほど身につく本　問題解決能力を鍛えよう！ (アスキー書籍)</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00MB2STXK" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/B0126I117E/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B0126I117E&linkCode=as2&tag=recommend7150-22">ヴァージン・ウェイ　Ｒ・ブランソンのリーダーシップを磨く教室</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B0126I117E" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00GSHI04M/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00GSHI04M&linkCode=as2&tag=recommend7150-22">闘うプログラマー［新装版］　ビル・ゲイツの野望を担った男達</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00GSHI04M" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+  </ul>
+</section>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          &copy; 2016.
+RickyNews
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <script src="http://www.rickynews.com/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+  </body>
+</html>
+

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://www.rickynews.com/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="http://www.rickynews.com/favicon.png">
+    <title>Macで少し生産性の上がるBashエイリアス集 | RickyNews</title>
+    
+    <script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-46051188-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<meta property="og:title" content="Macで少し生産性の上がるBashエイリアス集 | RickyNews" />
+<meta property="og:url"   content="http://www.rickynews.com/blog/2014/07/19/useful-bash-aliases/" />
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="http://www.rickynews.com" class="navbar-brand">
+            <span class="visible_pc">
+              <img src="http://www.rickynews.com/images/logo.jpg" alt="logo" />
+            </span>
+            <span class="visible_sp">
+              RickyNews
+            </span>
+          </a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="http://www.rickynews.com/post">Archive</a></li>
+<li><a href="http://www.rickynews.com/atom.xml">RSS</a></li>
+<li><a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml">Feedly</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">Macで少し生産性の上がるBashエイリアス集</h1>
+      <p class="text-muted">Jul 19, 2014</p>
+
+    </div>
+    <div class="post-content">
+      
+
+<p style='text-align: center; margin-top:0px; font-size: small;'>
+  <img src="http://www.rickynews.com/images/articles/20140719/bashaliases.jpg" alt=""><br />
+  <a href="https://www.flickr.com/photos/qualityandstyle/">Qualityandstyle</a>
+</p>
+
+<p>Macでは基本的にターミナルを開けばShellでコントロール可能です。
+これがあるから使っている！という人も多いかと思います。
+Finderをターミナルにドラッグドロップするとパスが表示されたりなど、
+CUIとGUIの親和性も非常に高いです。さて個人的に作成した便利なエイリアス達を紹介します。</p>
+
+<p>基本的に<code>~/.bashrc</code>や<code>~/.zshrc</code>などに下記の行をコピーすれば動く簡単な仕様です。</p>
+
+<h2 id="md-linux-macosx">md [Linux/MacOSX]</h2>
+
+<p>カレントディレクトリにあるmarkdownファイルを全てvimバッファに載せ開きます。</p>
+
+<pre><code>alias 'md'='vim ./*.md'
+</code></pre>
+
+<p>複数バッファを同時に開きますが、あまりその動きは想定していません。
+現在のGitのプロジェクト等ではMarkdown形式のREADMEファイルなどが必ず置かれていると思います。
+そういったディレクトリに移動して、ホームポジションに近い<code>md</code>というコマンドで簡単に開けることを期待しています。
+とりあえずファイルが沢山あるディレクトリでも移動して<code>md</code>と打てば何かしらその場にあるドキュメントファイルを開けるので
+あまり考えなくて良いです。
+Vimを開いた後では<code>:bn</code>や<code>:bp</code>などでバッファの前後を開けますので次々に移動させ任意のファイルを確認します。</p>
+
+<p>個人的にはvimをターミナルで利用するため指定していますが、openコマンドを組み合わせて
+他のエディタでも良いかもしれません。</p>
+
+<h2 id="dic-linux-macosx">dic [Linux/MacOSX]</h2>
+
+<p>引数の単語の和訳を出力します。</p>
+
+<pre><code>dic () {
+  w3m &quot;http://ejje.weblio.jp/content/$1&quot; | grep &quot;用例&quot;
+}
+</code></pre>
+
+<p>ややハック気味なプログラムです。weblioのWebサイトをCUIブラウザで出力させ、
+「用例」の箇所を抜き出します。動作はこのような感じです。<code>w3m</code>コマンドはbrew等でインストール可能です。</p>
+
+<p><img src="http://www.rickynews.com/images/articles/20140719/dic.png" alt=""></p>
+
+<p>ただの単語の和訳というよりは用例=フレーズというのがポイントです。
+ピンポイントに和訳を出されてもすぐ忘れてしまいますので流れで覚えます。
+たまにノイズも入るのでそこは微調整を個別にしてください。</p>
+
+<h2 id="sha1-linux-macosx">sha1 [Linux/MacOSX]</h2>
+
+<p>引数として渡される文字列のsha1のハッシュを返します。</p>
+
+<pre><code class="language-sh">alias sha1='echo -n &quot;${1}&quot; | openssl sha1 | sed &quot;s/^.* //&quot;'
+</code></pre>
+
+<p>opensslの種類によって出力される文字列に揺れがあるため、
+sedで切り取りをしています。</p>
+
+<p><img src="http://www.rickynews.com/images/articles/20140719/sha1.png" alt=""></p>
+
+<p>ただのハッシュ値ですが、手元でサクっと生成できると意外に便利です。
+適当な文字列を叩き込んで簡単なパスワード代わりに利用可能です。</p>
+
+<p>自分のSaltなど用意すれば、自分だけ思い出すことが可能なパスワードも簡単に生成
+可能です。システム開発などで基本的に使うテクニックですが、
+簡単にCUI上から出来ることで実生活にも役立ちます。</p>
+
+<h2 id="up-linux-macosx">up [Linux/MacOSX]</h2>
+
+<p>一つ上のディレクトリにCDして、リストを表示させます。</p>
+
+<pre><code class="language-sh">alias up=&quot;cd ..; ls -l&quot;
+</code></pre>
+
+<p>大したことはないですが、自分のコマンドをヒストリ解析した結果この流れの作業をよくやっていたため、作成して使っています。
+「移動先でどのようなディレクトリがあるのか？」というのをすぐにフィードバックが得られるので
+非常に便利です。<code>cd ..</code>より<code>up</code>のほうがキーの配置も近いので、楽です。</p>
+
+<p>cdする時にlsを合わせて出力してくれるものもあっても良いかもしれませんが、
+個人的にはあまり使いません。そもそもディレクトリを下るときはファイルの中身がある程度推測できますし、
+ディレクトリの上に移動するときはフォルダ一覧も見えるような流れにすれば、
+「上に移動=表示」「下に移動=そのまま」とディレクトリの移動方向が明確になるので混乱が少ないです。</p>
+
+<h2 id="f-macosx">f [MacOSX]</h2>
+
+<p>ターミナルのカレントディレクトリをFinderで開きます。</p>
+
+<pre><code class="language-sh">alias f=&quot;open .&quot;
+</code></pre>
+
+<p>こちら有名ですが、
+Macのopenコマンドを利用することで簡単にカレントディレクトリを開くことが出来ます。
+ファイルの移動や日本語ファイルの取り扱いなどGUIのほうが早く作業できるケースなど多いと思います。
+このコマンドを叩くことでシームレスに移動可能です。
+GUIが得意な領域はGUIを使って高速作業です。</p>
+
+<h2 id="cdf-macosx">cdf [MacOSX]</h2>
+
+<p>Finderのアクティブウィンドウのパスにターミナルで移動します。</p>
+
+<pre><code class="language-sh">cdf () {
+        target=`osascript -e 'tell application &quot;Finder&quot; to if (count of Finder windows) &gt; 0 then get POSIX path of (target of front Finder window as text)'`
+        if [ &quot;$target&quot; != &quot;&quot; ]
+        then
+                cd &quot;$target&quot;
+                pwd
+        else
+                echo 'No Finder window found' &gt;&amp;2
+        fi
+}
+</code></pre>
+
+<p>fコマンドの逆で、今のFinderのカレントパスに移動します。GUIで作業した後など、
+シームレスに移動可能です。以下がもう少し詳しいかと思います。</p>
+
+<p>jumping to the finder location in terminal
+<a href="http://blog.glidenote.com/blog/2013/02/26/jumping-to-the-finder-location-in-terminal/">http://blog.glidenote.com/blog/2013/02/26/jumping-to-the-finder-location-in-terminal/</a></p>
+
+<h2 id="z-j-linux-macosx">z(j) [Linux/MacOSX]</h2>
+
+<p>過去のコマンドヒストリからファジーに移動してくれます。</p>
+
+<pre><code class="language-sh">brew install z
+</code></pre>
+
+<pre><code>z work
+# cd /Users/Myname/workspace してくれる
+</code></pre>
+
+<p>断片さえ記憶していれば移動してくれます。とりあえずターミナルを立ち上げてworkspaceに移動しています。
+同様の<code>j</code>というコマンドもありますが、インストールが手間なのといまこちらのほうが
+更新も多いので、<code>z</code>に乗り換えました。ただ、<code>j</code>のほうが指の位置が近いため、以下も設置します。</p>
+
+<pre><code>alias j=&quot;z&quot;
+</code></pre>
+
+<p>自分のケースであれば、<code>j</code>コマンドを利用して、適当に移動したあと<code>f</code>コマンドを利用してFinderを開きます。
+Finderで色々やった後、iTermを再度アクティブにさせ<code>cdf</code>をしてターミナルに戻ります。
+また必要になれば<code>f</code>をしてFinderを開きます。
+まさにGUIとCUIをハイブリッド生活になれるとなかなか戻れません。</p>
+
+<h2 id="jj-linux-macosx">jj [Linux/MacOSX]</h2>
+
+<p>カレントパス以下のディレクトリでGrepマッチしたディレクトリに移動します。</p>
+
+<pre><code>jj () {
+    if [ $1 ]; then
+        JUMPDIR=$(find . -type d -maxdepth 1 | grep $1 | tail -1)
+        if [[ -d $JUMPDIR &amp;&amp; -n $JUMPDIR ]]; then
+            cd $JUMPDIR
+        else
+            echo &quot;directory not found&quot;
+        fi
+    fi
+}
+</code></pre>
+
+<p>見えているディレクトリを適当にコマンド叩いて移動したいことも多いかと思います。
+ただ<code>YYYYMMDD_Dirname</code>のようなディレクトリルールで配置されている箇所はBashのTab補完が
+あまり便利ではないです。確実に年あたりの所でサジェストが一度止まるからです。</p>
+
+<p><img src="http://www.rickynews.com/images/articles/20140719/jj3.png" alt=""></p>
+
+<p>ただディレクトリ名自体はユニークなものにしているケースも多いと思いますので、
+うまく唯一マッチングするような文字列を組み合わせて移動するようにします。</p>
+
+<p><img src="http://www.rickynews.com/images/articles/20140719/jj.png" alt=""></p>
+
+<h2 id="cleanup-linux-macosx">cleanup [Linux/MacOSX]</h2>
+
+<p>カレントディレクトリ以下にある空ディレクトリを削除します。</p>
+
+<pre><code class="language-sh">cleanup () {
+    find . -type d -maxdepth 2 -empty -exec rmdir -v {} \; 2&gt;/dev/null
+    find . -type d -maxdepth 2 -empty -exec rmdir -v {} \; 2&gt;/dev/null
+}
+</code></pre>
+
+<p>意外と出来てしまう空ディレクトリ。こちらのコマンドで安全に削除です。
+Finderで作業中でもターミナルをアクティブにさせたのち、<code>cdf</code>を行い、
+該当ディレクトリへ移動し、このコマンドを発行です。</p>
+
+<p>リカーシヴに全部強制削除だと何か不安が残るため、
+経験則的に2階層だけ削除するように設定しています。
+不足があればコマンドを何度か叩けば問題ありません。</p>
+
+<h2 id="ssheuc-linux-macosx">ssheuc [Linux/MacOSX]</h2>
+
+<p>OS設定がEUC-JPのサーバにUTF8環境から文字化けせずに接続します。</p>
+
+<pre><code>alias ssheuc='TERM=xterm cocot -t UTF-8 -p EUC-JP ssh '
+</code></pre>
+
+<p>tmuxなど基本的にUTF-8しか表示をサポートしておりません。
+その時に困るのが他の文字コードを利用しているサーバです。
+それを<code>cocot</code>を利用することで、全て表示をUTF8に統一させ文字化けを回避できます。
+tmuxでもpaneを分割してその中でeuc-jpのサーバに文字化けなくアクセスが出来るようになります。</p>
+
+<p>Macであればbrewでインストール可能です。</p>
+
+      <div class="sharing" style="text-align: right;">
+        <a href="http://b.hatena.ne.jp/entry/http://www.rickynews.com/blog/2014/07/19/useful-bash-aliases/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+        <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.rickynews.com/blog/2014/07/19/useful-bash-aliases/" data-via="" data-counturl="http://www.rickynews.com/blog/2014/07/19/useful-bash-aliases/" >Tweet</a>
+        
+        <div class="fb-like" data-layout="button_count" style="line-height:0.5;"></div>
+      </div>
+    </div>
+
+
+    <div class="post-footer">
+      <a href="http://www.rickynews.com/post" class="btn btn-primary btn-block btn-lg">View All 76 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4 sidebar">
+    <section>
+
+  <h3 style="margin-top: 0px">RickyNews</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+  Tech News & Music
+    <a href='http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml'  target='blank'><img id='feedlyFollow' src='http://s3.feedly.com/img/follows/feedly-follow-rectangle-flat-small_2x.png' alt='follow us in feedly' width='66' height='20' style="border: none;"></a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+
+  <h3 style="margin-top: 0px">Author</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+    <a href="https://twitter.com/rksz" target="_blank" style="text-decoration: none;">@rksz</a><br />
+    Ho Chi Minh City & Tokyo
+  </div>
+
+</section>
+
+
+<section>
+  <h3>Popular Posts</h3>
+      <script language="javascript" type="text/javascript" src="http://b.hatena.ne.jp/js/widget.js" charset="utf-8"></script>
+      <script language="javascript" type="text/javascript">
+Hatena.BookmarkWidget.url   = "www.rickynews.com";
+Hatena.BookmarkWidget.sort  = "count";
+Hatena.BookmarkWidget.width = 0;
+Hatena.BookmarkWidget.num   = 5;
+Hatena.BookmarkWidget.theme = "hatenadiary";
+Hatena.BookmarkWidget.load();
+      </script>
+</section>
+
+
+<section>
+  <h3>Amazon</h3>
+  <ul>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/4781701973/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4781701973&linkCode=as2&tag=recommend7150-22">ハッカーの学校 - IPUSIRON</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4781701973" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/4478026548/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4478026548&linkCode=as2&tag=recommend7150-22">シフト――2035年、米国最高情報機関が予測する驚愕の未来</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4478026548" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00MB2STXK/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00MB2STXK&linkCode=as2&tag=recommend7150-22">プログラマの考え方がおもしろいほど身につく本　問題解決能力を鍛えよう！ (アスキー書籍)</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00MB2STXK" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/B0126I117E/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B0126I117E&linkCode=as2&tag=recommend7150-22">ヴァージン・ウェイ　Ｒ・ブランソンのリーダーシップを磨く教室</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B0126I117E" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00GSHI04M/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00GSHI04M&linkCode=as2&tag=recommend7150-22">闘うプログラマー［新装版］　ビル・ゲイツの野望を担った男達</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00GSHI04M" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+  </ul>
+</section>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          &copy; 2016.
+RickyNews
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <script src="http://www.rickynews.com/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+  </body>
+</html>
+

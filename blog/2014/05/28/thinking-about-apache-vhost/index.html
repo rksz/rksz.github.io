@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://www.rickynews.com/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="http://www.rickynews.com/favicon.png">
+    <title>ApacheのVirtualhostと振り分けについて考える | RickyNews</title>
+    
+    <script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-46051188-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<meta property="og:title" content="ApacheのVirtualhostと振り分けについて考える | RickyNews" />
+<meta property="og:url"   content="http://www.rickynews.com/blog/2014/05/28/thinking-about-apache-vhost/" />
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="http://www.rickynews.com" class="navbar-brand">
+            <span class="visible_pc">
+              <img src="http://www.rickynews.com/images/logo.jpg" alt="logo" />
+            </span>
+            <span class="visible_sp">
+              RickyNews
+            </span>
+          </a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="http://www.rickynews.com/post">Archive</a></li>
+<li><a href="http://www.rickynews.com/atom.xml">RSS</a></li>
+<li><a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml">Feedly</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">ApacheのVirtualhostと振り分けについて考える</h1>
+      <p class="text-muted">May 28, 2014</p>
+
+    </div>
+    <div class="post-content">
+      
+
+<p><img src="http://www.rickynews.com/images/articles/20140528/top.jpg" alt="" /></p>
+
+<p>ApacheにはVirtualhostという便利な機能があります。
+  来るリクエストの種類によって、受信するディレクトリを切り分けることが出来ます。
+  ドメインネームベースのVhostで注意点があります。</p>
+
+<h3 id="ssl問題-1サーバ1サービス">SSL問題: 1サーバ1サービス?</h3>
+
+<p>基本的にネームベースのVirtualhostではSSL複数ドメインを運用することは出来ません。
+  本来であれば、Apacheの着信時点でドメイン情報を元に切り分けを実施します。
+  すなわち、IPアドレスとリクエストホスト(ドメイン)がセットになり、受信したApacheが解析して振り分けします。</p>
+
+<p>しかし、HTTPSの暗号化通信の場合では、HTTP通信をするまえにSSL/TLSハンドシェイクをする必要があります。
+  そのため、通信を着信した段階ではどのドメインに対してのリクエストなのか分からず、振り分けることが出来ません。</p>
+
+<p>Apacheのデフォルトの挙動としては、複数Virtualhostが設定されており、振り分けが不明な場合は一番最初に読み込まれた設定に
+  飛ばすようになっています。</p>
+
+<pre><code>&lt;Virtualhost *:80&gt;
+  ServerName rickynews.com
+  DocumentRoot /deploy/rickynews_com
+  CustomLog    &quot;|/usr/sbin/rotatelogs /var/log/httpd/rickynews_com_access_log.%Y%m%d 86400 540&quot; combined
+  ErrorLog     &quot;|/usr/sbin/rotatelogs /var/log/httpd/rickynews_com_error_log.%Y%m%d  86401 540&quot;
+  &lt;Directory /deploy/rickynews_com&gt;
+      AllowOverride all
+      Options -MultiViews -Indexes
+  &lt;/Directory&gt;
+&lt;/Virtualhost&gt;
+
+&lt;Virtualhost *:80&gt;
+  ServerName michaelnews.com
+  DocumentRoot /deploy/michaelnews_com
+  CustomLog    &quot;|/usr/sbin/rotatelogs /var/log/httpd/michaelnews_com_access_log.%Y%m%d 86400 540&quot; combined
+  ErrorLog     &quot;|/usr/sbin/rotatelogs /var/log/httpd/michaelnews_com_error_log.%Y%m%d  86401 540&quot;
+  &lt;Directory /deploy/michaelnews_com&gt;
+      AllowOverride all
+      Options -MultiViews -Indexes
+  &lt;/Directory&gt;
+&lt;/Virtualhost&gt;
+</code></pre>
+
+<p>上記が俗にいう「1サーバ、1SSL」の問題です。上記の現象を少し理解していると、同じサーバのApacheに複数のSSLサービスが入らないことが想像つきます。</p>
+
+<p>「さすがにそれは不便だ」と感じた開発者が<a href="http://ja.wikipedia.org/wiki/Server_Name_Indication" target="_blank">SNI: Server Name Indication</a>という技術を開発しました。HTTPSを行うSSL/TLS通信を拡張し、暗号化通信と共に平文のドメインの情報をやりとりできるようにしました。</p>
+
+<p>一見全て解決したように感じますが、やはりそこには問題があります。それは「特定のブラウザでは対応していないものがある」という事実です。
+  WindowsXPのIE8が非対応になっているため、プロダクションユースではやはり無視することは出来ません。</p>
+
+<p>結局、「だから、やっぱり出来ないんだ」という考えに至ってしまう人もいます。しかし、そこには誤解があります。</p>
+
+<h3 id="そもそもの誤解の発端">そもそもの誤解の発端</h3>
+
+<p>社内の新卒エンジニアなどと会話していて、ApacheのVirtualhostで勘違いしているポイントがあります。
+  ApacheではVirtualhostの振り分けは以下の3パターンで振り分け可能です。</p>
+
+<ol>
+<li>IPアドレス</li>
+<li>ポート番号</li>
+<li>ドメイン名(ServerName)</li>
+</ol>
+
+<p><img src="http://www.rickynews.com/images/articles/20140528/apache_vhost.png" alt="" /></p>
+
+<p><a href="http://httpd.apache.org/docs/2.2/ja/mod/core.html#virtualhost">http://httpd.apache.org/docs/2.2/ja/mod/core.html#virtualhost</a></p>
+
+<p>インターネット上に呪文のように<code>&lt;Virtualhost *:80&gt;</code>と記載されているのが影響しているのではないか？と感じております。
+  さて、この組み合わせがユニークになるようにすれば、自分が意図するサービスへ転送することが可能です。</p>
+
+<pre><code>Listen 80111
+&lt;Virtualhost *:80 *:80111&gt;
+  ServerName rickynews.com
+  ~
+</code></pre>
+
+<p>上記のように記載すれば、以下のようなURLで直接任意のプロジェクトにアクセス可能になります。</p>
+
+<p><code>http://192.168.33.104:80111/sampladata/</code></p>
+
+<p>ネームベースのVirtualhostしか理解していないと、リリースの事前確認などをしてもらう時に、
+  Hostsの設定を各自でしてもらったり、あるいはDNSに対して適当なドメインを設定をする必要があります。</p>
+
+<p>それは開発者として不親切です。ポート番号であれば、ユニークなので設定が不要でそのままアクセス可能です。
+  付加的に80番ポートの通常の設定をしていれば、各自でhostsを設定すれば、通常と同じ振る舞いでテストも可能です。</p>
+
+<h3 id="sslの振り分けに戻る">SSLの振り分けに戻る</h3>
+
+<p>上記のロジックを利用すれば「サービスがユニークに振り分けられるようにすればよい」ということが簡単に導けます。</p>
+
+<p>SSLの性質を考えると、SSLではport443を取り決めとして通信を開始します。
+  ApacheでSSLのListenポートを変更も可能ですが、Webブラウザ側もSSLポートを指定する必要があるため、現実的でありません。
+  そこで出てくるのがIPアドレスの固定指定です。</p>
+
+<pre><code>&lt;Virtualhost 192.168.33.103:443&gt;
+</code></pre>
+
+<p>上記のようにSSLポートとIPアドレスを指定すれば、同じIPのVhostを記載しない限り、一意に転送可能です。
+  そこがポイントです。</p>
+
+<h3 id="ip-aliasを利用する">IP Aliasを利用する</h3>
+
+<p>LinuxマシンではデフォルトでIPエイリアス機能を利用し、簡単に1つのnicに対して複数のIPアドレスを指定可能です。</p>
+
+<pre><code class="language-sh">$ cd /etc/sysconfig/network-scripts
+
+# デバイス複製
+$ cp -a ifcfg-em1 ifcfg-em1:0
+</code></pre>
+
+<pre><code>DEVICE=&quot;em1:0&quot;          #1/2 Device名を変更する
+IPADDR=&quot;192.168.33.104&quot; #2/2 好きなIPアドレスを指定する
+NETMASK=&quot;255.255.255.0&quot;
+GATEWAY=&quot;192.168.33.1&quot;
+ONBOOT=&quot;yes&quot;
+TYPE=&quot;Ethernet&quot;
+</code></pre>
+
+<pre><code class="language-sh">$ service network restart
+</code></pre>
+
+<p>たったこれだけです。こうすることで、いくつでもIPアドレスを複製することが可能です。もちろんグローバルIPでも可能です。
+  これを指定すれば、あとは対応するVirtualHost設定をApacheに記載すれば終了です。</p>
+
+<h3 id="終わりに">終わりに</h3>
+
+<p>このポート番号とIPアドレスの原理はインフラの様々な冗長化などにも応用可能です。MySQLもbindするIPアドレスを指定することができます。
+  MySQL辺などまた次回の機会に記載します。</p>
+
+      <div class="sharing" style="text-align: right;">
+        <a href="http://b.hatena.ne.jp/entry/http://www.rickynews.com/blog/2014/05/28/thinking-about-apache-vhost/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+        <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.rickynews.com/blog/2014/05/28/thinking-about-apache-vhost/" data-via="" data-counturl="http://www.rickynews.com/blog/2014/05/28/thinking-about-apache-vhost/" >Tweet</a>
+        
+        <div class="fb-like" data-layout="button_count" style="line-height:0.5;"></div>
+      </div>
+    </div>
+
+
+    <div class="post-footer">
+      <a href="http://www.rickynews.com/post" class="btn btn-primary btn-block btn-lg">View All 76 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4 sidebar">
+    <section>
+
+  <h3 style="margin-top: 0px">RickyNews</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+  Tech News & Music
+    <a href='http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml'  target='blank'><img id='feedlyFollow' src='http://s3.feedly.com/img/follows/feedly-follow-rectangle-flat-small_2x.png' alt='follow us in feedly' width='66' height='20' style="border: none;"></a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+
+  <h3 style="margin-top: 0px">Author</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+    <a href="https://twitter.com/rksz" target="_blank" style="text-decoration: none;">@rksz</a><br />
+    Ho Chi Minh City & Tokyo
+  </div>
+
+</section>
+
+
+<section>
+  <h3>Popular Posts</h3>
+      <script language="javascript" type="text/javascript" src="http://b.hatena.ne.jp/js/widget.js" charset="utf-8"></script>
+      <script language="javascript" type="text/javascript">
+Hatena.BookmarkWidget.url   = "www.rickynews.com";
+Hatena.BookmarkWidget.sort  = "count";
+Hatena.BookmarkWidget.width = 0;
+Hatena.BookmarkWidget.num   = 5;
+Hatena.BookmarkWidget.theme = "hatenadiary";
+Hatena.BookmarkWidget.load();
+      </script>
+</section>
+
+
+<section>
+  <h3>Amazon</h3>
+  <ul>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/4781701973/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4781701973&linkCode=as2&tag=recommend7150-22">ハッカーの学校 - IPUSIRON</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4781701973" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/4478026548/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4478026548&linkCode=as2&tag=recommend7150-22">シフト――2035年、米国最高情報機関が予測する驚愕の未来</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4478026548" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00MB2STXK/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00MB2STXK&linkCode=as2&tag=recommend7150-22">プログラマの考え方がおもしろいほど身につく本　問題解決能力を鍛えよう！ (アスキー書籍)</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00MB2STXK" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/B0126I117E/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B0126I117E&linkCode=as2&tag=recommend7150-22">ヴァージン・ウェイ　Ｒ・ブランソンのリーダーシップを磨く教室</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B0126I117E" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00GSHI04M/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00GSHI04M&linkCode=as2&tag=recommend7150-22">闘うプログラマー［新装版］　ビル・ゲイツの野望を担った男達</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00GSHI04M" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+  </ul>
+</section>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          &copy; 2016.
+RickyNews
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <script src="http://www.rickynews.com/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+  </body>
+</html>
+

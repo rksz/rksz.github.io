@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://www.rickynews.com/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="http://www.rickynews.com/favicon.png">
+    <title>MacアドレスとIPアドレスの両者が必要な理由 | RickyNews</title>
+    
+    <script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-46051188-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<meta property="og:title" content="MacアドレスとIPアドレスの両者が必要な理由 | RickyNews" />
+<meta property="og:url"   content="http://www.rickynews.com/blog/2015/07/09/why-ip-address-and-mac-address-are-needed/" />
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="http://www.rickynews.com" class="navbar-brand">
+            <span class="visible_pc">
+              <img src="http://www.rickynews.com/images/logo.jpg" alt="logo" />
+            </span>
+            <span class="visible_sp">
+              RickyNews
+            </span>
+          </a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="http://www.rickynews.com/post">Archive</a></li>
+<li><a href="http://www.rickynews.com/atom.xml">RSS</a></li>
+<li><a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml">Feedly</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">MacアドレスとIPアドレスの両者が必要な理由</h1>
+      <p class="text-muted">Jul 9, 2015</p>
+
+    </div>
+    <div class="post-content">
+      
+
+<p>基本的に通信というのはお互いのマシンを識別出来ればいいので、
+Macアドレス同士だけでも通信できるし、
+IPアドレス同士だけでも通信出来るはずである。
+ただその状況下でなぜ両者を並行して利用しているのか？とふと疑問に。</p>
+
+<p>「TCP/IPのルールだから」「MACアドレスだけではルーティング出来ないから」
+といえばなんとなくその通りですが、
+MACアドレス側にもルーティングなどのL3の機能を持たせることも設計的に可能だろうし、
+その逆もしかりです。
+実際なぜTCP/IPがそういうルールで落ち着いたのか？今回は自分なりの解釈をまとめます。</p>
+
+<h3 id="ネットワークの共通ルール-tcp-ip-vs-osi">ネットワークの共通ルール: TCP/IP vs OSI</h3>
+
+<p>まずTCP/IPに入る前におさらい。
+そもそもマルチベンダー間のネットワーク通信を実現するためには、
+共通ルールが必要なことは間違いありません。</p>
+
+<p>実際、1970年代頃のコンピュータ・ネットワークの通信プロトコルは
+ベンダー毎に独自の規格が乱立。
+そのため、業界共通のネットワーク標準を作ろうという動きが自然に発生してゆきます。
+主に電話会社など大手企業の主導でOSIという通信仕様を策定し、
+同時期に米国国防高等研究計画局がデータ通信としてTCP/IPを生んだ。</p>
+
+<p>TCP/IPのほうが必須の実装仕様自体がシンプルなため、結果としてこちらのほうが
+普及していった。
+電子メールの仕様でいえば、当初<a href="https://ja.wikipedia.org/wiki/%E9%96%8B%E6%94%BE%E5%9E%8B%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E9%96%93%E7%9B%B8%E4%BA%92%E6%8E%A5%E7%B6%9A#.E8.A9.95.E4.BE.A1.E3.81.A8.E5.BD.B1.E9.9F.BF">これほどまでに差</a>があった。</p>
+
+<blockquote>
+<ul>
+<li>OSI: 数冊の分厚い本</li>
+<li>TCP/IP: RFC-871上に数十ページ</li>
+</ul>
+</blockquote>
+
+<p>さらにOSIにはオプションなどの概念で変な柔軟性を
+もってしまった故に、皮肉なことにそれ故に相互の接続が出来ないということもあった。
+対称的にTCP/IPでは実用的かつシンプルであり、
+結果として爆発的に普及していった。</p>
+
+<p>「ネットワークの役割を最低限まで減らす」というTCP/IPのポリシーが
+開発者にも受け入れられた。</p>
+
+<h3 id="ハードウェアとソフトウェアのいい感じのバランス">ハードウェアとソフトウェアのいい感じのバランス</h3>
+
+<p>ソフトウェアというのは「OSなどの上で動かす処理系」
+ハードウェアは「組み込み用チップ、専用の機器で直接動かす処理系」と定義します。</p>
+
+<table>
+<thead>
+<tr>
+<th>種類</th>
+<th>柔軟性</th>
+<th>処理速度</th>
+<th>実装</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>ソフトウェア</td>
+<td>高</td>
+<td>遅</td>
+<td>複雑なことが多い</td>
+</tr>
+
+<tr>
+<td>ハードウェア</td>
+<td>低</td>
+<td>早</td>
+<td>シンプルなことが多い</td>
+</tr>
+</tbody>
+</table>
+
+<p>これが一般的な考えかと思います。
+双方にメリット・デメリットがあり、「柔軟性を取るか、処理速度を取るか」という
+状態です。</p>
+
+<ol>
+<li><strong>両方のメリットを享受出来る効率的な処理バランス</strong></li>
+<li><strong>安定した通信を実現するために、ハードウェア側は徹底的にやることを減らし、
+バグらないようにした</strong></li>
+</ol>
+
+<p>というのが私の解釈です。</p>
+
+<p>複雑なことをすればするだけ不具合が出る可能性が高くなります。
+ハードウェアは一旦完成すると、変更するのが大変なので、
+必然的に実装はシンプルな方向が良いと思います。</p>
+
+<p>物理層、すなわちL2におけるイーサネットケーブルや、スイッチングハブですが、
+これらも基本的な所は本当に難しいことはしていません。
+データである電気信号の波形を銅線/光ケーブルを通じて遠くに伝えるだけです。
+スイッチングハブに関して言えば、全部の通信を全ポートへ転送するのは多少ムダなため、
+ポートに繋がっているマシンを記憶して、効率良く送信してくれます。言ってもそれだけです。</p>
+
+<p>遠いマシンへの通信をどうするか？などをソフトウェア側に寄せることで、
+開発スピードのサイクルを高め、結果として急速に発達したのではないでしょうか。</p>
+
+<h3 id="マシンもデータ処理が楽になる">マシンもデータ処理が楽になる</h3>
+
+<p>特定の処理は得意な専用マシンがやってくれるほうが楽で効率が良いです。</p>
+
+<p>例えば、マシンの視点からすると、次々に着信するデータを「自分のものか否か」
+判定する必要があります。L2のMACアドレスという概念があれば、
+NICの時点で「自分のMACアドレス宛のものだけ取り込む」ということが出来ます。
+L3のIPだけで全ての処理を完結しようとしてしまうと、
+マシンの上で動くOS側が着信したデータを常に自分宛のデータかを判定しなければなりません。</p>
+
+<p>tcpdumpを実行すると視覚的に分かるように、
+激流のごとく常にデータがパソコンの出入口に来ています。
+これをOSという汎用マシンの上に動く仮想ソフトウェアが常に判定するのは、
+効率が悪いです。</p>
+
+<p>ある程度下処理を済ませた上で、それでも入ってきたデータ対して、処理をさせたほうが遥かに楽です。</p>
+
+<h3 id="住所と名前">住所と名前</h3>
+
+<p>私も個人的に好きなMACアドレスとIPアドレスの例えがあります。</p>
+
+<table>
+<thead>
+<tr>
+<th>種類</th>
+<th>例</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>MACアドレス</td>
+<td>名前</td>
+</tr>
+
+<tr>
+<td>IPアドレス</td>
+<td>住所</td>
+</tr>
+</tbody>
+</table>
+
+<p>家に名前の違う人宛の荷物はその場で受け取らなければ良いです。
+「前に住んでいた人の荷物かな」そんな感じです。
+逆に自分が送り主として、名前だけ分かっていて荷物を送りたい場合でも、
+内容を問い合わせて(RARP)、情報が分かれば送信もできるし、
+MACアドレスとIPアドレスのセットであることで、より間違いなくデータも送れます。</p>
+
+<h3 id="unixとtcp-ip">UNIXとTCP/IP</h3>
+
+<p>結局の所、TCP/IPは実際に作りながら進めてみて
+「シンプルで安定していていい感じに出来た！」
+これに尽きるのではないかなぁと解釈しています。</p>
+
+<p>UNIX哲学というは結構強力だと思うのですが、UNIX陣営からみても、
+「TCP/IPも我々と同じような考えをしているではないか。実装に取り込もう」
+こんな閣議決定があったのではないかと想像してしまいます。</p>
+
+<p>MACアドレスとIPを見ただけでここまで話が膨らんでしまいました。
+コンピュータのコミュニティは本当に面白いですね。今日はこのあたりで。</p>
+
+      <div class="sharing" style="text-align: right;">
+        <a href="http://b.hatena.ne.jp/entry/http://www.rickynews.com/blog/2015/07/09/why-ip-address-and-mac-address-are-needed/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+        <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.rickynews.com/blog/2015/07/09/why-ip-address-and-mac-address-are-needed/" data-via="" data-counturl="http://www.rickynews.com/blog/2015/07/09/why-ip-address-and-mac-address-are-needed/" >Tweet</a>
+        
+        <div class="fb-like" data-layout="button_count" style="line-height:0.5;"></div>
+      </div>
+    </div>
+
+
+    <div class="post-footer">
+      <a href="http://www.rickynews.com/post" class="btn btn-primary btn-block btn-lg">View All 76 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4 sidebar">
+    <section>
+
+  <h3 style="margin-top: 0px">RickyNews</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+  Tech News & Music
+    <a href='http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml'  target='blank'><img id='feedlyFollow' src='http://s3.feedly.com/img/follows/feedly-follow-rectangle-flat-small_2x.png' alt='follow us in feedly' width='66' height='20' style="border: none;"></a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+
+  <h3 style="margin-top: 0px">Author</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+    <a href="https://twitter.com/rksz" target="_blank" style="text-decoration: none;">@rksz</a><br />
+    Ho Chi Minh City & Tokyo
+  </div>
+
+</section>
+
+
+<section>
+  <h3>Popular Posts</h3>
+      <script language="javascript" type="text/javascript" src="http://b.hatena.ne.jp/js/widget.js" charset="utf-8"></script>
+      <script language="javascript" type="text/javascript">
+Hatena.BookmarkWidget.url   = "www.rickynews.com";
+Hatena.BookmarkWidget.sort  = "count";
+Hatena.BookmarkWidget.width = 0;
+Hatena.BookmarkWidget.num   = 5;
+Hatena.BookmarkWidget.theme = "hatenadiary";
+Hatena.BookmarkWidget.load();
+      </script>
+</section>
+
+
+<section>
+  <h3>Amazon</h3>
+  <ul>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/4781701973/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4781701973&linkCode=as2&tag=recommend7150-22">ハッカーの学校 - IPUSIRON</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4781701973" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/4478026548/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4478026548&linkCode=as2&tag=recommend7150-22">シフト――2035年、米国最高情報機関が予測する驚愕の未来</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4478026548" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00MB2STXK/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00MB2STXK&linkCode=as2&tag=recommend7150-22">プログラマの考え方がおもしろいほど身につく本　問題解決能力を鍛えよう！ (アスキー書籍)</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00MB2STXK" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/B0126I117E/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B0126I117E&linkCode=as2&tag=recommend7150-22">ヴァージン・ウェイ　Ｒ・ブランソンのリーダーシップを磨く教室</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B0126I117E" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00GSHI04M/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00GSHI04M&linkCode=as2&tag=recommend7150-22">闘うプログラマー［新装版］　ビル・ゲイツの野望を担った男達</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00GSHI04M" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+  </ul>
+</section>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          &copy; 2016.
+RickyNews
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <script src="http://www.rickynews.com/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+  </body>
+</html>
+

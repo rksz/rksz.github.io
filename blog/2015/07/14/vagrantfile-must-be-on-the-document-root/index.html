@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://www.rickynews.com/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="http://www.rickynews.com/favicon.png">
+    <title>開発パートナーとしてのVagrantfileとdotfiles連携 | RickyNews</title>
+    
+    <script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-46051188-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<meta property="og:title" content="開発パートナーとしてのVagrantfileとdotfiles連携 | RickyNews" />
+<meta property="og:url"   content="http://www.rickynews.com/blog/2015/07/14/vagrantfile-must-be-on-the-document-root/" />
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="http://www.rickynews.com" class="navbar-brand">
+            <span class="visible_pc">
+              <img src="http://www.rickynews.com/images/logo.jpg" alt="logo" />
+            </span>
+            <span class="visible_sp">
+              RickyNews
+            </span>
+          </a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="http://www.rickynews.com/post">Archive</a></li>
+<li><a href="http://www.rickynews.com/atom.xml">RSS</a></li>
+<li><a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml">Feedly</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">開発パートナーとしてのVagrantfileとdotfiles連携</h1>
+      <p class="text-muted">Jul 14, 2015</p>
+
+    </div>
+    <div class="post-content">
+      
+
+<p><center><img src="http://www.rickynews.com/images/articles/20150714/vagrant.jpg" alt="vagrant" /></center></p>
+
+<p>皆さんVagrantfileをどこに配置されていますか。各Gitプロジェクト配下にVagrantfileを入れ、
+Chefなどと連携して個別に動くようにしている方が多いと思います。</p>
+
+<blockquote>
+<p>LOOKUP PATH</p>
+
+<p>When you run any vagrant command, Vagrant climbs up the directory tree looking for the first Vagrantfile it can find, starting first in the current directory. So if you run vagrant in /home/mitchellh/projects/foo, it will search the following paths in order for a Vagrantfile, until it finds one:</p>
+
+<pre><code>&gt; /home/mitchellh/projects/foo/Vagrantfile
+&gt; /home/mitchellh/projects/Vagrantfile
+&gt; /home/mitchellh/Vagrantfile
+&gt; /home/Vagrantfile
+&gt; /Vagrantfile
+&gt; This feature lets you run vagrant from any directory in your project.
+&gt; ```
+&gt;
+&gt; You can change the starting directory where Vagrant looks for a Vagrantfile by setting the VAGRANT_CWD environmental variable to some other path.
+&gt;
+&gt; http://docs.vagrantup.com/v2/vagrantfile/
+
+
+元々知らなかったのですが、Vagrantfileは上の階層まで順々にLOOKUPして動いてくれます。
+すなわちどこの階層にいても``vagrant ssh``などのコマンドが実行出来ます。
+
+
+</code></pre>
+
+<p>{PROJET}/Vagrantfile</p>
+
+<pre><code>
+このように必ずgitファイルの一番上に配置しておけばどこからでもアクセス出来ます。
+私個人の経験として、過去に運用系の設定などは一個のフォルダにまとめて展開していましたが、
+Vagrantfileは必ずPROJECT_ROOT配下に移動するべきと気付き、移動するようにしました。
+
+
+</code></pre>
+
+<p>{PROJET}/opsfiles/vagrant/Vagrantfile
+{PROJET}/opsfiles/capistrano/</p>
+
+<pre><code>
+変更後が以下の構成です。
+
+
+</code></pre>
+
+<p>{PROJET}/Vagrantfile
+{PROJET}/opsfiles/chef
+{PROJET}/opsfiles/capistrano/</p>
+
+<pre><code>
+
+### Disposalな環境準備のための ~/Vagrantfile
+
+
+運用系のツールなどをテストするときに、とりあえず小さなマシンが欲しいということが多いかと思います。
+``vagrant.app 192.168.33.33``のようなHostsが常時設定されていて、
+ansibleやchefなどをそのサーバめがけて手軽にゼロからテスト出来るようなマシンです。
+
+それを補足するのがまさにVagrantですが、Vagrantfile自体も案外準備するのは面倒です。
+既存のプロジェクトからとってきたり、``vagrant init``の実行するかと思います。
+
+ただ上にPATHをLookupしてくれるということを理解していれば、
+実は$HOME配下に自分の良く使う設定のVagrantfileを置いておけば良いわけです。
+
+</code></pre>
+
+<p>~/Vagrantfile</p>
+
+<pre><code>
+そうすることにより、ターミナル上の好きな所から``vagrant up``と実行すればいつでも
+クリーンな仮想マシンを取得することが出来ます。
+
+
+### 仮想マシンへのアクセスalias
+
+bashrcやzshrcに以下を追加すれば、vmとただくだけで仮想マシンへのアクセスを提供してくれます。
+
+</code></pre>
+
+<h2 id="bashrc-zshrc">bashrc/zshrc</h2>
+
+<p>alias vm=&ldquo;vagrant ssh || vagrant up&rdquo;</p>
+
+<pre><code>
+少しハック気味でCtrl-Cを打つとvagrant upが発動したりなどしてしまうので、
+もう少しいい感じの設定があれば、そちらのほうが良いと思います。
+
+
+### dotfiles連携
+
+厳密には連携ではない所ですが、dotfilesのディレクトリにVagrantfileを私はおいています。
+
+https://github.com/rksz/dotfiles/
+
+</code></pre>
+
+<p>$ ls ~/dotfiles
+total 104
+drwxr-xr-x   24 rksz staff   816  7 14 21:39 .
+drwxr-xr-x+ 113 rksz staff  3842  7 14 22:03 ..
+-rw-r&ndash;r&ndash;    1 rksz staff  1398  4 13 14:33 .ctags
+-rw-r&ndash;r&ndash;    1 rksz staff  5600  9 26  2014 .dir_colors
+-rw-r&ndash;r&ndash;    1 rksz staff    53  9 26  2014 .gemrc
+drwxr-xr-x   17 rksz staff   578  7 14 22:02 .git
+-rw-r&ndash;r&ndash;    1 rksz staff  3136  4  2 12:54 .gitconfig
+-rw-r&ndash;r&ndash;    1 rksz staff   151  9 26  2014 .gitignore
+-rw-r&ndash;r&ndash;    1 rksz staff   121  9 26  2014 .gitmodules
+-rw-r&ndash;r&ndash;    1 rksz staff   341  7 12 19:51 .gvimrc
+drwxr-xr-x    3 rksz staff   102  5 23 19:21 .peco
+-rw-r&ndash;r&ndash;    1 rksz staff  1456  9 26  2014 .taskrc
+-rw-r&ndash;r&ndash;    1 rksz staff  3933  5 22 14:15 .tmux.conf
+drwxr-xr-x    9 rksz staff   306  5 28 12:05 .vim
+-rw-r&ndash;r&ndash;    1 rksz staff 23002  7 13 16:21 .vimrc
+-rw-r&ndash;r&ndash;    1 rksz staff   699  7 12 22:20 .zprofile
+drwxr-xr-x    5 rksz staff   170  9 26  2014 .zsh
+-rw-r&ndash;r&ndash;    1 rksz staff  9323  7 14 08:53 .zshrc
+-rw-r&ndash;r&ndash;    1 rksz staff   147  5 17 09:35 README.md
+-rw-r&ndash;r&ndash;    1 rksz staff   717  7 14 08:52 Vagrantfile
+drwxr-xr-x   30 rksz staff  1020  7 13 09:46 bin
+-rwxr-xr-x    1 rksz staff  6071  7 14 21:39 bootstrap.sh</p>
+
+<pre><code>
+dotfiles運用されている方であれば、
+dotfilesを$HOME(~)配下に置いてそこからシンボリックリンクで各種$HOME配下にコピーしているはずです。
+
+</code></pre>
+
+<p>ln -s /Users/rksz/dotfiles/.vimrc /Users/rksz/.vimrc
+```</p>
+</blockquote>
+
+<p>この運用に乗せてVagrantfileも格納してしまえば、
+いつでもどこでも動かせるデフォルトのVagrantfileを構築が可能です。
+これで好きなディレクトリから開発の相棒のバーチャルマシンを作ることが出来ます。</p>
+
+<p>Vagrantは設計が本当によく出来ています。</p>
+
+      <div class="sharing" style="text-align: right;">
+        <a href="http://b.hatena.ne.jp/entry/http://www.rickynews.com/blog/2015/07/14/vagrantfile-must-be-on-the-document-root/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+        <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.rickynews.com/blog/2015/07/14/vagrantfile-must-be-on-the-document-root/" data-via="" data-counturl="http://www.rickynews.com/blog/2015/07/14/vagrantfile-must-be-on-the-document-root/" >Tweet</a>
+        
+        <div class="fb-like" data-layout="button_count" style="line-height:0.5;"></div>
+      </div>
+    </div>
+
+
+    <div class="post-footer">
+      <a href="http://www.rickynews.com/post" class="btn btn-primary btn-block btn-lg">View All 76 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4 sidebar">
+    <section>
+
+  <h3 style="margin-top: 0px">RickyNews</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+  Tech News & Music
+    <a href='http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml'  target='blank'><img id='feedlyFollow' src='http://s3.feedly.com/img/follows/feedly-follow-rectangle-flat-small_2x.png' alt='follow us in feedly' width='66' height='20' style="border: none;"></a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+
+  <h3 style="margin-top: 0px">Author</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+    <a href="https://twitter.com/rksz" target="_blank" style="text-decoration: none;">@rksz</a><br />
+    Ho Chi Minh City & Tokyo
+  </div>
+
+</section>
+
+
+<section>
+  <h3>Popular Posts</h3>
+      <script language="javascript" type="text/javascript" src="http://b.hatena.ne.jp/js/widget.js" charset="utf-8"></script>
+      <script language="javascript" type="text/javascript">
+Hatena.BookmarkWidget.url   = "www.rickynews.com";
+Hatena.BookmarkWidget.sort  = "count";
+Hatena.BookmarkWidget.width = 0;
+Hatena.BookmarkWidget.num   = 5;
+Hatena.BookmarkWidget.theme = "hatenadiary";
+Hatena.BookmarkWidget.load();
+      </script>
+</section>
+
+
+<section>
+  <h3>Amazon</h3>
+  <ul>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/4781701973/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4781701973&linkCode=as2&tag=recommend7150-22">ハッカーの学校 - IPUSIRON</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4781701973" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/4478026548/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4478026548&linkCode=as2&tag=recommend7150-22">シフト――2035年、米国最高情報機関が予測する驚愕の未来</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4478026548" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00MB2STXK/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00MB2STXK&linkCode=as2&tag=recommend7150-22">プログラマの考え方がおもしろいほど身につく本　問題解決能力を鍛えよう！ (アスキー書籍)</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00MB2STXK" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/B0126I117E/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B0126I117E&linkCode=as2&tag=recommend7150-22">ヴァージン・ウェイ　Ｒ・ブランソンのリーダーシップを磨く教室</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B0126I117E" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00GSHI04M/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00GSHI04M&linkCode=as2&tag=recommend7150-22">闘うプログラマー［新装版］　ビル・ゲイツの野望を担った男達</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00GSHI04M" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+  </ul>
+</section>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          &copy; 2016.
+RickyNews
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <script src="http://www.rickynews.com/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+  </body>
+</html>
+

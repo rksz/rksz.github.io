@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Taskwarrior Vit Trouble on RickyNews</title>
+    <link>http://www.rickynews.com/categories/taskwarrior-vit-trouble/</link>
+    <description>Recent content in Taskwarrior Vit Trouble on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 23 Jul 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/taskwarrior-vit-trouble/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>vit &amp; taskwarriorの文字化けクラッシュに対処する</title>
+      <link>http://www.rickynews.com/blog/2014/07/23/task-warriror-vit-trouble/</link>
+      <pubDate>Wed, 23 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2014/07/23/task-warriror-vit-trouble/</guid>
+      <description>
+
+&lt;p style=&#39;text-align: center; margin-top:0px; font-size: small;&#39;&gt;
+  &lt;img src=&#34;http://www.rickynews.com/images/articles/20140723/taskwarrior.jpg&#34; alt=&#34;&#34;&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Taskwarriorの支援ツールである&lt;code&gt;vit&lt;/code&gt;。日本語環境で利用していた所、
+おそろしい事件が発生したため、その対処法。&lt;/p&gt;
+
+&lt;p&gt;vitはCUIのタスク管理ツールである&lt;a href=&#34;http://taskwarrior.org/&#34;&gt;Taskwarrior&lt;/a&gt;の支援ツールとして開発されており、
+簡単にbrew等でインストール可能です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ brew install vit
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;いちいちCUIで&lt;code&gt;t 12 modi pri:H .....&lt;/code&gt; などと記載しなくても簡単にvimのようなインタフェースで対話的に更新が出来ます。&lt;/p&gt;
+
+&lt;p&gt;先日、vitを利用してTODOの書き換えを行ったところ、Taskwarriorのデータが壊れる事件が発生。
+日本語でアノテーションなどを大量に記載しておりましたが、何やら反応が鈍くなり、
+taskwarrior側でeditモードで書き換えた所、完全にご臨終しました。
+全く起動もなにもしません。&lt;/p&gt;
+
+&lt;h2 id=&#34;復旧&#34;&gt;復旧&lt;/h2&gt;
+
+&lt;p&gt;Taskwarriorでは基本的にjsonのようなテキスト形式でファイルは管理されています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;~/.task/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;今回の例でいえば、見事に&lt;code&gt;.task&lt;/code&gt;配下のファイル達のマルチバイト文字が全て文字化けをして、
+nkfで調査したところBINARYと表示されておりました。&lt;/p&gt;
+
+&lt;p&gt;もしやと思い、nkfコマンドでutf-8に変換したところ無事に文字化けから復旧。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ nkf --overwrite -w ~/.task/pending.data
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;変換後も一部の文字列は完全に壊れていたため、editモードで削除。無事に完全復旧です。
+推測の範囲ですが、プログラム側でBINARY -&amp;gt; UTF8に変換保存する過程で途中終了し、
+破壊されたように見えたのではないかと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;最後に&#34;&gt;最後に&lt;/h2&gt;
+
+&lt;p&gt;ワンファイルで管理するTaskwarriorは利便性もありながら、一抹の不安も感じました。
+Taskwarriroの元データの定期的なバックアップは忘れずに行いましょう。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

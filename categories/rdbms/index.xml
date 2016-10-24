@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rdbms on RickyNews</title>
+    <link>http://www.rickynews.com/categories/rdbms/</link>
+    <description>Recent content in Rdbms on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 20 Apr 2016 00:00:00 +0900</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/rdbms/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>資料整理としての One fact in one place</title>
+      <link>http://www.rickynews.com/blog/2016/04/20/one-fact-in-one-place/</link>
+      <pubDate>Wed, 20 Apr 2016 00:00:00 +0900</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2016/04/20/one-fact-in-one-place/</guid>
+      <description>&lt;p&gt;One fact in one placeとはDBのテーブル設計の時によく出てくる言葉で、「一つのデータは一箇所にあるべき」という意味です。例えばTwitterのユーザID(@rksz)がテーブル内のいろいろな所でそのままコピーされてたら恐ろしいですよね。変更したい時に全部探して、整合性をとるために全部アップデートが必要です。&lt;/p&gt;
+
+&lt;p&gt;でもこれは・・・日頃の生活に関しても何でも同じことが言えます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;スケジュールは社内全員Google Calendarで管理するべきだ&lt;/li&gt;
+&lt;li&gt;Excelファイルではなく、1箇所のGoogle Spreadsheetを使ってみんなで編集する&lt;/li&gt;
+&lt;li&gt;作業ファイルは全てEvernoteに集約してある&lt;/li&gt;
+&lt;li&gt;TODO管理ツールは一箇所だけに集約する&lt;/li&gt;
+&lt;li&gt;Redmineの個別チケットへの直接ファイルをアップするのではなく、ファイルのリンク先を添付するべきだ&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;これだけを頭にいれるだけで、ぐっと情報が整理出来るようになります。RDBはまさに情報整理の本質部分を教えてくれます。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

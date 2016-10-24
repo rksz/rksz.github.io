@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tmux on RickyNews</title>
+    <link>http://www.rickynews.com/categories/tmux/</link>
+    <description>Recent content in Tmux on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 17 Aug 2015 19:57:55 +0900</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/tmux/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ちょっと役に立つ上級者向けのTmuxのConfig設定</title>
+      <link>http://www.rickynews.com/blog/2015/08/17/the-useful-tmux-configs/</link>
+      <pubDate>Mon, 17 Aug 2015 19:57:55 +0900</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2015/08/17/the-useful-tmux-configs/</guid>
+      <description>
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20150817/tmux.jpg&#34; alt=&#34;tmux&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://tmux.github.io/&#34;&gt;tmux&lt;/a&gt;はかなり便利で活用されてる方も多いと思います。zshやtmux.confに設定している多少上級者向けのお勧めの設定を今回はご紹介します。&lt;/p&gt;
+
+&lt;h3 id=&#34;1-alias-t&#34;&gt;1. alias t&lt;/h3&gt;
+
+&lt;p&gt;zshrc向けの設定です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;alias t=&amp;quot;tmux attach || tmux&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;t&lt;/code&gt;は左手人差し指で届く非常に押しやすいボタンです。
+この重要な一文字エイリアスを贅沢にtmuxにアサインしてしまいます。
+ポイントは基本をtmux attachにし、attachへ失敗した時に新しく構築するようにHackさせます。&lt;/p&gt;
+
+&lt;p&gt;基本的に&lt;a href=&#34;https://github.com/tmuxinator/tmuxinator&#34;&gt;tmuxinator&lt;/a&gt;などでtmuxのsessionは作っているものを運用することが多いため、このショートカットはattachを前提として設定してしまいます。恐らくtmuxコマンドを打たれる時も、「何もsessionが無い時に新規で作る」or「既存のsessionにアタッチする」この二択が8割以上を占めるはずです。&lt;/p&gt;
+
+&lt;p&gt;新たに無名tmux sessionを作り始めたい場合は、alias経由ではなく、&lt;code&gt;tmux&lt;/code&gt;と押せば問題ありません。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-alias-x-x&#34;&gt;2. alias x/X&lt;/h3&gt;
+
+&lt;p&gt;こちらもzshrc用の設定です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;alias x=&amp;quot;mux&amp;quot;
+alias X=&amp;quot;tmux kill-server&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;x&lt;/code&gt;コマンドでtmuxinatorを起動します。&lt;code&gt;x project&lt;/code&gt;などで直ぐにsessionを引っ張ることが出来ます。&lt;/p&gt;
+
+&lt;p&gt;tmuxinatorを使っていて感じることは、&amp;rdquo;Sessionを最初から作り直したい&amp;rdquo;という要望です。tmuxinatorでは最初に起動するときにスクリプトが一式実行されます。一度セッションを作ってしまうと、&lt;code&gt;mux project&lt;/code&gt;と実行しても同じプロジェクトがアタッチされるだけになります。もちろんセッション切り替えという面ではある意味合理的ですが、後述するsession切り替えをメインで利用する身としてはあまり不要な機能だったりします。&lt;/p&gt;
+
+&lt;p&gt;そういう時のために、&lt;code&gt;X&lt;/code&gt;キーをkill serverに大胆にアサインしてしまいます。これにより、「&lt;code&gt;x&lt;/code&gt;でセッションを呼び出し、&lt;code&gt;X&lt;/code&gt;で全部のセッションを閉じる」というスムーズな流れを構築できます。またtmuxでは元々&lt;code&gt;BIND + x&lt;/code&gt;でpaneを閉じる動きをするため、元来の動きの意味合いからもそこまで離れていません。&lt;/p&gt;
+
+&lt;p&gt;これで、tmuxinator経由でsession作って、すぐにsessionを捨てて、またsessionを作ってという、まさにイミュータブルインフラストラクチャではりませんが、tmuxの環境のDisposable化実現させます。&lt;/p&gt;
+
+&lt;h3 id=&#34;3-peco-switch-client&#34;&gt;3. peco + switch-client&lt;/h3&gt;
+
+&lt;p&gt;tmux.confの設定です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bind s split-window -c &#39;#{pane_current_path}&#39; -v &amp;quot;tmux ls | cut -d: -f1 | peco | xargs tmux switch-client -t&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;デフォルトのswitch-client設定をpecoで上書きしてしまいます。
+&lt;code&gt;bind s&lt;/code&gt;を叩くことで、pecoが起動しキーワードでのフィルター経由の選択が簡単に出来るようになります。
+tmuxinator経由で起動している場合、かならずsession名が付与されるため、pecoでsessionをスイッチ出来るのは非常に相性が良いです。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

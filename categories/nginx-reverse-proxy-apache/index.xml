@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nginx Reverse Proxy Apache on RickyNews</title>
+    <link>http://www.rickynews.com/categories/nginx-reverse-proxy-apache/</link>
+    <description>Recent content in Nginx Reverse Proxy Apache on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 25 Aug 2014 14:10:12 +0900</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/nginx-reverse-proxy-apache/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>フロントエンジニアに知ってもらいたいリバースプロキシの重要性</title>
+      <link>http://www.rickynews.com/blog/2014/08/25/why-you-need-to-use-reverse-proxy/</link>
+      <pubDate>Mon, 25 Aug 2014 14:10:12 +0900</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2014/08/25/why-you-need-to-use-reverse-proxy/</guid>
+      <description>
+
+&lt;p style=&#39;text-align: center; margin-top:0px; font-size: small;&#39;&gt;
+  &lt;img src=&#34;http://www.rickynews.com/images/articles/20140824/reverse-proxy.jpg&#34; alt=&#34;&#34;&gt;&lt;br /&gt;
+&lt;a href=&#34;https://www.flickr.com/photos/chefranden/&#34;&gt;Randen Pederson&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;大規模なシステムであれば使っているであろうリバースプロキシ。
+セキュリティや稼働率の観点からみて利用することは非常にメリットは高いです。
+ただ、社内や周りであまり知見がなく、
+「動くからいいや」という理由でApacheをそのままWebサービスの一次受けとして利用されている方も多いと思います。
+動くという目的からすれば確かにその通りですが、ただ一枚リバースプロキシを入れるだけで
+ぐっと運用効率、稼働率も拡張性も上がります。&lt;/p&gt;
+
+&lt;h2 id=&#34;1-ルーティング処理の簡略化&#34;&gt;1. ルーティング処理の簡略化&lt;/h2&gt;
+
+&lt;p&gt;例えばRESTfulな一般的なAPI構成を作りたいと思った時に以下のようなURL構成になると思います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;http://api.something.com/search/v1/item/list.json?cid=xxxx&amp;amp;gid=xxxxx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;もしアプリケーション側のルーティングしか知らなければframework側のrouteのようなファイルで
+以下のように設定するケースが多いかと思います。&lt;/p&gt;
+
+&lt;p&gt;fuelphpのルーティング設定ファイルである&lt;a href=&#34;http://fuelphp.jp/docs/1.8/general/routing.html#/advanced&#34;&gt;route.php&lt;/a&gt;の例とすると&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;return array(
+    &#39;search/v1/item/list&#39;   =&amp;gt; &#39;item/list&#39;, //search/v1以下を飛ばす
+    &#39;search/v1/item/detail&#39; =&amp;gt; &#39;item/detail&#39;,
+);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;確かに動くといえば動きますが、毎回search/v1を書くのは直感的にどうかと思います。&lt;/p&gt;
+
+&lt;p&gt;一歩進んで、.htaccessやhttpd.confでRewriteすると・・・&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;RewriteEngine On
+RewriteBase /
+RewriteRule search/v1/(.*) /$1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;v2として動かしたいときにはここのファイルを変えるのでしょうか。
+Gitのコミットログも少々ノイズが入ってきそうです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-text&#34;&gt;$ git log --oneline
+f94f133 refs #3150 search/v2からsearchitem/v2に仕様変更(.htaccess)
+d07a2ce refs #3121 search/v1からsearch/v2に変更(.htaccess)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;.htaccessなどでURLの書き換えを行ってしまうと、新しい開発者からすると少々面倒です。
+「なんだか良くわからないが、うまく動作しない」などと気付き、
+よくみてみるとフレームワークの外側の.htaccessでゴリゴリ設定が入っているなど。
+そんなプロジェクトの改修作業は極力避けたいものです。&lt;/p&gt;
+
+&lt;h3 id=&#34;リバースプロキシを入れた場合&#34;&gt;リバースプロキシを入れた場合&lt;/h3&gt;
+
+&lt;p&gt;nginxを例に設定を行ってみます。&lt;/p&gt;
+
+&lt;p&gt;適当に&lt;code&gt;/etc/nginx/conf.d/reverse-proxy.conf&lt;/code&gt;の名前で以下のファイルを作成します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;proxy_set_header Host $http_host;
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Forwarded-Proto $scheme;
+proxy_set_header X-Forwarded-Host $http_host;
+proxy_set_header X-Forwarded-Server $host;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_read_timeout 600s;
+proy_connect_timeout 10s;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;そして任意の所に下記のreverse proxy設定を追加します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;server {
+    listen *:80;
+    server_name api.something.com;
+
+    location /search/v1 {
+        rewrite /search/v1/(.*) /$1 break;
+        proxy_pass  http://localhost:8080;
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このようにすると、search/v1となっているものをバックエンドのアプリ側に引き渡すことが出来ます。
+アプリ側からすれば、search/1を考えず以下のようなURLでアクセスが来たと考えれば良いだけです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;http://localhost:8080/item/list.json?cid=xxxx&amp;amp;gid=xxxxx
+//http://api.something.com/search/v1/item/list.json?cid=xxxx&amp;amp;gid=xxxxx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;簡単そうですね。このURL構成であれば、
+コントローラ + アクション名の極めてシンプルなフレームワークのルーティング構成になります。
+開発者も見たままのURL構成で実装すれば良いので非常に簡単です。&lt;/p&gt;
+
+&lt;p&gt;そしてアプリケーション側も細かなルーティングは気にしなくてよくなります。
+SEO対策などでURL改変などはよくある事例だと思いますが、末端のスラッシュ以下のパラメータを
+アプリケーション側で変更することは簡単なのはご存知の通りです。
+ただ、URLを一階層固定で下げたいなどの理由であれば、もう一つ上のレイヤーで処理させるべきです。&lt;/p&gt;
+
+&lt;h3 id=&#34;ワンドメイン配下に複数のサービスが出来る&#34;&gt;ワンドメイン配下に複数のサービスが出来る&lt;/h3&gt;
+
+&lt;p&gt;簡単にサービスをワンドメイン配下に統合も可能です。
+APIというドメインの名前の元、色々なサービスをどんどん拡張可能です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;server {
+    listen *:80;
+    server_name api.something.com;
+
+    #検索用API 
+    location /search/v1 {
+        rewrite /search/v1/(.*) /$1 break;
+        proxy_pass  http://localhost:8080;
+    }
+
+    #アイテム用API
+    location /item/v1 {
+        rewrite /item/v1/(.*) /$1 break;
+        proxy_pass  http://localhost:8081;
+    }
+
+    #レコメンド用API v1
+    location /recommend/v1 {
+        rewrite /recommend/v1/(.*) /$1 break;
+        proxy_pass  http://localhost:8082;
+    }
+
+    #レコメンド用API v2
+    location /recommend/v2 {
+        rewrite /recommend/v2/(.*) /$1 break;
+        proxy_pass  http://localhost:8083;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;よくあるAPIのバージョンですが、上記のURLのような規則にしていれば、
+全く別プロジェクトに対して、APIのエンドポイントを指定することも可能です。
+これにより、既存のバージョンのAPIを残せるため、並行稼動なども容易にすることが出来ます。&lt;/p&gt;
+
+&lt;p&gt;このリバースプロキシ自体のconfig設定が、API全体の情報も集約する意味あいにもなれるので、
+非常に運用効率自体も上がります。&lt;/p&gt;
+
+&lt;h3 id=&#34;注意点&#34;&gt;注意点&lt;/h3&gt;
+
+&lt;p&gt;一つ気をつけるのが、リバースプロキシ側との密接すぎるアプリケーションルーティングを組まないことです。
+今度こちらが密結合になってしまうことは本末転倒です。
+&lt;strong&gt;アプリ側で処理できるルーティングとリバースプロキシ側で処理出来るルーティングの中間地点を狙うべき&lt;/strong&gt;です。
+感覚的になりますが、リバースプロキシ経由でもURLを直感的にアクセスしてページが表示できるし、
+アプリケーション単体でも同様にアクセス出来るような状態が好ましいです。&lt;/p&gt;
+
+&lt;h2 id=&#34;2-リリース切り替えが容易になる&#34;&gt;2. リリース切り替えが容易になる&lt;/h2&gt;
+
+&lt;p&gt;プレリリースしたい場合は簡単で、リバースプロキシ側の向き先を社内のステージング環境に向けるだけでOKです。
+これにより、簡単に本番環境のユーザを一時的にプレ本番であるステージング環境に流し込むことが出来ます。&lt;/p&gt;
+
+&lt;p&gt;いくらApacheBenchなどを利用して、ベンチマークを取ったとしても、
+実際のユーザの挙動というもは似て非なるものです。それを一時的でもプレ本番環境で試して、
+すぐに戻せるのはシステム開発において非常に安心感があります。&lt;/p&gt;
+
+&lt;h2 id=&#34;3-dnsの伝播も気にしなくてよい&#34;&gt;3. DNSの伝播も気にしなくてよい&lt;/h2&gt;
+
+&lt;p&gt;ドメインのAレコードの変更設定してもインターネットの仕組み上すぐに反映されません。
+ローカルブラウザを含め色々な所でDNSの情報はキャッシュされ、
+毎回オリジンのDNSサーバに問い合わせなくて良いような仕組みになっています。&lt;/p&gt;
+
+&lt;p&gt;DNSサーバの負荷軽減という意味では良いですが、サービスリリースという意味では大敵です。
+全く新規ドメインのサービスであれば、イニシャルアクセスがかかるので問題はありませんが、
+同一ドメインのサーバ切り替えるなどという時には問題があります。
+DNS側で設定を切り替えても、すぐにユーザに反映されるか分からないからです。&lt;/p&gt;
+
+&lt;p&gt;そのため、通常DNSサーバではTTL(time to live)を短めに設定して、すぐにDNS問い合わせをしてもらうように
+設定します。ただそれであってもあくまでもTTLを短くしているだけで、
+絶対に全ての端末が一瞬で切り替わってくれる保証はありません。&lt;/p&gt;
+
+&lt;p&gt;そんな時にリバースプロキシさえあれば、一切問題はありません。&lt;/p&gt;
+
+&lt;p&gt;ユーザからすれば、普段と同一のリバースプロキシに向けてアクセスするだけなので、
+こちらがリバースプロキシの設定を変更したタイミングで、ユーザに変更を届けることが可能です。
+逆に言えば、いざリリースをしてみてトラブルがあった時に即座に別サーバにある前バージョンに戻すことも可能ということです。
+リリース後にすぐ差し戻せるのは精神的に安心感があるのは周知の通りです。&lt;/p&gt;
+
+&lt;h2 id=&#34;4-もしもの障害時に対策が出来る&#34;&gt;4. もしもの障害時に対策が出来る&lt;/h2&gt;
+
+&lt;p&gt;一枚プロキシが挟まるため、障害時の対応がスムーズです。
+例えばページ表示に問題があれば、簡単にペラ1のメンテナンスページに飛ばすことが出来ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;server {
+    listen *:80;
+    server_name api.something.com;
+    error_page 503 /path/to/maintenance.html;
+
+    location /search/v1 {
+        if (-f &amp;quot;/tmp/MAINTENANCE_LOCK&amp;quot;) {
+          return 503;
+        }
+        rewrite /search/v1/(.*) /$1 break;
+        proxy_pass  http://localhost:8080;
+    }
+
+    location /path/to/maintenance.html {
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;tmp以下に任意のファイルをtouchさせすれば簡単に503でユーザアクセスをOFFにすることが出来ます。
+もしリバースプロキシが上位に無い場合はApache側などで直接書き換えなければなりません。&lt;/p&gt;
+
+&lt;p&gt;もちろんApacheのconf側にこの機能を持たせることも可能ですが、
+複数台のサーバがあった時に、その配下のサーバにログインしてファイルをtouchしてロックするのかというと
+それはあまりにもナンセンスなことは自明です。&lt;/p&gt;
+
+&lt;p&gt;そもそも1台であれば、nginx上のupstreamから切り離しノーメンテナンスで行けますし、
+全停止であればやはり上流、すなわちnginxで止めたほうがはるかに楽となります。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.amazon.co.jp/gp/product/4774176540/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4774176540&amp;linkCode=as2&amp;tag=recommend7150-22&#34;&gt;Docker実践入門――Linuxコンテナ技術の基礎から応用まで (Software Design plus)&lt;/a&gt;&lt;img src=&#34;http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&amp;l=as2&amp;o=9&amp;a=4774176540&#34; width=&#34;1&#34; height=&#34;1&#34; border=&#34;0&#34; alt=&#34;&#34; style=&#34;border:none !important; margin:0px !important;&#34; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;small&gt;(更新 2014/08/26 01:47:00) サンプルソースコードのサーバネームなど一部統一修正いたしました。&lt;/small&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

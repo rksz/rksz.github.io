@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lifehack on RickyNews</title>
+    <link>http://www.rickynews.com/categories/lifehack/</link>
+    <description>Recent content in Lifehack on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 30 Jun 2016 00:00:00 +0900</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/lifehack/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>誤解していたポモドーロテクニックと本当の威力</title>
+      <link>http://www.rickynews.com/blog/2016/06/30/pomodoro/</link>
+      <pubDate>Thu, 30 Jun 2016 00:00:00 +0900</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2016/06/30/pomodoro/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://pomodorotechnique.com/&#34;&gt;ポモドーロ法&lt;/a&gt;は割と有名なテクニックかなと思います。
+時間を作業25分 + 休憩5分＝1セットとして、繰り返していきます。
+こうすることにより「時間を分割して、集中力を上がる」という訳です。&lt;/p&gt;
+
+&lt;p&gt;昔に実際に使ってみて、「まぁ・・・無いよりはあったらいいのかな」くらいの感覚ではあった。
+Macにはポモドーロタイマーは入っているものの、気休め程度に入っている程度だった。&lt;/p&gt;
+
+&lt;p&gt;実践者の日本語のブログの記事をみても&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ポモドーロがあると集中出来る&lt;/li&gt;
+&lt;li&gt;勉強がたくさん出来るようになった&lt;/li&gt;
+&lt;li&gt;必ず休憩が入るので、集中が長続きする&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;くらいの浅い記述しかない。実際に自分もこのテクニックについて深く掘り下げようと思ってもいなかった。
+実際の活用方法は全然違った。&lt;/p&gt;
+
+&lt;h2 id=&#34;きっかけはsoft-skills&#34;&gt;きっかけはSoft Skills&lt;/h2&gt;
+
+&lt;p&gt;きっかけは最近、日本語翻訳が出た「&lt;a  href=&#34;http://www.amazon.co.jp/gp/product/4822251551/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4822251551&amp;linkCode=as2&amp;tag=recommend7150-22&#34;&gt;SOFT SKILLS ソフトウェア開発者の人生マニュアル&lt;/a&gt;&lt;img src=&#34;http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&amp;l=as2&amp;o=9&amp;a=4822251551&#34; width=&#34;1&#34; height=&#34;1&#34; border=&#34;0&#34; alt=&#34;&#34; style=&#34;border:none !important; margin:0px !important;&#34; /&gt;」という本での記述。ここの記載で考え方がガラっと変わった。すっ飛ばして理解したい人のために、自分なりの解釈もいれたまとめは以下。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;ポモドーロの達成回数で一日の業務の終わりを定義する&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;途中でインタラプトが入った場合は、ポモドーロを失敗とする&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ポモドーロ数で1日の業務量を見積もる&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;私はソフトウェアエンジニアですが、業務の性質上どうしても気が散りやすい。
+時間が自由だったり、インターネットに常に接続もされているので、かなり個人管理能力が問われる。&lt;/p&gt;
+
+&lt;p&gt;1日の作業の終了定義も難しく、長く働いたり早く帰ったりまちまちにもなりがち。
+毎回同じ作業の反復であればある程度推測が出来るが、毎回新プロジェクト＆新技術の多い現場だとそれも難しい。
+勉強もいくらでも出来るので、ようするに自分なりの作業スコープ範囲を決めないと時間が無限に膨れ上がってしまう。&lt;/p&gt;
+
+&lt;h2 id=&#34;ポモドーロ-テクニックの効果&#34;&gt;ポモドーロ・テクニックの効果&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;終了目標＝ポモドーロ数とすると、必ず集中した生産的な状態を迎えて1日を終えられる&lt;/li&gt;
+&lt;li&gt;1ポモドーロという単位で見積もりに対して、実績の差分が&lt;strong&gt;正確に&lt;/strong&gt;分かる&lt;/li&gt;
+&lt;li&gt;「ポモドーロを終わらせきる」という目標のために、必然的に集中せざるをえない。
+
+&lt;ul&gt;
+&lt;li&gt;途中で違う作業開始したら、ポモドーロ失敗。最初からやり直し。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;やってみると本当にしんどい。1日8時間労働でも理論上16ポモドーロは出来るはずだが、
+実際は8個くらいできたら相当凄い。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;1日8ポモドーロを持っていると仮定。この8個をどのタスクに分解しようか、などを朝に考える。&lt;/li&gt;
+&lt;li&gt;8ポモドーロが達成出来たら即帰る。&lt;/li&gt;
+&lt;li&gt;これを達成してもプロジェクトが終わらない場合は、そもそもタスク優先順位が間違ってるか、期日設定が間違っているので考えなおす。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;相当な作業のストレスがなくなり、バンバン仕事も進みそうな感じがしませんか？&lt;/p&gt;
+
+&lt;h2 id=&#34;併用ツール&#34;&gt;併用ツール&lt;/h2&gt;
+
+&lt;p&gt;Soft Skillsの中では Kanbanflowというツールをおすすめしている。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://kanbanflow.com&#34;&gt;https://kanbanflow.com&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;実際に使ってみた所、たしかに素晴らしい。Trello + ポモドーロタイマーという感じで、
+UIは多少雑なものの、集中力を強制的に出させる仕組みがすごい。
+タスクを選んで、ポモドーロを開始でき、その作業実績も自動的に計算されるため、本質的に何時間使っているかも正確に分かる。少しでもこの記事で興味がわけば、確実におすすめ。&lt;/p&gt;
+
+&lt;h2 id=&#34;結論&#34;&gt;結論&lt;/h2&gt;
+
+&lt;p&gt;なお、この記事は私の貴重な1ポモドーロを使って書かれた。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Obsoledge(無用知識)と良い資料の判断基準</title>
+      <link>http://www.rickynews.com/blog/2016/01/18/toffler-obsoledge/</link>
+      <pubDate>Mon, 18 Jan 2016 21:41:34 +0700</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2016/01/18/toffler-obsoledge/</guid>
+      <description>
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20160118/toffler.jpg&#34; alt=&#34;toffler&#34; /&gt;
+credit: &lt;a href=&#34;http://www.alvintoffler.net/?fa=gallery&#34;&gt;toffler.net&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;私事ですが、今更ながらトフラーの第三の波を読んでいます。非常に刺激のあって面白い本です。
+その中でObsoledgeについて言及があり、「やはりそうだな」と感じたのでそれを記事に。&lt;/p&gt;
+
+&lt;h3 id=&#34;obsoledge-無用知識&#34;&gt;Obsoledge: 無用知識&lt;/h3&gt;
+
+&lt;p&gt;アルビン・トフラーが作った造語で、「Obsoledge (役に立たない) + Knowledge (知識)」
+を掛けわせた言葉になります。全ての知識には寿命があり、どこかのポイントで無用になってしまうという意味です。
+食べ物と一緒で、常に消費期限があります。トフラーは「今後、この情報の消費サイクルがどんどん短くなる」
+と1980年くらいに予言しています。ここに関しては特に異論ないと思います。&lt;/p&gt;
+
+&lt;p&gt;ソフトウェアのエンジニアリングなんていうのは典型例なもので、2年前のツールの操作方法なんて覚えても
+大抵役に立ちません。設計思想など本質的な所は、色褪せないかと思いますが、
+ついつい賞味期限がドンドン切れるような知識を追ってしまうと、割と努力がムダになってしまいがちです。&lt;/p&gt;
+
+&lt;h3 id=&#34;良い資料の判断基準-アクション&#34;&gt;良い資料の判断基準: アクション&lt;/h3&gt;
+
+&lt;p&gt;当然ですが仕事の資料自体にも消費期限があり、時間がたって、大抵のものはシュレッダー対象ともいえます。
+監査対応しなければ、なと考えないかぎりはどんどん捨てて良いと思います。&lt;/p&gt;
+
+&lt;p&gt;ではその消費期限が長い缶詰のような情報は何か？となりますが、それは私は「&lt;strong&gt;アクションを起こせる情報か&lt;/strong&gt;」
+という１点に集約されるのではないかと思います。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;手順書: 資料をみて、同じアウトプットを出せるのであれば、それは非常に良い資料。見ても良くわからないのであれば。それは悪い資料。&lt;/li&gt;
+&lt;li&gt;ガントチャート: チャートをみて、全体を俯瞰しながらプロジェクトがスムーズに進行できるなら良い情報。&lt;/li&gt;
+&lt;li&gt;旅行のしおり: しおりを見て、何事もなくスムーズに旅行が出来るのであれば、それは良い情報。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;どうやってアクション起こしたらいいのか分からない&#34;&gt;どうやってアクション起こしたらいいのか分からない&lt;/h3&gt;
+
+&lt;p&gt;だからコンサルティングという業種が存在するんだと感じる所です。（私はコンサルタントではないのですが。）
+一歩前に進める思考のフレームワークもそうですし、なんとなくワクワクする感じだったり、
+「とにかくアクション出来る。前に進められる」というのがお手軽に手に入るので、みんなお金を払うのだろうと感じます。
+アクションの取り方が分からないものは大抵放置されますからね。&lt;/p&gt;
+
+&lt;p&gt;とにかくアクションです。&lt;/p&gt;
+
+&lt;p&gt;&lt;a rel=&#34;nofollow&#34; href=&#34;http://www.amazon.co.jp/gp/product/B000J84WBQ/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=B000J84WBQ&amp;linkCode=as2&amp;tag=recommend7150-22&#34;&gt;第三の波 (1980年)&lt;/a&gt;&lt;img src=&#34;http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&amp;l=as2&amp;o=9&amp;a=B000J84WBQ&#34; width=&#34;1&#34; height=&#34;1&#34; border=&#34;0&#34; alt=&#34;&#34; style=&#34;border:none !important; margin:0px !important;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>FacebookのMessenger.comを知っていますか？</title>
+      <link>http://www.rickynews.com/blog/2015/11/10/facebook-messenger/</link>
+      <pubDate>Tue, 10 Nov 2015 09:53:15 +0900</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2015/11/10/facebook-messenger/</guid>
+      <description>
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20151110/messenger.jpg&#34; alt=&#34;messenger&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;2015年にひっそりとローンチされ、意外と知名度が低い&lt;a href=&#34;https://www.messenger.com/&#34;&gt;Messenger.com&lt;/a&gt;を知っていますか？&lt;/p&gt;
+
+&lt;h3 id=&#34;messengerとは&#34;&gt;Messengerとは&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Facebookのメッセージ機能だけを取り出したWebサービスが&lt;a href=&#34;https://www.messenger.com/&#34;&gt;Messenger.com&lt;/a&gt;です。&lt;/strong&gt;こちらにアクセスすればFacebookのメッセージ機能を単体で動かすことが可能です。当然Facebookのアカウントでログインするため、何も設定は不要です。&lt;/p&gt;
+
+&lt;p&gt;メッセージのUIは一般的なチャットUIになっています。&lt;/p&gt;
+
+&lt;p&gt;iPhoneアプリではFacebookとMessengerが別々に切り分けられ、意識せずとも２個のアプリで無理やり画面遷移をさせられているのですが、実はWebサービスも同じ構成になっています。&lt;/p&gt;
+
+&lt;h3 id=&#34;ありがたい別ドメイン&#34;&gt;ありがたい別ドメイン&lt;/h3&gt;
+
+&lt;p&gt;地味にありがたいのは完全にFacebookとは切り離された別ドメインになっていることです。業務連絡などのメッセージを集中して、送ることが出来ます。&lt;/p&gt;
+
+&lt;p&gt;意外と業務でもFacebook経由の連絡というのが意外と重要度あったりして、メッセージだけをやりとり出来るサービスは地味に重宝します。変にウォールを開いてしまい、クリックしてネットサーフィンをする心配もありません。&lt;/p&gt;
+
+&lt;p&gt;私は前回の集中テクニックで、&lt;a href=&#34;http://www.rickynews.com/blog/2015/11/01/net-surfing/&#34;&gt;facebookドメインのアクセスを停止しているため&lt;/a&gt;、
+それを維持をしながら、メッセージのやり取りが出来る中々便利な状態です。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ダラダラとしたネットサーフィンを防ぐ方法</title>
+      <link>http://www.rickynews.com/blog/2015/11/01/net-surfing/</link>
+      <pubDate>Sun, 01 Nov 2015 11:01:09 +0900</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2015/11/01/net-surfing/</guid>
+      <description>
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20151101/surf.jpg&#34; alt=&#34;net surfing&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;人間とは恐ろしいもので、常に楽をしたいという欲求が渦巻いています。
+ダニエル・カーネマンの&lt;a rel=&#34;nofollow&#34; href=&#34;http://www.amazon.co.jp/gp/product/4152093382/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4152093382&amp;linkCode=as2&amp;tag=recommend7150-22&#34;&gt;ファスト&amp;amp;スロー: あなたの意思はどのように決まるか?&lt;/a&gt;&lt;img src=&#34;http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&amp;l=as2&amp;o=9&amp;a=4152093382&#34; width=&#34;1&#34; height=&#34;1&#34; border=&#34;0&#34; alt=&#34;&#34; style=&#34;border:none !important; margin:0px !important;&#34; /&gt;という著書の中でも、システムIとシステムIIという表現でこれを解説しています。&lt;/p&gt;
+
+&lt;p&gt;特にパソコンを使って仕事するのが当たり前の中、ネットサーフィンというのはなかなか大敵です。ふと、息抜きと思って開始したネットサーフィンが、気づいたらネットクルージング世界一周の旅ぐらいになってしまいます。&lt;/p&gt;
+
+&lt;h2 id=&#34;人間はそういうものだと割り切る&#34;&gt;人間はそういうものだと割り切る&lt;/h2&gt;
+
+&lt;p&gt;ネットサーフィンをしてしまうというのは、人間の３大欲求のような、避けようがないものと認識します。別にネットサーフィンをしても罪悪感を感じる必要はなく、「人間だからしょうがない」くらいの感覚で理解をしておけば気が楽です。「ネットサーフィンをしてしまって罪悪感を感じる。とりあえず気分が悪いから明日から仕切りなおそう」これが一番NGです。ネットサーフィンをしようと、昼寝をしようと、「人間だもの」くらいの感覚で構えましょう。１日でどれだけアウトプット出たかが一番重要です。&lt;/p&gt;
+
+&lt;p&gt;本題、いかにして防ぐかですが、これはシステムで防ぐのが一番です。&lt;/p&gt;
+
+&lt;h2 id=&#34;1-完全にシャットアウトしたい-hostsを設定&#34;&gt;(1) 完全にシャットアウトしたい: HOSTSを設定&lt;/h2&gt;
+
+&lt;p&gt;HOSTSとは本来、ドメイン名とIPアドレスを紐付けるために利用します。
+Macの環境であれば、/etc/hosts を編集、Windowsも同様の設定があります。
+これを活用して、全部適当なIPアドレスに書き換えてしまい、一切のアクセスを遮断します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;127.0.0.1 localhost b.hatena.ne.jp www.facebook.com
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;覚えやすいドメイン名というのは強力で、ついついブラウザのアドレスバーに入力してしまいます。
+ブックマークをしてなかろうと、手が無意識にfaceobokなど叩いてしまいます。
+HOSTSに設定さえしておけば、アクセスは不能になります。&lt;/p&gt;
+
+&lt;p&gt;人間は面白いもので、常にアクセスが出来ないと、アクセスすることを無意識が諦めます。
+これにより、同時に人間の習慣も書き換えることが出来ます。&lt;/p&gt;
+
+&lt;h2 id=&#34;2-学習に役立てたい-アクセスリダイレクトツール&#34;&gt;(2) 学習に役立てたい: アクセスリダイレクトツール&lt;/h2&gt;
+
+&lt;p&gt;とはいえ、この「ネットサーフィンをしたいモチベーションを何か勉強に役立てたい」と感じる方も多いと思います。
+そんなときはリダイレクトツールを利用します。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://chrome.google.com/webstore/detail/switcheroo-redirector/cnmciclhnghalnpfhhleggldniplelbg?hl=ja&#34;&gt;Switcheroo Redirector&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;私はこのツールを利用して、下のような設定をしています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;www.yahoo.co.jp --&amp;gt; www.bbc.com
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;「とりあえずYahooで何かをみる」というアクションが、世界情勢の把握に早変わりです。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>読みやすいテキスト議事録を書くテクニック</title>
+      <link>http://www.rickynews.com/blog/2015/10/25/good-memo/</link>
+      <pubDate>Sun, 25 Oct 2015 23:37:21 +0900</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2015/10/25/good-memo/</guid>
+      <description>
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20151025/sky.jpg&#34; alt=&#34;sky&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;テキストでのメモは書く人多いと思いますが、書き方は千差万別です。
+この辺りは「業界スタンダードの方法」というのは無いのかな？とは感じます。エンジニア寄りの人間であれば、Markdown形式で書く人も多いかなとは感じます。&lt;/p&gt;
+
+&lt;p&gt;日本語の場合、ずばりそのメモの書き方で割と綺麗に書ける方法があるので、その秘密のテクニックをご紹介。&lt;/p&gt;
+
+&lt;h2 id=&#34;markdownをそのまま貼り付けてしまう残念な人たち&#34;&gt;Markdownをそのまま貼り付けてしまう残念な人たち&lt;/h2&gt;
+
+&lt;p&gt;Markdownは素晴らしいフォーマットです。
+ドキュメントを簡単に直感的に構造化できます。
+まさにこのブログも今Markdownフォーマットで書いています。&lt;/p&gt;
+
+&lt;p&gt;しかしながら、最近周りのエンジニアで見かけるのが、この生のMarkdown形式で、直接メールなどにテキストを添付して送付する人たちです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# 開発グループ
+## 本日の作業予定
++ 仕様書作成
++ MTG1件
+  - 定例MTG
+
+## 障害になっていること
++ 予期せぬ障害対応で時間が取られてしまいプロジェクトが遅れた
+
+# 営業グループ
+## 本日の作業予定
++ 仕様書作成
++ MTG1件
+  - 定例MTG
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こんな文書、受信した側が読む気がすると思って送っているのでしょうか。私は読まずに即アーカイブ行きです。MarkdownをMarkdownとしてプレビューが無い環境で見るのが前提であれば、やはり見やすいテキストのフォーマットで送るのが丁寧な仕事の対応といえます。&lt;/p&gt;
+
+&lt;h2 id=&#34;書き方サンプル&#34;&gt;書き方サンプル&lt;/h2&gt;
+
+&lt;p&gt;私がよく使っているサンプルを書いてみましたので、以下に記載。見たそのままです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;＜メモについて現状の問題＞
+　■そもそもの問題点
+　　・プレーンテキストで見やすく書くのが難しい
+　　・たまにHTMLなどを使ってリッチテキストで書いている人がいる
+　　　⇒ 手っ取り早く綺麗には書ける
+　　　⇒ しかし、テキストとしてコピペすると構造化情報が失われてしまう
+　■Markdown問題
+　　・エンジニアはよくMarkdownで書いている
+　　・そのMarkdownをそのままメールに貼り付け、送付している人が多い
+　　・そもそも生のMarkdownは直接テキストのまま読むことを前提としていない
+
+＜良い書き方＞
+　■ヴィジュアル面で見やすい
+　■書きやすい
+　■グルーピングし易い
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;PowerPointのようなリスト表記で、さらに字下げ出来る仕組みが経験的に綺麗に書けます。これを、以下の組み合わせで表現します。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Level1: ＜＞&lt;/li&gt;
+&lt;li&gt;Level2: ■&lt;/li&gt;
+&lt;li&gt;Level3: ・&lt;/li&gt;
+&lt;li&gt;Level4: ⇒&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;半角スペースを連結して利用すると、環境によっては崩れてしまうので、全角スペースをインデントとして活用します。全角スペースもかなり便利です。&lt;/p&gt;
+
+&lt;h2 id=&#34;秘密のテクニック&#34;&gt;秘密のテクニック&lt;/h2&gt;
+
+&lt;p&gt;簡単に構造化するテクニックがあります。それはGoogleIMEなどの辞書機能の活用です。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;変換元文字&lt;/th&gt;
+&lt;th&gt;変換先&lt;/th&gt;
+&lt;th&gt;備考&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;＜&lt;/td&gt;
+&lt;td&gt;＜＞&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ｓ(全角)&lt;/td&gt;
+&lt;td&gt;[全角スペース]■&lt;/td&gt;
+&lt;td&gt;しかく&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;・(全角)&lt;/td&gt;
+&lt;td&gt;[全角スペース][全角スペース]・&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;ｙ(全角)&lt;/td&gt;
+&lt;td&gt;[全角スペース][全角スペース][全角スペース]⇒&lt;/td&gt;
+&lt;td&gt;やじるし&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;これを準備しておけば超簡単に構造化したドキュメントを書くことが出来ます。
+パワーポイント上でしか成し得なかったテクニックが、メモ帳で簡単に再現が可能です。&lt;/p&gt;
+
+&lt;p&gt;このテクニックを使うことで、構造化された文書をバンバン書けるようになり、
+羨望の眼差しを手に入れられることでしょう。&lt;/p&gt;
+
+&lt;h2 id=&#34;最後に&#34;&gt;最後に&lt;/h2&gt;
+
+&lt;p&gt;私の秘密のテクニックを紹介してしまいました。
+もし皆様も良いテクニックがあれば、&lt;a href=&#34;https://twitter.com/rksz&#34;&gt;私のTwitter宛&lt;/a&gt;までこっそりご紹介下さい。&lt;/p&gt;
+
+&lt;p&gt;&lt;a rel=&#34;nofollow&#34; href=&#34;http://www.amazon.co.jp/gp/product/4478490279/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=4478490279&amp;linkCode=as2&amp;tag=recommend7150-22&#34;&gt;考える技術・書く技術―問題解決力を伸ばすピラミッド原則&lt;/a&gt;&lt;img src=&#34;http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&amp;l=as2&amp;o=9&amp;a=4478490279&#34; width=&#34;1&#34; height=&#34;1&#34; border=&#34;0&#34; alt=&#34;&#34; style=&#34;border:none !important; margin:0px !important;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

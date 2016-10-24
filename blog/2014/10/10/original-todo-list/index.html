@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://www.rickynews.com/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="http://www.rickynews.com/favicon.png">
+    <title>[コラム] オリジナルのTODO.txtをどうやって作るか | RickyNews</title>
+    
+    <script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-46051188-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<meta property="og:title" content="[コラム] オリジナルのTODO.txtをどうやって作るか | RickyNews" />
+<meta property="og:url"   content="http://www.rickynews.com/blog/2014/10/10/original-todo-list/" />
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="http://www.rickynews.com" class="navbar-brand">
+            <span class="visible_pc">
+              <img src="http://www.rickynews.com/images/logo.jpg" alt="logo" />
+            </span>
+            <span class="visible_sp">
+              RickyNews
+            </span>
+          </a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="http://www.rickynews.com/post">Archive</a></li>
+<li><a href="http://www.rickynews.com/atom.xml">RSS</a></li>
+<li><a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml">Feedly</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">[コラム] オリジナルのTODO.txtをどうやって作るか</h1>
+      <p class="text-muted">Oct 10, 2014</p>
+
+    </div>
+    <div class="post-content">
+      
+
+<p style='text-align: center; margin-top:0px; font-size: small;'>
+  <img src="http://www.rickynews.com/images/articles/20141010/todolist.jpg" alt=""><br />
+  <a href="https://www.flickr.com/photos/angeloangelo/">Angelo DeSantis</a>
+</p>
+
+<p>毎日のタスク管理は意外と悩みのタネだと思います。
+TODO管理のアプリケーションも大量にあり、WindowsやMacなどのGUI環境であれば<a href="https://www.wunderlist.com/ja/">Wunderlist</a>、
+LinuxなどのCUI環境では<a href="http://taskwarrior.org/">Taskwarrior</a>が有名です。
+またTODO.txtのような名前のテキストファイルを作成し、
+日々のTODOを確認している方もいらっしゃると思います。</p>
+
+<p>個人的には色々巡り巡って、直近のタスク管理にはTODOのテキストファイルを書くのに落ち着いています。
+柔軟性の高さやカスタマイズ性、そして好きなテキストエディタを利用できるのが選択ポイントです。</p>
+
+<p>この記事をきっかけに他の方の手順も共有されることを期待しながら、
+私の2014年10月現在の書き方について紹介したいと思います。</p>
+
+<h2 id="オーバビュー">オーバビュー</h2>
+
+<p><img src="http://www.rickynews.com/images/articles/20141010/overview.png" alt="todo" /></p>
+
+<p>個別の項目はサンプルです。それぞれの役割について説明しようと思います。</p>
+
+<h2 id="ファイル名の付け方">ファイル名の付け方</h2>
+
+<p>まずテキストファイルの名称を以下のような名前に設定します。</p>
+
+<pre><code>memo-20141007.md
+</code></pre>
+
+<p>これを任意のフォルダに毎日作成していきます。
+作業開始時に、前日のファイルをみて、必要な情報を今日の作業のTODOファイルに移していきます。</p>
+
+<pre><code class="language-sh"># 朝 or 前日の終わりにこの作業をする
+vimdiff memo-20141006.md memo-20141005.md
+</code></pre>
+
+<p>まず大原則として<strong>「1日1ファイルを作成する」</strong>となります。
+一つのTODOファイルを更新するスタイルにしてしまうと、どんどんファイルが肥大化し、
+結局全体を把握しきれなくなります。<strong>TODOの中から本当のTODOを探すようではダメなのです。</strong></p>
+
+<p>また朝の時点で余計な情報は書き込まないように心がけます。
+<strong>一番重要なことは今日やることだけを記載することです</strong>。
+それ以外のことを記載しても結局できないので、
+「やらなければいけないけど、出来ない」といったただ単に心理的負担になるだけです。</p>
+
+<p>「来週やる作業はどのように記載するか？」という問いに関しては、
+来週作業するリストや長期作業リストという他のシートを用意させるのが吉です。
+私の場合はこういったケースに関してはまだ軸が定まっていないですが、
+Taskwarriorを利用して、長期予定を管理しています。</p>
+
+<h2 id="スケジュール箇所">スケジュール箇所</h2>
+
+<pre><code>09:00 - 10:00 | TODOリストの確認
+      - 11:30 | RickyNewsの執筆
+12:30 - 13:30 | ランチ休憩
+15:00 -       | ブログ執筆MTG
+
+## スケジュール
+16:00 - 17:00 | ブログ改善MTG
+</code></pre>
+
+<p>作業した時間を上記のような形式で記載します。
+見ての通りですが、左に開始時刻、右に終了時刻、縦棒を挟んで作業した内容を記載します。</p>
+
+<p>ポイントとしては<strong>無理に完璧に書こうとしないこと</strong>です。
+例えば開始時間を忘れてしまった場合はそこを空白にして、
+ひとまず何時に終わったという記録だけ残して終了にします。その逆の場合もしかりです。
+断片的な情報さえあれば、後での振り返りで簡単に作業時間を埋めることも可能です。</p>
+
+<p>時間のトラッキングはかなり重要なことは自明です。
+現状が分からないことには改善のしようもありません。
+しかし、時間の記録とは案外面倒くさいもので、結局やらなくなってしまいます。
+「タイムトラッキングアプリでブログ執筆スタートと始めたが、
+結局割り込みが入って別のタスクになった」など昨今のタスクは非常に流動的です。
+その時にアプリのGUIに従って時間をかけて作業内容を書き換えるのは、本末転倒です。</p>
+
+<p>もちろんタイムトラッキング系のツールを利用すれば、
+作業内容の解析やグラフ化などを容易に行うことが可能です。
+そのため、 一旦このような形式で、常に開いている自由度の高いTODOファイルに書き込み、
+まとめて、ログとしてそのようなツールに移し替えればよいかと感じます。</p>
+
+<h2 id="todoの書き方">TODOの書き方</h2>
+
+<pre><code>## TODO
+- ブログ記事を一本書く
+- 開発プロジェクトの決済周りを実装完了させる
+- サーバ利用料金10月分のさくらVPS振込
+- ------------------------------------------------------------
+- ブログ記事の承認
+</code></pre>
+
+<p>基本的には段落下げなどは行わず箇条書きで記載します。
+終わったものに関してはダッシュで区切られた下の箇所に移動させます。
+もし<code>vim</code>等のテキストエディタを利用していれば、<code>dd p</code>で簡単に移動出来るかと思います。</p>
+
+<p>作業が終わったものは削除してもよいかもしれなせんが、終わったものを目に見える範囲に置くことにより、
+(1) タスクを完了させたモチベーションの維持 (2) やったかどうか忘れないようにする
+の2点のメリットを個人的に感じるため、こちらに記載を残します。</p>
+
+<h2 id="確認箇所">確認箇所</h2>
+
+<pre><code>## 確認中
+- ブログ記事の承認(上長)
+</code></pre>
+
+<p>シンプルに作業が終了したが、確認待ちなどのステータスのものを記載します。
+ここに記載をしてけば、
+あとで「承認されたかどうかヒアリングする」などのTODOを書き起こすことも容易になります。</p>
+
+<h2 id="フリーメモ">フリーメモ</h2>
+
+<pre><code>## 気になった点
+How to Start a Startup
+http://startupclass.samaltman.com/
+
+English for Doing Business in Asia - Speaking
+https://www.edx.org/course/hkustx/hkustx-eba101x-english-doing-business-1840#.VCjBtCt_sjg
+
+
+## 感想
+- 今日は昼過ぎも集中できた。ランチで食事量を減らすのは効果があった。
+</code></pre>
+
+<p>それ以外の部分は適当なフリーなメモとして残します。
+知人から聞いた情報であったり、一日のふりかえりであったり何でもあれば記載します。
+「そういえばだいぶ前に業務の過程で気づいたことがあったけど、あれなんだっけ」といった、
+心理的な消耗をしないようにさせます。</p>
+
+<p>サンプルの感想の所は適当に記載してありますが、
+一日を振り返って適当に良かった点や悪かった点を明文化するのも意外と効果的です。
+「良いことは継続して、悪かったことはやめる」ということは何事でも基本です。
+この自己学習が簡単に出来るのが人間の強みだと思いますので、是非活用をしたい所です。</p>
+
+<h2 id="その他全般">その他全般</h2>
+
+<pre><code>memo-20141007.md #markdown形式
+</code></pre>
+
+<p>またテキストファイルとしてはmarkdown形式がおすすめです。
+markdownも結局な所プレーンテキストであるtxtと変わらないのですが、
+自動で色付けをしてくれたり、ある種書き方の制約により思考を整理させてくれます。</p>
+
+<p>今回は全体のTODOを作成しましたが、これは各プロジェクトごとに記載することも可能です。</p>
+
+<pre><code>memo-20141005.md
+projects/20140912_blog/memo-20141007.md
+projects/20140912_singapore/memo-20140912.md
+</code></pre>
+
+<p>上記のように配置すれば、
+同じフォーマットでそれぞれのプロジェクトにも細かいTODOを設定でき、
+柔軟性が非常に高いです。</p>
+
+<h2 id="最後に">最後に</h2>
+
+<p>これは今現在の書き方のため、今後も色々変化するかと思います。
+より良い方法があれば、またブログ等で掲載いたします。</p>
+
+      <div class="sharing" style="text-align: right;">
+        <a href="http://b.hatena.ne.jp/entry/http://www.rickynews.com/blog/2014/10/10/original-todo-list/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+        <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.rickynews.com/blog/2014/10/10/original-todo-list/" data-via="" data-counturl="http://www.rickynews.com/blog/2014/10/10/original-todo-list/" >Tweet</a>
+        
+        <div class="fb-like" data-layout="button_count" style="line-height:0.5;"></div>
+      </div>
+    </div>
+
+
+    <div class="post-footer">
+      <a href="http://www.rickynews.com/post" class="btn btn-primary btn-block btn-lg">View All 76 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4 sidebar">
+    <section>
+
+  <h3 style="margin-top: 0px">RickyNews</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+  Tech News & Music
+    <a href='http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml'  target='blank'><img id='feedlyFollow' src='http://s3.feedly.com/img/follows/feedly-follow-rectangle-flat-small_2x.png' alt='follow us in feedly' width='66' height='20' style="border: none;"></a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+
+  <h3 style="margin-top: 0px">Author</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+    <a href="https://twitter.com/rksz" target="_blank" style="text-decoration: none;">@rksz</a><br />
+    Ho Chi Minh City & Tokyo
+  </div>
+
+</section>
+
+
+<section>
+  <h3>Popular Posts</h3>
+      <script language="javascript" type="text/javascript" src="http://b.hatena.ne.jp/js/widget.js" charset="utf-8"></script>
+      <script language="javascript" type="text/javascript">
+Hatena.BookmarkWidget.url   = "www.rickynews.com";
+Hatena.BookmarkWidget.sort  = "count";
+Hatena.BookmarkWidget.width = 0;
+Hatena.BookmarkWidget.num   = 5;
+Hatena.BookmarkWidget.theme = "hatenadiary";
+Hatena.BookmarkWidget.load();
+      </script>
+</section>
+
+
+<section>
+  <h3>Amazon</h3>
+  <ul>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/4781701973/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4781701973&linkCode=as2&tag=recommend7150-22">ハッカーの学校 - IPUSIRON</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4781701973" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/4478026548/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4478026548&linkCode=as2&tag=recommend7150-22">シフト――2035年、米国最高情報機関が予測する驚愕の未来</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4478026548" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00MB2STXK/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00MB2STXK&linkCode=as2&tag=recommend7150-22">プログラマの考え方がおもしろいほど身につく本　問題解決能力を鍛えよう！ (アスキー書籍)</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00MB2STXK" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/B0126I117E/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B0126I117E&linkCode=as2&tag=recommend7150-22">ヴァージン・ウェイ　Ｒ・ブランソンのリーダーシップを磨く教室</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B0126I117E" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00GSHI04M/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00GSHI04M&linkCode=as2&tag=recommend7150-22">闘うプログラマー［新装版］　ビル・ゲイツの野望を担った男達</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00GSHI04M" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+  </ul>
+</section>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          &copy; 2016.
+RickyNews
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <script src="http://www.rickynews.com/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+  </body>
+</html>
+

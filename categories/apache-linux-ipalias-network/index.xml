@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Apache Linux Ipalias Network on RickyNews</title>
+    <link>http://www.rickynews.com/categories/apache-linux-ipalias-network/</link>
+    <description>Recent content in Apache Linux Ipalias Network on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 28 May 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/apache-linux-ipalias-network/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ApacheのVirtualhostと振り分けについて考える</title>
+      <link>http://www.rickynews.com/blog/2014/05/28/thinking-about-apache-vhost/</link>
+      <pubDate>Wed, 28 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2014/05/28/thinking-about-apache-vhost/</guid>
+      <description>
+
+&lt;p&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20140528/top.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;ApacheにはVirtualhostという便利な機能があります。
+  来るリクエストの種類によって、受信するディレクトリを切り分けることが出来ます。
+  ドメインネームベースのVhostで注意点があります。&lt;/p&gt;
+
+&lt;h3 id=&#34;ssl問題-1サーバ1サービス&#34;&gt;SSL問題: 1サーバ1サービス?&lt;/h3&gt;
+
+&lt;p&gt;基本的にネームベースのVirtualhostではSSL複数ドメインを運用することは出来ません。
+  本来であれば、Apacheの着信時点でドメイン情報を元に切り分けを実施します。
+  すなわち、IPアドレスとリクエストホスト(ドメイン)がセットになり、受信したApacheが解析して振り分けします。&lt;/p&gt;
+
+&lt;p&gt;しかし、HTTPSの暗号化通信の場合では、HTTP通信をするまえにSSL/TLSハンドシェイクをする必要があります。
+  そのため、通信を着信した段階ではどのドメインに対してのリクエストなのか分からず、振り分けることが出来ません。&lt;/p&gt;
+
+&lt;p&gt;Apacheのデフォルトの挙動としては、複数Virtualhostが設定されており、振り分けが不明な場合は一番最初に読み込まれた設定に
+  飛ばすようになっています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;Virtualhost *:80&amp;gt;
+  ServerName rickynews.com
+  DocumentRoot /deploy/rickynews_com
+  CustomLog    &amp;quot;|/usr/sbin/rotatelogs /var/log/httpd/rickynews_com_access_log.%Y%m%d 86400 540&amp;quot; combined
+  ErrorLog     &amp;quot;|/usr/sbin/rotatelogs /var/log/httpd/rickynews_com_error_log.%Y%m%d  86401 540&amp;quot;
+  &amp;lt;Directory /deploy/rickynews_com&amp;gt;
+      AllowOverride all
+      Options -MultiViews -Indexes
+  &amp;lt;/Directory&amp;gt;
+&amp;lt;/Virtualhost&amp;gt;
+
+&amp;lt;Virtualhost *:80&amp;gt;
+  ServerName michaelnews.com
+  DocumentRoot /deploy/michaelnews_com
+  CustomLog    &amp;quot;|/usr/sbin/rotatelogs /var/log/httpd/michaelnews_com_access_log.%Y%m%d 86400 540&amp;quot; combined
+  ErrorLog     &amp;quot;|/usr/sbin/rotatelogs /var/log/httpd/michaelnews_com_error_log.%Y%m%d  86401 540&amp;quot;
+  &amp;lt;Directory /deploy/michaelnews_com&amp;gt;
+      AllowOverride all
+      Options -MultiViews -Indexes
+  &amp;lt;/Directory&amp;gt;
+&amp;lt;/Virtualhost&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上記が俗にいう「1サーバ、1SSL」の問題です。上記の現象を少し理解していると、同じサーバのApacheに複数のSSLサービスが入らないことが想像つきます。&lt;/p&gt;
+
+&lt;p&gt;「さすがにそれは不便だ」と感じた開発者が&lt;a href=&#34;http://ja.wikipedia.org/wiki/Server_Name_Indication&#34; target=&#34;_blank&#34;&gt;SNI: Server Name Indication&lt;/a&gt;という技術を開発しました。HTTPSを行うSSL/TLS通信を拡張し、暗号化通信と共に平文のドメインの情報をやりとりできるようにしました。&lt;/p&gt;
+
+&lt;p&gt;一見全て解決したように感じますが、やはりそこには問題があります。それは「特定のブラウザでは対応していないものがある」という事実です。
+  WindowsXPのIE8が非対応になっているため、プロダクションユースではやはり無視することは出来ません。&lt;/p&gt;
+
+&lt;p&gt;結局、「だから、やっぱり出来ないんだ」という考えに至ってしまう人もいます。しかし、そこには誤解があります。&lt;/p&gt;
+
+&lt;h3 id=&#34;そもそもの誤解の発端&#34;&gt;そもそもの誤解の発端&lt;/h3&gt;
+
+&lt;p&gt;社内の新卒エンジニアなどと会話していて、ApacheのVirtualhostで勘違いしているポイントがあります。
+  ApacheではVirtualhostの振り分けは以下の3パターンで振り分け可能です。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;IPアドレス&lt;/li&gt;
+&lt;li&gt;ポート番号&lt;/li&gt;
+&lt;li&gt;ドメイン名(ServerName)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20140528/apache_vhost.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://httpd.apache.org/docs/2.2/ja/mod/core.html#virtualhost&#34;&gt;http://httpd.apache.org/docs/2.2/ja/mod/core.html#virtualhost&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;インターネット上に呪文のように&lt;code&gt;&amp;lt;Virtualhost *:80&amp;gt;&lt;/code&gt;と記載されているのが影響しているのではないか？と感じております。
+  さて、この組み合わせがユニークになるようにすれば、自分が意図するサービスへ転送することが可能です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Listen 80111
+&amp;lt;Virtualhost *:80 *:80111&amp;gt;
+  ServerName rickynews.com
+  ~
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上記のように記載すれば、以下のようなURLで直接任意のプロジェクトにアクセス可能になります。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;http://192.168.33.104:80111/sampladata/&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;ネームベースのVirtualhostしか理解していないと、リリースの事前確認などをしてもらう時に、
+  Hostsの設定を各自でしてもらったり、あるいはDNSに対して適当なドメインを設定をする必要があります。&lt;/p&gt;
+
+&lt;p&gt;それは開発者として不親切です。ポート番号であれば、ユニークなので設定が不要でそのままアクセス可能です。
+  付加的に80番ポートの通常の設定をしていれば、各自でhostsを設定すれば、通常と同じ振る舞いでテストも可能です。&lt;/p&gt;
+
+&lt;h3 id=&#34;sslの振り分けに戻る&#34;&gt;SSLの振り分けに戻る&lt;/h3&gt;
+
+&lt;p&gt;上記のロジックを利用すれば「サービスがユニークに振り分けられるようにすればよい」ということが簡単に導けます。&lt;/p&gt;
+
+&lt;p&gt;SSLの性質を考えると、SSLではport443を取り決めとして通信を開始します。
+  ApacheでSSLのListenポートを変更も可能ですが、Webブラウザ側もSSLポートを指定する必要があるため、現実的でありません。
+  そこで出てくるのがIPアドレスの固定指定です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;Virtualhost 192.168.33.103:443&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上記のようにSSLポートとIPアドレスを指定すれば、同じIPのVhostを記載しない限り、一意に転送可能です。
+  そこがポイントです。&lt;/p&gt;
+
+&lt;h3 id=&#34;ip-aliasを利用する&#34;&gt;IP Aliasを利用する&lt;/h3&gt;
+
+&lt;p&gt;LinuxマシンではデフォルトでIPエイリアス機能を利用し、簡単に1つのnicに対して複数のIPアドレスを指定可能です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ cd /etc/sysconfig/network-scripts
+
+# デバイス複製
+$ cp -a ifcfg-em1 ifcfg-em1:0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;DEVICE=&amp;quot;em1:0&amp;quot;          #1/2 Device名を変更する
+IPADDR=&amp;quot;192.168.33.104&amp;quot; #2/2 好きなIPアドレスを指定する
+NETMASK=&amp;quot;255.255.255.0&amp;quot;
+GATEWAY=&amp;quot;192.168.33.1&amp;quot;
+ONBOOT=&amp;quot;yes&amp;quot;
+TYPE=&amp;quot;Ethernet&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ service network restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;たったこれだけです。こうすることで、いくつでもIPアドレスを複製することが可能です。もちろんグローバルIPでも可能です。
+  これを指定すれば、あとは対応するVirtualHost設定をApacheに記載すれば終了です。&lt;/p&gt;
+
+&lt;h3 id=&#34;終わりに&#34;&gt;終わりに&lt;/h3&gt;
+
+&lt;p&gt;このポート番号とIPアドレスの原理はインフラの様々な冗長化などにも応用可能です。MySQLもbindするIPアドレスを指定することができます。
+  MySQL辺などまた次回の機会に記載します。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

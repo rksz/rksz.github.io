@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Todo Productivity on RickyNews</title>
+    <link>http://www.rickynews.com/categories/todo-productivity/</link>
+    <description>Recent content in Todo Productivity on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 10 Oct 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/todo-productivity/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>[コラム] オリジナルのTODO.txtをどうやって作るか</title>
+      <link>http://www.rickynews.com/blog/2014/10/10/original-todo-list/</link>
+      <pubDate>Fri, 10 Oct 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2014/10/10/original-todo-list/</guid>
+      <description>
+
+&lt;p style=&#39;text-align: center; margin-top:0px; font-size: small;&#39;&gt;
+  &lt;img src=&#34;http://www.rickynews.com/images/articles/20141010/todolist.jpg&#34; alt=&#34;&#34;&gt;&lt;br /&gt;
+  &lt;a href=&#34;https://www.flickr.com/photos/angeloangelo/&#34;&gt;Angelo DeSantis&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;毎日のタスク管理は意外と悩みのタネだと思います。
+TODO管理のアプリケーションも大量にあり、WindowsやMacなどのGUI環境であれば&lt;a href=&#34;https://www.wunderlist.com/ja/&#34;&gt;Wunderlist&lt;/a&gt;、
+LinuxなどのCUI環境では&lt;a href=&#34;http://taskwarrior.org/&#34;&gt;Taskwarrior&lt;/a&gt;が有名です。
+またTODO.txtのような名前のテキストファイルを作成し、
+日々のTODOを確認している方もいらっしゃると思います。&lt;/p&gt;
+
+&lt;p&gt;個人的には色々巡り巡って、直近のタスク管理にはTODOのテキストファイルを書くのに落ち着いています。
+柔軟性の高さやカスタマイズ性、そして好きなテキストエディタを利用できるのが選択ポイントです。&lt;/p&gt;
+
+&lt;p&gt;この記事をきっかけに他の方の手順も共有されることを期待しながら、
+私の2014年10月現在の書き方について紹介したいと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;オーバビュー&#34;&gt;オーバビュー&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20141010/overview.png&#34; alt=&#34;todo&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;個別の項目はサンプルです。それぞれの役割について説明しようと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;ファイル名の付け方&#34;&gt;ファイル名の付け方&lt;/h2&gt;
+
+&lt;p&gt;まずテキストファイルの名称を以下のような名前に設定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;memo-20141007.md
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これを任意のフォルダに毎日作成していきます。
+作業開始時に、前日のファイルをみて、必要な情報を今日の作業のTODOファイルに移していきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;# 朝 or 前日の終わりにこの作業をする
+vimdiff memo-20141006.md memo-20141005.md
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;まず大原則として&lt;strong&gt;「1日1ファイルを作成する」&lt;/strong&gt;となります。
+一つのTODOファイルを更新するスタイルにしてしまうと、どんどんファイルが肥大化し、
+結局全体を把握しきれなくなります。&lt;strong&gt;TODOの中から本当のTODOを探すようではダメなのです。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;また朝の時点で余計な情報は書き込まないように心がけます。
+&lt;strong&gt;一番重要なことは今日やることだけを記載することです&lt;/strong&gt;。
+それ以外のことを記載しても結局できないので、
+「やらなければいけないけど、出来ない」といったただ単に心理的負担になるだけです。&lt;/p&gt;
+
+&lt;p&gt;「来週やる作業はどのように記載するか？」という問いに関しては、
+来週作業するリストや長期作業リストという他のシートを用意させるのが吉です。
+私の場合はこういったケースに関してはまだ軸が定まっていないですが、
+Taskwarriorを利用して、長期予定を管理しています。&lt;/p&gt;
+
+&lt;h2 id=&#34;スケジュール箇所&#34;&gt;スケジュール箇所&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;09:00 - 10:00 | TODOリストの確認
+      - 11:30 | RickyNewsの執筆
+12:30 - 13:30 | ランチ休憩
+15:00 -       | ブログ執筆MTG
+
+## スケジュール
+16:00 - 17:00 | ブログ改善MTG
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;作業した時間を上記のような形式で記載します。
+見ての通りですが、左に開始時刻、右に終了時刻、縦棒を挟んで作業した内容を記載します。&lt;/p&gt;
+
+&lt;p&gt;ポイントとしては&lt;strong&gt;無理に完璧に書こうとしないこと&lt;/strong&gt;です。
+例えば開始時間を忘れてしまった場合はそこを空白にして、
+ひとまず何時に終わったという記録だけ残して終了にします。その逆の場合もしかりです。
+断片的な情報さえあれば、後での振り返りで簡単に作業時間を埋めることも可能です。&lt;/p&gt;
+
+&lt;p&gt;時間のトラッキングはかなり重要なことは自明です。
+現状が分からないことには改善のしようもありません。
+しかし、時間の記録とは案外面倒くさいもので、結局やらなくなってしまいます。
+「タイムトラッキングアプリでブログ執筆スタートと始めたが、
+結局割り込みが入って別のタスクになった」など昨今のタスクは非常に流動的です。
+その時にアプリのGUIに従って時間をかけて作業内容を書き換えるのは、本末転倒です。&lt;/p&gt;
+
+&lt;p&gt;もちろんタイムトラッキング系のツールを利用すれば、
+作業内容の解析やグラフ化などを容易に行うことが可能です。
+そのため、 一旦このような形式で、常に開いている自由度の高いTODOファイルに書き込み、
+まとめて、ログとしてそのようなツールに移し替えればよいかと感じます。&lt;/p&gt;
+
+&lt;h2 id=&#34;todoの書き方&#34;&gt;TODOの書き方&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;## TODO
+- ブログ記事を一本書く
+- 開発プロジェクトの決済周りを実装完了させる
+- サーバ利用料金10月分のさくらVPS振込
+- ------------------------------------------------------------
+- ブログ記事の承認
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;基本的には段落下げなどは行わず箇条書きで記載します。
+終わったものに関してはダッシュで区切られた下の箇所に移動させます。
+もし&lt;code&gt;vim&lt;/code&gt;等のテキストエディタを利用していれば、&lt;code&gt;dd p&lt;/code&gt;で簡単に移動出来るかと思います。&lt;/p&gt;
+
+&lt;p&gt;作業が終わったものは削除してもよいかもしれなせんが、終わったものを目に見える範囲に置くことにより、
+(1) タスクを完了させたモチベーションの維持 (2) やったかどうか忘れないようにする
+の2点のメリットを個人的に感じるため、こちらに記載を残します。&lt;/p&gt;
+
+&lt;h2 id=&#34;確認箇所&#34;&gt;確認箇所&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;## 確認中
+- ブログ記事の承認(上長)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;シンプルに作業が終了したが、確認待ちなどのステータスのものを記載します。
+ここに記載をしてけば、
+あとで「承認されたかどうかヒアリングする」などのTODOを書き起こすことも容易になります。&lt;/p&gt;
+
+&lt;h2 id=&#34;フリーメモ&#34;&gt;フリーメモ&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;## 気になった点
+How to Start a Startup
+http://startupclass.samaltman.com/
+
+English for Doing Business in Asia - Speaking
+https://www.edx.org/course/hkustx/hkustx-eba101x-english-doing-business-1840#.VCjBtCt_sjg
+
+
+## 感想
+- 今日は昼過ぎも集中できた。ランチで食事量を減らすのは効果があった。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;それ以外の部分は適当なフリーなメモとして残します。
+知人から聞いた情報であったり、一日のふりかえりであったり何でもあれば記載します。
+「そういえばだいぶ前に業務の過程で気づいたことがあったけど、あれなんだっけ」といった、
+心理的な消耗をしないようにさせます。&lt;/p&gt;
+
+&lt;p&gt;サンプルの感想の所は適当に記載してありますが、
+一日を振り返って適当に良かった点や悪かった点を明文化するのも意外と効果的です。
+「良いことは継続して、悪かったことはやめる」ということは何事でも基本です。
+この自己学習が簡単に出来るのが人間の強みだと思いますので、是非活用をしたい所です。&lt;/p&gt;
+
+&lt;h2 id=&#34;その他全般&#34;&gt;その他全般&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;memo-20141007.md #markdown形式
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;またテキストファイルとしてはmarkdown形式がおすすめです。
+markdownも結局な所プレーンテキストであるtxtと変わらないのですが、
+自動で色付けをしてくれたり、ある種書き方の制約により思考を整理させてくれます。&lt;/p&gt;
+
+&lt;p&gt;今回は全体のTODOを作成しましたが、これは各プロジェクトごとに記載することも可能です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;memo-20141005.md
+projects/20140912_blog/memo-20141007.md
+projects/20140912_singapore/memo-20140912.md
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上記のように配置すれば、
+同じフォーマットでそれぞれのプロジェクトにも細かいTODOを設定でき、
+柔軟性が非常に高いです。&lt;/p&gt;
+
+&lt;h2 id=&#34;最後に&#34;&gt;最後に&lt;/h2&gt;
+
+&lt;p&gt;これは今現在の書き方のため、今後も色々変化するかと思います。
+より良い方法があれば、またブログ等で掲載いたします。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nginx Apache on RickyNews</title>
+    <link>http://www.rickynews.com/categories/nginx-apache/</link>
+    <description>Recent content in Nginx Apache on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 24 Sep 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/nginx-apache/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ApacheとNginxを素早くシンタックスチェックする</title>
+      <link>http://www.rickynews.com/blog/2014/09/24/quick-apache-nginx-restart/</link>
+      <pubDate>Wed, 24 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2014/09/24/quick-apache-nginx-restart/</guid>
+      <description>
+
+&lt;p style=&#39;text-align: center; margin-top:0px; font-size: small;&#39;&gt;
+  &lt;img src=&#34;http://www.rickynews.com/images/articles/20140924/quick.jpg&#34; alt=&#34;&#34;&gt;&lt;br /&gt;
+  &lt;a href=&#34;https://www.flickr.com/photos/syobosyobo/&#34;&gt;jim212jim&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;ApacheやNginxの新しい設定をした時に&lt;code&gt;configtest&lt;/code&gt;がありますが、もっと早くシンタックスチェックする方法を紹介。&lt;/p&gt;
+
+&lt;h2 id=&#34;手法の比較&#34;&gt;手法の比較&lt;/h2&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;種類&lt;/th&gt;
+&lt;th&gt;Apache&lt;/th&gt;
+&lt;th&gt;Nginx&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;service系&lt;/td&gt;
+&lt;td&gt;service httpd configtest&lt;/td&gt;
+&lt;td&gt;service nginx configtest&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;default&lt;/td&gt;
+&lt;td&gt;apachectl configtest&lt;/td&gt;
+&lt;td&gt;nginx -t&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;お勧め&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;httpd -t&lt;/td&gt;
+&lt;td&gt;nginx -t&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;RHELにはserviceコマンドがあり、
+Apacheユーザには慣れ親しんだ&lt;code&gt;configtest&lt;/code&gt;という記述方法でNginx含めシンタックスチェックが可能です。
+serviceコマンド自体はinit.dの配下のスクリプトを実行する訳ですが、
+&lt;strong&gt;その実態が呼び出しているコマンドを直接叩くと楽で早いです。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;service&lt;/code&gt;という文字列自体、キーが飛び飛びで打ちにくいですし、
+&lt;code&gt;-t&lt;/code&gt;はApacheもNginxも共通なので覚えやすくてとても楽です。&lt;/p&gt;
+
+&lt;h2 id=&#34;ただしシンタックスチェックのみが無難&#34;&gt;ただしシンタックスチェックのみが無難&lt;/h2&gt;
+
+&lt;p&gt;そのNginxやApacheですが、コマンドラインから同様に直接実行することも可能です。
+ただし、通常利用であれば、シンタックスチェックのみの利用をとどめておくべきです。&lt;/p&gt;
+
+&lt;p&gt;理由はシンプルで、デーモン起動するにあたり、
+&lt;strong&gt;init.dのスクリプトも大きな役割を果たしているからです。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;以下が&lt;code&gt;/etc/rc.d/init.d/nginx&lt;/code&gt;の例です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;nginx=&amp;quot;/usr/sbin/nginx&amp;quot;
+prog=$(basename $nginx)
+
+sysconfig=&amp;quot;/etc/sysconfig/$prog&amp;quot;
+lockfile=&amp;quot;/var/lock/subsys/nginx&amp;quot;
+pidfile=&amp;quot;/var/run/${prog}.pid&amp;quot;
+
+NGINX_CONF_FILE=&amp;quot;/etc/nginx/nginx.conf&amp;quot;
+
+[ -f $sysconfig ] &amp;amp;&amp;amp; . $sysconfig
+
+
+start() {
+    [ -x $nginx ] || exit 5
+    [ -f $NGINX_CONF_FILE ] || exit 6
+    echo -n $&amp;quot;Starting $prog: &amp;quot;
+    daemon $nginx -c $NGINX_CONF_FILE
+    retval=$?
+    echo
+    [ $retval -eq 0 ] &amp;amp;&amp;amp; touch $lockfile
+    return $retval
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ご覧の通り、startを実行するにあたり、
+統一されたlockfileやpidfileを指定してくれるようになっています。
+すなわち実行するユーザに依存せず、デーモンを一律で管理できるようになっています。&lt;/p&gt;
+
+&lt;p&gt;さらにいえば、&lt;strong&gt;&lt;code&gt;init.d&lt;/code&gt;にて直接実行するより、serviceコマンド経由で実行するべきです。&lt;/strong&gt;
+なぜならservice経由であれば、環境変数なども統一して実行してくれます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;# serviceコマンドを活用する
+$ service nginx restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;直接影響が出る可能性は少ないかもしれません。
+しかし無用なトラブルの元を減らすという意味でも、service経由の起動をお勧めします。&lt;/p&gt;
+
+&lt;p&gt;参考: デーモンの起動・終了にはserviceコマンドを利用しよう
+&lt;a href=&#34;http://heartbeats.jp/hbblog/2013/06/service-start-stop.html&#34;&gt;http://heartbeats.jp/hbblog/2013/06/service-start-stop.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;結論&#34;&gt;結論&lt;/h2&gt;
+
+&lt;p&gt;上記を全て総合すると、シンタックスチェックから再起動までの流れは以下で決定です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;## Apache
+$ httpd -t
+$ service httpd restart
+
+## Nginx
+$ nginx -t
+$ service nginx restart
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bash Shellscript on RickyNews</title>
+    <link>http://www.rickynews.com/categories/bash-shellscript/</link>
+    <description>Recent content in Bash Shellscript on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 14 May 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/bash-shellscript/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Ryncが絡むBashスクリプトの設計方針</title>
+      <link>http://www.rickynews.com/blog/2014/05/14/design-of-rsync-n-bash-script/</link>
+      <pubDate>Wed, 14 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2014/05/14/design-of-rsync-n-bash-script/</guid>
+      <description>
+
+&lt;p&gt;バッチ処理を行うスクリプトを作成するときには、rsyncなどを利用して
+  異なるサーバ間で通信をして処理するものも多かと思います。
+  (むしろそれが出来るからこそBash/Shell Scriptを利用するかと思いますが・・・)&lt;/p&gt;
+
+&lt;p&gt;意外とBashスクリプトのTipsは無かったりして、それぞれ我流でやられており、
+  普段LLアプリケーションのみ作っている人が書いしたものを見ると、
+  たまにOopsと叫びたくなってしまうこともあります笑。&lt;/p&gt;
+
+&lt;h3 id=&#34;個人的なポイントは以下3点&#34;&gt;個人的なポイントは以下3点。&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;データを配置するな、取得せよ&lt;/li&gt;
+&lt;li&gt;秘密鍵もちゃんと用意せよ&lt;/li&gt;
+&lt;li&gt;接続先変更に柔軟性を持たせる&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;1-データを配置するな-取得せよ&#34;&gt;1. データを配置するな、取得せよ&lt;/h3&gt;
+
+&lt;p&gt;リモートサーバ上で処理されたファイルをWebサーバへ配置し、ユーザへ公開したい。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ REMOTE_SERVER=&amp;quot;192.168.33.12&amp;quot;
+$ sync_files=$@
+$ rsync -av $sync_files $REMOTE_SERVER:/var/www/html/myapp/htdocs/assets/upfiles
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;まずパッとみて、リモートファイルのPATH変更に弱すぎますし、データを受け取るタイミングを選べません。
+  フロント開発者Webアプリ側のフォルダ変更をしたくなった場合、いちいちこのバッチまで考えていなければならない
+  なんて面倒くさすぎます。そしてデータを受け取るタイミングをWebサーバごとに変えたいとしても
+  作業コストが大きくなってしまいます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ ln -s /var/www/html/myapp/htdocs/pdf /var/www/html/myapp/htdocs/assets/upfiles
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こんな風に勝手にシンボリックリンクを貼って、とりあえず動けばいいやで無理やり解決する人が出てくる可能性もあります。笑。&lt;/p&gt;
+
+&lt;p&gt;重要なのがスコープ範囲を狭めることです。意外とアプリ開発では意識出来たりしますが、ShellScriptになった途端に
+  スッポ抜けてしまいがちです。今回の例でいえば、Rsyncのデータ配置バッチはWebアプリケーション側に設置すべきです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ REMOTE_PATH=&amp;quot;192.168.33.13:/path/to/sync/dir&amp;quot;
+$ rsync -av $REMOTE_PATH ./
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;だいぶスッキリしました。Webアプリ側のパス変更の作業がWebアプリ側のサーバを内部だけで完結出来ます。
+  自分が欲しいものは自分が欲しいタイミングで取りに行くという状態になり、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;&amp;lt;?php
+if ($update_user_data) {
+  exec(&#39;./fetch_data.sh&#39;);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;アプリケーション側でも自由にデータを取ってくる処理を好きなタイミングでKickすることが出来ます。&lt;/p&gt;
+
+&lt;p&gt;もちろんREMOTE側のPATHが変わった時には対応しなければならないことに変わりはありませんが、
+  フロント開発者が自分の範囲だけは自由に変更出来るのは非常に強みです。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-秘密鍵もちゃんと用意せよ&#34;&gt;2. 秘密鍵もちゃんと用意せよ&lt;/h3&gt;
+
+&lt;p&gt;gitからバッチファイルを取得して、いざ実行！そしてsshで弾かれる or パスワードを求められるシーンが多いかなと思います。
+  そこから手動でssh-copy-idなど実行して都度設置者にauthorized_keys設定させるのは少々不親切です。&lt;/p&gt;
+
+&lt;p&gt;vagrantなどでローカル仮想環境を作って作業していたとして、そんなワンタイムのssh公開鍵のauthorized_keys設定を勝手に追加する
+  人が出てくる場合、目もあてられないかと・・・思います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ ssh-keygen -f id_rsa_mybatch
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なので、バッチ専用の鍵をssh-keygenコマンドで用意してやります。&lt;code&gt;-f&lt;/code&gt;オプションで新しいファイル名のものを作成可能です。&lt;/p&gt;
+
+&lt;p&gt;あとは任意のサーバ側にこの作成したsshキーの秘密鍵に対する公開鍵の許可設定をすればOKです。
+  バッチ側で接続する場合には以下のようにsshのidentityファイル指定をして、通信します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ rsync -e &amp;quot;ssh -i /root/.ssh/id_rsa_mybatch&amp;quot; -av $REMOTE_PATH ./
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この鍵の公開鍵さえ登録しておけば、どれだけサーバが増えたとしても公開鍵の許可設定追加の必要は一切ありません。
+  プロジェクトさえ持ってこれれば、いきなり通信できることが保証されます。
+  バッチスクリプトのサーバ移動も容易になりますし、非常にメリット多いです。&lt;/p&gt;
+
+&lt;p&gt;セキュリティに関してはある程度トレードオフにはなります。とはいえ、authorized_keysに登録するユーザを特定の権限の弱いユーザにすれば
+  良かったりと工夫する余地はあります。&lt;/p&gt;
+
+&lt;h3 id=&#34;3-接続先変更に柔軟性を持たせる&#34;&gt;3. 接続先変更に柔軟性を持たせる&lt;/h3&gt;
+
+&lt;p&gt;上のサンプルでも記載しておりますが、バッチ側にIPをベタで書くケースも多いと思います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;REMOTE_SERVER=&amp;quot;192.168.33.12&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;もちろん利用頻度や設備の大きさによっては、上記で問題ないケースは多いです。(むしろ殆ど？)
+  とはいえ、サーバの移動が頻繁に行われるケースなどは考える余地はあります。&lt;/p&gt;
+
+&lt;p&gt;おすすめのTipsとしては&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;引数としてIP/RemoteHostを指定出来るようにする&lt;/li&gt;
+&lt;li&gt;名前解決出来るhosts名にする&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;1つ目のものはシンプルです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ ./batch_script.sh 192.168.33.12
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このようにして引数としてIP(host名)を与えます。rsyncで相互にデータをコピーさせたいときなどは有効です。
+  もちろんこれにより、大切な引数が1つ失われてしまうため、引数無しで実行できるようなShell Scriptに対して組み込む程度が
+  実際の活用方法として良いかな？とは感じます。&lt;/p&gt;
+
+&lt;p&gt;そして、2番目のですが、IPを直接書くのではなくhost名で記載に変更します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#REMOTE_SERVER=&amp;quot;192.168.33.12&amp;quot;
+REMOTE_SERVER=&amp;quot;srv01.mistdev.com&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こうすることにより、バッチスクリプト自体を書き換えなくても外部から接続先サーバを変更することが出来ます。
+  host名自体は/etc/hostsに書いてもよいですし、内部DNSへ書いてもよいかと思います。
+  スクリプトを書き換えなくてもよいというのは結構重要で、Ops側の人間としても安心感はあります。
+  だいたいソースコードに変更があったタイミングで障害が発生するので、そのリスクを少しでも減らせます。&lt;/p&gt;
+
+&lt;p&gt;この書き方での注意点が1つだけあります。sshの場合は接続先ホストのfingerprintをみており、このままでは単純に/etc/hosts側等でサーバのIP変更すると&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ssh srv01.mistdev.com
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the ECDSA key sent by the remote host is
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;のようにエラーが出てしまいます。
+  (man-in-the-middle attackとアラートを親切にだしており、もちろんこれは重要な挙動ではあります。)
+  こうなってしまうと、&lt;code&gt;ssh-keygen -R&lt;/code&gt;で律儀にサーバのknown_hostsを削除しなければなりません。&lt;/p&gt;
+
+&lt;p&gt;これを防ぐ方法が1点あり、StrictHostKeyChecking及びUserKnownHostsFileをオフにします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null srv01.mistdev.com
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;常にKnowHostsを無視し、新しいssh接続をする状態となります。
+  UserKnownHostsFileだけの場合だと「The authenticity of host &amp;lsquo;[192.168.33.12]:22 ([192.168.33.12]:22)&amp;rsquo; can&amp;rsquo;t be established.」と通常の確認が出てくるため
+  それをStrictHostKeyCheckingで無視させます。&lt;/p&gt;
+
+&lt;p&gt;この設定を追加することで、自由にリモートサーバを変更出来るようになります。
+  memo: &lt;a href=&#34;http://siguniang.wordpress.com/2014/02/28/get-rid-of-openssh-warning-message/&#34; target=&#34;_blank&#34;&gt;Siguniang&amp;rsquo;s Blog: OpenSSHの警告メッセージを黙らせる&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;最後に補足&#34;&gt;最後に補足！&lt;/h3&gt;
+
+&lt;p&gt;上記の設計方針はもちろん規模や状況やサイズ感によって異なります。
+  完全にPrivateなサーバ群に対しては、ある程度セキュリティを下げて利便性を追加したり、
+  グローバルのみの接続であればsshの接続にてfingerprint checkの無視などは出来ないかと思います。
+  それを加味した上で、リスクと利便性のバランスを理解して組み立てることが重要かと思います。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

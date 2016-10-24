@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>時間管理 on RickyNews</title>
+    <link>http://www.rickynews.com/categories/%E6%99%82%E9%96%93%E7%AE%A1%E7%90%86/</link>
+    <description>Recent content in 時間管理 on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 03 May 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/%E6%99%82%E9%96%93%E7%AE%A1%E7%90%86/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Vital Japan - 杉田敏流「時間管理術」</title>
+      <link>http://www.rickynews.com/blog/2014/05/03/sugita-satoshi/</link>
+      <pubDate>Sat, 03 May 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2014/05/03/sugita-satoshi/</guid>
+      <description>
+
+&lt;p&gt;NHKラジオのビジネス英会話の講師でもあり、プラップジャパンの代表でもある杉田敏さんの
+  講演会2014年4月12日にあったので、だいぶ遅れてしまいましたが、そちらのメモ。&lt;/p&gt;
+
+&lt;p&gt;東京都内を中心に行っている&lt;a href=&#34;http://vitaljapan.com/&#34;&gt;Vital Japan&lt;/a&gt;さんはなかなかおもしろいです。
+  基本的にはオール英語のディベートですが、たまにスペシャルゲストを招いて面白いお話を
+  聞くこともできます。&lt;/p&gt;
+
+&lt;p&gt;さて本題の時間管理とはエンジニアである自分にとって永遠のテーマです。
+  エンジニアにとっての理想を全部詰め込むと永遠にソフトウェアがリリース出来ない笑。
+  なので、ある程度の所で妥協して汚いコードでも無理やり進めなければならぬ事が多い。&lt;/p&gt;
+
+&lt;p&gt;チーム開発でも一緒で、細かくコミット期日を設定していかないと、これもまた永遠にプロダクト開発が進まない。
+  そして技術自体が優秀な人が全て時間管理も優秀とは限らないのでなかなか難しい。
+  適度な締め切りがないと人はダラけてしまうので、それも難しい！&lt;/p&gt;
+
+&lt;p&gt;そんな難しいだらけの時間管理のヒントを与えてくれるような講演会でございました。
+  どちらかというと個人寄りの一般的な内容ですが、エンジニアにもヒントがあると思います。&lt;/p&gt;
+
+&lt;p&gt;英語の箇所は勢い良くメモしたため、誤字脱字等ございましたらご指摘頂けると幸いです。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;時間とは何か&#34;&gt;時間とは何か&lt;/h2&gt;
+
+&lt;p&gt;袴田事件から考える。彼は48年間刑務所にいた。その彼が出所して国から補償される予定のお金は約2億円。
+  この時間の価値においてどう感じますか？&lt;/p&gt;
+
+&lt;p&gt;自分の時間意識とそのきっかけ。目につく所すべてに時計がおいてある。常に時を意識するようにしています。
+  アメリカのPR会社にはいって15分単位でタイムシートを書くようになって、自分の時間を意識するようになった。&lt;/p&gt;
+
+&lt;p&gt;ビジネスにおける経験も時間の側面から考えなければならないと感じる。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Does he have 17 years of experience or a year of experience 17 times? &lt;br /&gt;
+  &lt;small&gt;あの男には17年の経験があるのか、1年の経験を17回繰り返しただけなのか？&lt;/small&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;ビジネスでは5年までの経験までが最大だと思う。
+  3年以上働いて上司がダメだなと思わなければ、自分自身が成長していない証拠ではないか&lt;/p&gt;
+
+&lt;h2 id=&#34;人々の時間に対する考え&#34;&gt;人々の時間に対する考え&lt;/h2&gt;
+
+&lt;p&gt;言葉の定義としての時間とは時の流れの二点間のこと。 時間管理とは出来事・自分をコントロールすること
+  ちなみに、コントロール出来る出来事と出来ない出来事がある。
+  そして。やりたいこととやらなければならないことは別。
+  イベント、自尊心、生産性とうまくコントロールする必要がある。&lt;/p&gt;
+
+&lt;p&gt;時間には数々の名言がある&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;dost thou love life? then do not squander time, for that is the stuff life is made of.
+
+&lt;ul&gt;
+&lt;li&gt;time is money&lt;/li&gt;
+&lt;li&gt;time flies&lt;/li&gt;
+&lt;li&gt;the future comes one day at a time&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;自分は重要なんだということを相手に知らしめたいときには遅刻してくる。
+  忙しくなくても忙しいように魅せることが出来る。
+  忙しい人は時間をうまく管理できるから忙しくなれる&lt;/p&gt;
+
+&lt;p&gt;そして、忙しいだけでは十分ではない。
+  アリだって忙しい。&lt;em&gt;問題は、何をしていて忙しいかということである。&lt;/em&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;時間がないから会えません&lt;br /&gt;
+  &lt;small&gt;―あなたと遊んでいることより、さらに重要なことが自分にはあります&lt;/small&gt;&lt;/p&gt;
+
+&lt;p&gt;Preparation is the mother of good fortune&lt;br /&gt;
+  &lt;small&gt;― the mafia manager&lt;/small&gt;&lt;/p&gt;
+
+&lt;p&gt;プロジェクトのプランニングに時間をかければかけるほど、必要とされる全体の時間は少なくなる&lt;br /&gt;
+  &lt;small&gt;― edwin c. bliss&lt;/small&gt;&lt;/p&gt;
+
+&lt;p&gt;If i had eight hours to chop down a tree, I would spend six hours sharpening my ax.&lt;br/ &gt;
+  &lt;small&gt;―abraham&lt;/small&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;過去の大日本帝国時代には5分前精神というものがあった。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;5分前精神。旧大日本帝国海軍の伝統で、定刻の5分前には準備を終えておくこと。5分前に帰艦しなかった場合は、敵前逃亡と同等とされ、銃殺刑も適応された&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;あと有名な法則として、パーキンソンの法則がある。これは「時間はあればあっただけ仕事が膨らむ」ということ。
+  締め切りが1週間後であろうと、1ヶ月後であろうとそれにピッタリ合わさるように仕事を人々はしてしまう。&lt;/p&gt;
+
+&lt;p&gt;タイムマネジメントはイベントマネジメントとも言える。&lt;/p&gt;
+
+&lt;h2 id=&#34;誓いその1&#34;&gt;誓いその1&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;私はこれから毎日少なくとも10分間プランニングの時間を持ち、日々やるべきことのリストを作ります&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;アドバイス:  管理の工数を予めつけておこう&lt;/p&gt;
+
+&lt;h2 id=&#34;イベントの優先順位&#34;&gt;イベントの優先順位&lt;/h2&gt;
+
+&lt;p&gt;A. Vital - must do            A1, A2, A3&amp;hellip;
+  B. Improtant - should do      B1, B2,&amp;hellip;.
+  C. relatively unimportant&lt;/p&gt;
+
+&lt;p&gt;パレートの法則のように、我々は最も重要な2割をやらなければならない。
+  &lt;strong&gt;あなたの明日のA1は 「10分間予定のプランニングすること」&lt;/strong&gt;である。&lt;/p&gt;
+
+&lt;h2 id=&#34;day-plannerの利用&#34;&gt;Day Plannerの利用&lt;/h2&gt;
+
+&lt;h4 id=&#34;毎日の計画の手順&#34;&gt;毎日の計画の手順&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;集中できる環境を選ぶ&lt;/li&gt;
+&lt;li&gt;前日の今日の優先事項の仲で終了していない業務を確認する&lt;/li&gt;
+&lt;li&gt;今日の予定を確認する&lt;/li&gt;
+&lt;li&gt;今日の予定に優先順位をつける&lt;/li&gt;
+&lt;li&gt;数日後までの予定をたてる&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;日々の計画をたてる&#34;&gt;日々の計画をたてる&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;todo ist上の項目を消さない&lt;/li&gt;
+&lt;li&gt;手帳とパソコン上のファイルの両方は使わない&lt;/li&gt;
+&lt;li&gt;とにかく1箇所に集約させる(ポストイット使わない)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;習慣をつける&#34;&gt;習慣をつける&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Today is the first day of the rest of your life.&lt;/li&gt;
+&lt;li&gt;We are what we repeatedly do. excellence, then, is no an act but a habit. &amp;ndash; aristotle&lt;/li&gt;
+&lt;li&gt;No date on the calendar is as important as tomorrow &amp;ndash; roy howard&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;誓いその2&#34;&gt;誓いその2&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;私はこれから全てのフローティング・ペーパーを排除し、時間管理のためのカレンダーはひとつだけにします。そしてこれから21日間そのカレンダーを片時も離しません&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;時の盗人&#34;&gt;時の盗人&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Procrastination:      引き伸ばすこと&lt;/li&gt;
+&lt;li&gt;Cluttered work space: 乱雑な作業空間&lt;/li&gt;
+&lt;li&gt;Interruptions:        中断&lt;/li&gt;
+&lt;li&gt;Poor planning:        段取りの悪さ&lt;/li&gt;
+&lt;li&gt;Socializing:          勤務中のおしゃべり&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;優柔不断でぐずぐず引き伸ばすのは時間泥棒。決してやってはならない。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;今日できることを明日に延ばすな&lt;br /&gt;
+  &lt;small&gt;Don&amp;rsquo;t put off till tomorrow what you can do today&lt;/small&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;生産性を損なうものは乱雑な仕事スペース。
+  帰る時にはまっさらに、仕事中は必要な資料だけにすること。&lt;/p&gt;
+
+&lt;h2 id=&#34;誓いその3&#34;&gt;誓いその3&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;私は月曜日から整理整頓されたデスクで仕事します&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;能率を上げるヒント&#34;&gt;能率を上げるヒント&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;自分の時間の金銭的価値を知る&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;バイオリズムを知る&lt;/li&gt;
+&lt;li&gt;締め切りを設ける
+
+&lt;ul&gt;
+&lt;li&gt;切り捨ててでも終わらせる&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;精神集中で能率を上げる&lt;/li&gt;
+&lt;li&gt;気分転換・休憩の効率を考える&lt;/li&gt;
+&lt;li&gt;朝の時間の有効利用&lt;/li&gt;
+&lt;li&gt;短い時間を豊かな時間にする&lt;/li&gt;
+&lt;li&gt;惰性と暇つぶしなら時間の浪費&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;長期目標を立てる&#34;&gt;長期目標を立てる&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;安全圏を出る - Comfort zone&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;今の会社。行きつけのお店。ここから出ていかないと次のレベルにいけない。&lt;/p&gt;
+
+&lt;h2 id=&#34;優先順位を整理し-未来について考える&#34;&gt;優先順位を整理し、未来について考える&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;The purpose of life is a life of purpose. &amp;ndash; robert byme&lt;/p&gt;
+
+&lt;p&gt;Get your priorities straight no one ever said on his daeath bed,  &amp;ldquo;Gee, if i&amp;rsquo;d only spent more time at the office&amp;rdquo; &amp;ndash; life&amp;rsquo;s little instruction book&lt;/p&gt;
+
+&lt;p&gt;One of these days is none of these days.&lt;br /&gt;
+  &lt;small&gt;いつかという日はこない&lt;/small&gt;&lt;/p&gt;
+
+&lt;p&gt;If you do not think abount the future, you cannot have one. &amp;ndash; john galsworthy&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Somedayとい日はないんです。Monday, Tuesday&amp;hellip;&amp;hellip;(会場笑)&lt;/p&gt;
+
+&lt;h2 id=&#34;質疑-終わりに&#34;&gt;質疑・終わりに&lt;/h2&gt;
+
+&lt;p&gt;部下にタイムマネジメントをさせたいという人がいるが自分は言わない。自分の会社でも最初はやり方は伝える。それから先はやりたい人だけやってもらう。Quality of Lifeを上げたい人だけがやればい。&lt;/p&gt;
+
+&lt;p&gt;どっかで立ち止まって、自分の将来について3日くらいかけてじっくり考える時間をもったほうが良いかも。&lt;/p&gt;
+
+&lt;h2 id=&#34;thanks&#34;&gt;Thanks&lt;/h2&gt;
+
+&lt;p&gt;Satoshi Sugita Web Site &lt;br /&gt;
+&lt;a href=&#34;http://www.ethospathoslogos.com&#34;&gt;http://www.ethospathoslogos.com&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Vital Japan&lt;br /&gt;
+&lt;a href=&#34;http://vitaljapan.com/&#34;&gt;http://vitaljapan.com/&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

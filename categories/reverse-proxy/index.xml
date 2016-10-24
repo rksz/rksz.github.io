@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Reverse Proxy on RickyNews</title>
+    <link>http://www.rickynews.com/categories/reverse-proxy/</link>
+    <description>Recent content in Reverse Proxy on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 16 Jan 2016 17:04:40 +0900</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/reverse-proxy/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>海外とのステージング環境設計TIPS</title>
+      <link>http://www.rickynews.com/blog/2016/01/16/tips-for-staging-environments/</link>
+      <pubDate>Sat, 16 Jan 2016 17:04:40 +0900</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2016/01/16/tips-for-staging-environments/</guid>
+      <description>
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20160116/off.jpg&#34; alt=&#34;off-shoring&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;Web開発の現場では空前のオフショア開発ブームです。
+今まで大規模なSIerなど大きなコストメリットが出る所のみでしたが、
+Githubを始めとした世界標準のツールの浸透に伴い、業務ノウハウ自体が標準化してきました。
+そのため、「１社でエンジニアを大量に抱え、そのメンバーを貸す」といったビジネスも浸透し、
+2 ~ 3名で動くことも多いようなWeb開発の現場でも、少ない投資で手軽に活用出来る機会が増えてきました。&lt;/p&gt;
+
+&lt;p&gt;いざ導入してみて意外と困るのが、社内のステージング環境への接続問題です。
+元々リモートで開発しているような企業出ないかぎりは、やはり内部に依存する環境でのみ確認出来る・・・というシチュエーションも多いはずです。&lt;/p&gt;
+
+&lt;p&gt;既存を残したまま簡単に解決出来る設計がありますで、そちらをご紹介。&lt;/p&gt;
+
+&lt;h2 id=&#34;設計図イメージ&#34;&gt;設計図イメージ&lt;/h2&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20160116/overview.png&#34; alt=&#34;overview&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;実体のサーバのアクセスまでに、名前解決から始まりますが、この名前解決の所で開発共通のドメインを指定します。社内のサーバに行くものに関しては、Nginx等でリバースプロキシを経由して、
+そこからアクセスするようにします。このリバースプロキシを社内に立てれば、
+自由に内部のステージング環境へアクセス可能です。&lt;/p&gt;
+
+&lt;p&gt;このように設計することで、開発メンバーには内部外部を意識することなく、開発に専念できるようになります。セキュリティに関しても、リバースプロキシ側でも設定できますし、サーバ側でも設定出来ます。&lt;/p&gt;
+
+&lt;h2 id=&#34;その他tips-ドメイン名の付け方&#34;&gt;その他TIPS: ドメイン名の付け方&lt;/h2&gt;
+
+&lt;p&gt;社内のサーバでIPしかないサーバなどあると思います。
+そういうものに関しては推測しやすいものをドメイン名として設定してあげるとスムーズです。
+例えば、社内で192.168.1.12というIPで単体で稼働しているものがあれば、1.12.rickydev.netのような名称にすることで、推測できるようになります。&lt;/p&gt;
+
+&lt;p&gt;もっとも、ステージング環境であろうと、全てのサービスには名前はついているべきだとは思いますので、ここはうまく現状の運用フローに照らし合わせてFITさせると良いと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;セキュリティと利便性&#34;&gt;セキュリティと利便性&lt;/h2&gt;
+
+&lt;p&gt;利便性とセキュリティはトレードオフです。
+例えば、ワイルドカード *.rickydev.netをDNSに登録すると、開発者視点では設定が不要になり開発が楽になります。しかし、もし勘の良い人がいれば、開発環境サーバのエントリーポイントと分かってしまい、攻撃対象にもなりえます。&lt;/p&gt;
+
+&lt;p&gt;これは夫々の企業や業態によっての考え方次第だとは思いますので、カスタマイズは必要です。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

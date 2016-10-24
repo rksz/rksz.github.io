@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://www.rickynews.com/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="http://www.rickynews.com/favicon.png">
+    <title>Use hostnames than ip addresses | RickyNews</title>
+    
+    <script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-46051188-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<meta property="og:title" content="Use hostnames than ip addresses | RickyNews" />
+<meta property="og:url"   content="http://www.rickynews.com/blog/2015/04/19/use-hostnames-than-ip-addresses/" />
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="http://www.rickynews.com" class="navbar-brand">
+            <span class="visible_pc">
+              <img src="http://www.rickynews.com/images/logo.jpg" alt="logo" />
+            </span>
+            <span class="visible_sp">
+              RickyNews
+            </span>
+          </a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="http://www.rickynews.com/post">Archive</a></li>
+<li><a href="http://www.rickynews.com/atom.xml">RSS</a></li>
+<li><a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml">Feedly</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">Use hostnames than ip addresses</h1>
+      <p class="text-muted">Apr 19, 2015</p>
+
+    </div>
+    <div class="post-content">
+      
+
+<p>元々私、オンプレの環境でエンジニアとして育ったこともあり、
+IPアドレスに対して親近感がありました。悪く言えば、使うのが当たり前という先入観です。
+ただ、最近気づいたことが、 「名前解決をもっと活用すると便利になる」という点です。</p>
+
+<p>IPアドレスの上に一枚Hostnameを入れることで、疎結合になります。
+そして具象化することにより、意味を伝えることが出来るようになります。</p>
+
+<p>具体例をバンバン上げて解説していきたいと思います。</p>
+
+<h3 id="開発サーバへ意味を含めたドメイン名を設定する">開発サーバへ意味を含めたドメイン名を設定する</h3>
+
+<p>AWSを想定します。たとえば開発用に外部公開されているSTGがあったとします。まだ名称は決まっていません。 たいていElasticIPなどでIP固定にさせているかもしれまん。
+Route53等のDNSサービスでPublic向けのAレコードを以下のように設定させておくと便利です。</p>
+
+<pre><code class="language-sh">//IPは適当です
+54.178.158.136 centos01.rkszdev.net
+54.178.158.136 centos02.rkszdev.net
+54.178.158.137 centos03.rkszdev.net
+54.178.158.138 ubuntu01.rkszdev.net
+54.178.158.139 ubuntu02.rkszdev.net
+</code></pre>
+
+<p>サブドメイン名の所で、centosなどインスタンス名の詳細を分かるようにします。
+これによりただの数字の羅列から実体のサーバに変わります。</p>
+
+<p>「<code>centos01</code>使いますね」のメッセージだけで、AWSのどのサーバを使うのかを
+開発者同士で簡単に周知出来るようになります。</p>
+
+<p>応用編としては、<code>ubuntu01micro.rkszdev.net</code>などもう少し情報を含めることも出来るかと思います。
+ただ、あまりこれを増やしすぎてしまうと、逆にそれを推測できなくなってしまうため、
+ある程度シンプルにして置くほうがベターです。</p>
+
+<h3 id="社内ツールにドメインを設定する">社内ツールにドメインを設定する</h3>
+
+<pre><code>54.178.158.136 git.rkszdev.net
+54.178.158.137 jenkins.rkszdev.net
+</code></pre>
+
+<p>これは定番かもしれませんが、Gitリポジトリなどあれば、それを設定していまいます。
+メンバー間の説明が用意になります。
+社内ツールの移行も、DNS側でIPアドレスを付け替えるだけでいいので、手間が少ないです。
+Gitリポジトリサーバを移動しただけで、メンバーの全てのoriginを変えてもらうは
+さすがに運用的にも非効率かと思います。</p>
+
+<h3 id="chefノードに活用する">Chefノードに活用する</h3>
+
+<p>基本的にSSH接続などと同じ原理ですが、Chefノードなどにもドメイン名を活用させます。
+上記の原則を利用し、knife prepareの段階で、ドメイン名に対して実行すれば、下記のように準備されるはずです。</p>
+
+<pre><code>{chef-root}/nodes/ubuntu01.rkszdev.net.json
+{chef-root}/nodes/ubuntu02.rkszdev.net.json
+</code></pre>
+
+<p>このようにすれば、「ubuntuサーバに実行するのか」などファイル名だけで情報を
+送ることが出来ます。非常にメリットが大きいです。</p>
+
+<h3 id="nginx-apacheのバックエンド記述に活用する">Nginx/Apacheのバックエンド記述に活用する</h3>
+
+<p>名前の設定でドメイン名という概念を利用します。</p>
+
+<p>たとえば、rickynewsをNginxでL7ロードバランスするとします。
+Upstream記述をしますが、そこでドメイン名も活用出来ます。</p>
+
+<pre><code>upstream www.rickynews.com {
+  server 54.178.158.137;
+  server 54.178.158.138;
+}
+</code></pre>
+
+<p>ちなみにupstreamの所はGitのリポジトリ名にする戦略もあると思います。
+以前は私は上記ポリシーを適応していました。
+全体ポリシー統一が出来れば問題なさそうです。</p>
+
+<h3 id="ローカルssh接続管理-ssh-config">ローカルSSH接続管理 (~/ssh/config)</h3>
+
+<p>Mac等でSSH接続を管理する場合、<code>~/.ssh/config</code>に更新していくのは定番だと思います。
+ここでもHost名としてドメイン名の形式で記述をします。</p>
+
+<pre><code>HOST bitbucket.com
+  IdentityFile ~/.ssh/credentials/rksz-production-key.pem
+HOST *.rksz-dev.net
+  IdentityFile ~/.ssh/credentials/rksz-test-key.pem
+HOST centos*.rksz-dev.net
+  User centos
+HOST ubuntu*.rksz-dev.net
+  User ubuntu
+</code></pre>
+
+<p>ドメイン名ドリブンです。ssh configではワイルドカード記述も利用出来るため、
+インスタンスごとのユーザ切り替えで積極的に活用します。</p>
+
+<p>上記のようにsshconfigを設定すれば、
+下記でスムーズにインスタンスにアクセスすることが出来るようになります。</p>
+
+<pre><code class="language-sh">$ ssh ubuntu01.rksz-dev.net
+</code></pre>
+
+<p>ポイントとしては、IPアドレスを書かなくてもいいところは書かないことです。
+DNSの名前解決に委ねたほうが、比較的トラブルは起きにくいです。</p>
+
+<h4 id="peco連携">Peco連携</h4>
+
+<p>SSH接続をドメイン名ドリブンにすることでPecoと連携がスムーズになります。</p>
+
+<pre><code class="language-sh">sshpeco () {
+    peco_query=$@
+    target=$(grep -iE &quot;^host[[:space:]]+[^*]&quot; ~/.ssh/config|grep -v &quot;*&quot;|peco --query=&quot;$peco_query&quot;|awk &quot;{print \$2}&quot;)
+    if [ ! -z $target ]
+    then
+        env TERM=xterm ssh $target
+    fi
+}
+</code></pre>
+
+<p>bashrc等に上記を仕込んでおけば、かなりFuzzyにリモートサーバへアクセス可能になります。</p>
+
+<pre><code class="language-sh">$ sshpeco git rksz
+// ssh git.rkzs-dev.net が発動し、アクセスが出来るようになります
+</code></pre>
+
+<p>プライベートIPアドレスや、DNSに対するAdmin権限が無い方は、
+手元のssh configさえ記載しておけばひとまず恩恵はさずかれます。</p>
+
+<pre><code>HOST ubuntu01.rksz-dev.local
+  HostName 192.168.33.104 
+  User     vagrant
+  IdentityFile ~/.ssh/credentials/insecure_private_key
+</code></pre>
+
+      <div class="sharing" style="text-align: right;">
+        <a href="http://b.hatena.ne.jp/entry/http://www.rickynews.com/blog/2015/04/19/use-hostnames-than-ip-addresses/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+        <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.rickynews.com/blog/2015/04/19/use-hostnames-than-ip-addresses/" data-via="" data-counturl="http://www.rickynews.com/blog/2015/04/19/use-hostnames-than-ip-addresses/" >Tweet</a>
+        
+        <div class="fb-like" data-layout="button_count" style="line-height:0.5;"></div>
+      </div>
+    </div>
+
+
+    <div class="post-footer">
+      <a href="http://www.rickynews.com/post" class="btn btn-primary btn-block btn-lg">View All 76 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4 sidebar">
+    <section>
+
+  <h3 style="margin-top: 0px">RickyNews</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+  Tech News & Music
+    <a href='http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml'  target='blank'><img id='feedlyFollow' src='http://s3.feedly.com/img/follows/feedly-follow-rectangle-flat-small_2x.png' alt='follow us in feedly' width='66' height='20' style="border: none;"></a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+
+  <h3 style="margin-top: 0px">Author</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+    <a href="https://twitter.com/rksz" target="_blank" style="text-decoration: none;">@rksz</a><br />
+    Ho Chi Minh City & Tokyo
+  </div>
+
+</section>
+
+
+<section>
+  <h3>Popular Posts</h3>
+      <script language="javascript" type="text/javascript" src="http://b.hatena.ne.jp/js/widget.js" charset="utf-8"></script>
+      <script language="javascript" type="text/javascript">
+Hatena.BookmarkWidget.url   = "www.rickynews.com";
+Hatena.BookmarkWidget.sort  = "count";
+Hatena.BookmarkWidget.width = 0;
+Hatena.BookmarkWidget.num   = 5;
+Hatena.BookmarkWidget.theme = "hatenadiary";
+Hatena.BookmarkWidget.load();
+      </script>
+</section>
+
+
+<section>
+  <h3>Amazon</h3>
+  <ul>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/4781701973/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4781701973&linkCode=as2&tag=recommend7150-22">ハッカーの学校 - IPUSIRON</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4781701973" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/4478026548/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4478026548&linkCode=as2&tag=recommend7150-22">シフト――2035年、米国最高情報機関が予測する驚愕の未来</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4478026548" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00MB2STXK/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00MB2STXK&linkCode=as2&tag=recommend7150-22">プログラマの考え方がおもしろいほど身につく本　問題解決能力を鍛えよう！ (アスキー書籍)</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00MB2STXK" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/B0126I117E/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B0126I117E&linkCode=as2&tag=recommend7150-22">ヴァージン・ウェイ　Ｒ・ブランソンのリーダーシップを磨く教室</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B0126I117E" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00GSHI04M/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00GSHI04M&linkCode=as2&tag=recommend7150-22">闘うプログラマー［新装版］　ビル・ゲイツの野望を担った男達</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00GSHI04M" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+  </ul>
+</section>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          &copy; 2016.
+RickyNews
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <script src="http://www.rickynews.com/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+  </body>
+</html>
+

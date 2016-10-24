@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hugo on RickyNews</title>
+    <link>http://www.rickynews.com/categories/hugo/</link>
+    <description>Recent content in Hugo on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 15 Mar 2015 15:06:01 +0700</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/hugo/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Goodbye Octopress, Hello Hugo</title>
+      <link>http://www.rickynews.com/blog/2015/03/15/goodbye-octopress-hello-hugo/</link>
+      <pubDate>Sun, 15 Mar 2015 15:06:01 +0700</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2015/03/15/goodbye-octopress-hello-hugo/</guid>
+      <description>
+
+&lt;h2 id=&#34;経緯-octopress-hugo&#34;&gt;経緯 Octopress ~ Hugo&lt;/h2&gt;
+
+&lt;p&gt;ブログを書く意思はありますが、典型的な面倒くさがり人間で、書こうにもWordpressにログインしたりなどがそもそも面倒でした。それに加え、再現性を気にしてしまうインフラ屋の職業柄なのか、一度設置したWordpressのバックアップやゼロからの構築手順の作成などにも心が行ってしまい、記事を書くという本質から遠ざかっていました。（正直、壊れたらまたゼロから作り直すくらいで良いと思うのですが)&lt;/p&gt;
+
+&lt;p&gt;そこで当時現れたOctopressははなかなか画期的でした。手元で書いたMarkdownがローカルでプレビュー出来る。ただOctopressの構造が複雑で、そして重すぎた。1年間くらいは利用しましたが、記事を書く意欲はありましたが、Octopressを触る意欲がなくなってしまったため、ずっと記事が更新されない状態に陥っていました。&lt;/p&gt;
+
+&lt;h2 id=&#34;そしてhugoへ&#34;&gt;そしてHugoへ&lt;/h2&gt;
+
+&lt;p&gt;ちょこちょこ流行っているという噂のHugoを導入。Macなら簡単。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ brew install hugo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;結論、とても良いです。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;記事をコンパイルする速度が素晴らしい (全て数秒）&lt;/li&gt;
+&lt;li&gt;構造が限りなくシンプルなhtmlの構造&lt;/li&gt;
+&lt;li&gt;Livepreview&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;とにかく「シンプル、早い、直感的」これに尽きます。Octopressは記事をアップするにも、ブラックボックスな感じが強く、自分のOctopress本体のPrivateリポジトリを管理する方法なども非常にトリッキーです。個人のBitbucketなどにセットアップしましたが、正直ゼロからセットアップして元に戻す気力はありません。&lt;/p&gt;
+
+&lt;p&gt;Hugoであれば、プロジェクトを丸々Gitの管理下にして、テーマごと管理するのも簡単です。どこの環境でもすぐに同じ構造を用意出来ます。&lt;/p&gt;
+
+&lt;p&gt;書き出しも用意です。以下のみ。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ hugo --theme=rickynews-hugo-theme
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでpublic配下にテーマを適応したものを書き出してくれます。そのファイルを単純にリモートへアップすれば、ブログの完成です。ファイルだけ置いて、あとはお任せくらいの機能だけで十分なのです。
+今後のHugoのアップデートでgithub pagesに直接アップ出来るコマンドなど、そういう所に力を入れだすようになる時には、またプロダクトをスイッチするようになるかもしれません。&lt;/p&gt;
+
+&lt;h2 id=&#34;github-pagesへのデプロイ方法&#34;&gt;github pagesへのデプロイ方法&lt;/h2&gt;
+
+&lt;p&gt;Octopressではdeployコマンドが用意され、直接アップ出来るようになっていましたが、Hugoは無いので適当に考える必要があります。&lt;/p&gt;
+
+&lt;h4 id=&#34;deploy-sh&#34;&gt;deploy.sh&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;#!/bin/sh -x
+basepath=$(cd `dirname $0`; pwd)
+cd $basepath
+rm -rf public
+hugo --theme=rickynews-hugo-theme
+cd public
+
+## update RSS atom
+cp -f index.xml atom.xml
+
+## commit
+git init
+git remote add origin git@github-rksz.com:rksz/rksz.github.io.git
+git add --all
+git commit -m &amp;quot;blog update $(date &#39;+%Y/%m/%d %H:%M:%S&#39;)&amp;quot;
+
+## deploy to githu
+echo &amp;quot;publish ok? [enter]&amp;quot;
+read
+git push -f
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;HugoのDocumentRootに上記のようなShellScriptを用意して、とりあえず終了です。ブログを書いたら、deploy.shを叩いて終わりです。ほぼ数秒です。&lt;/p&gt;
+
+&lt;p&gt;Githubさんには大変申し訳ないですが、github上のリポジトリは履歴管理は全く利用せず、ただファイルの置き場として活用します。
+毎回publicを削除し、ゼロからhugoで作成しなおすので、chefのcookbookのようにゼロからの再現性も担保しています。
+{username}.github.ioのリポジトリには常にコミットが一つあるだけの状態になります。&lt;/p&gt;
+
+&lt;h4 id=&#34;preview-sh&#34;&gt;&lt;strong&gt;preview.sh&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;#!/bin/sh -x
+basepath=$(cd `dirname $0`; pwd)
+cd $basepath
+
+hugo server --theme=rickynews-hugo-theme --buildDrafts --watch
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;私は面倒くさがりやなもので、HugoサーバのPreviewコマンドも毎度覚えられないため(常にCtrl-R searchをしてしまう)、
+ひどまずpreview.shというコマンドもこちらも用意します。これで記事のプレビューも楽に出来るようになりました。&lt;/p&gt;
+
+&lt;h2 id=&#34;hugoの不便な所&#34;&gt;Hugoの不便な所&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;GoogleでHugoって単語自体が検索しにくい&lt;/li&gt;
+&lt;li&gt;Templateに組み込める変数がいまいちしっくりこない&lt;/li&gt;
+&lt;li&gt;YAMLデフォルトで良いかと (個人的)&lt;/li&gt;
+&lt;li&gt;英語含めて情報が少ない&lt;/li&gt;
+&lt;li&gt;デザインテンプレートが少ない&lt;/li&gt;
+&lt;li&gt;あまりリッチなページには向いてない&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;但し、このあたりは時が解決してくれると思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;総評&#34;&gt;総評&lt;/h2&gt;
+
+&lt;p&gt;ブログを書く摩擦係数がやっと0に近いた感じがします。
+「モノを書く」という本質に時間をさけるような仕組みを作ることは重要、それを感じたこの頃でした。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

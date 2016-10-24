@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Neta on RickyNews</title>
+    <link>http://www.rickynews.com/categories/neta/</link>
+    <description>Recent content in Neta on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 16 Apr 2015 23:54:03 +0700</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/neta/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>I&#39;ve been using Vim for about 2 years now</title>
+      <link>http://www.rickynews.com/blog/2015/04/16/been-using-vim-for-about-2-years-now/</link>
+      <pubDate>Thu, 16 Apr 2015 23:54:03 +0700</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2015/04/16/been-using-vim-for-about-2-years-now/</guid>
+      <description>&lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34; lang=&#34;en&#34;&gt;&lt;p&gt;I&amp;#39;ve been using Vim for about 2 years now, mostly because I can&amp;#39;t figure out how to exit it.&lt;/p&gt;&amp;mdash; I Am Devloper (@iamdevloper) &lt;a href=&#34;https://twitter.com/iamdevloper/status/435555976687923200&#34;&gt;February 17, 2014&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;私は2年間もVimを使い続けている。どうやって終了したらいいか分からないからだ。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;これ好きです。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Vimの地味に楽しい機能: Center</title>
+      <link>http://www.rickynews.com/blog/2015/04/15/vim-center-command/</link>
+      <pubDate>Wed, 15 Apr 2015 18:44:59 +0700</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2015/04/15/vim-center-command/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20150415/center.gif&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vimは長らく使っているのですが、ドキュメントをみていて今更この機能を発見しました。&lt;/p&gt;
+
+&lt;p&gt;ただ&lt;code&gt;:center&lt;/code&gt;と叩くと、文字がいい感じに真ん中に来てくれます。
+Visual Modeの範囲指定にも対応しています。以下をコマンドラインモードで叩けば&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:%center
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20150415/starwars.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;スターウォーズ感&lt;/strong&gt;が出てきますね。いえ、ただのカラースキーマの問題かもしれません。
+さすがにバグりそうなのでShebangは左に寄せときます。&lt;/p&gt;
+
+&lt;p&gt;全部センタリングしたソースコードを持って行って、「これがプロの仕事なんです」とか、
+いつか適当なことを言ってみたいと思いました。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

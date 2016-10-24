@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://www.rickynews.com/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="http://www.rickynews.com/favicon.png">
+    <title>英字配列のIME切り替え方法についての考察 | RickyNews</title>
+    
+    <script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-46051188-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<meta property="og:title" content="英字配列のIME切り替え方法についての考察 | RickyNews" />
+<meta property="og:url"   content="http://www.rickynews.com/blog/2015/09/10/how-should-we-change-the-ime/" />
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="http://www.rickynews.com" class="navbar-brand">
+            <span class="visible_pc">
+              <img src="http://www.rickynews.com/images/logo.jpg" alt="logo" />
+            </span>
+            <span class="visible_sp">
+              RickyNews
+            </span>
+          </a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="http://www.rickynews.com/post">Archive</a></li>
+<li><a href="http://www.rickynews.com/atom.xml">RSS</a></li>
+<li><a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml">Feedly</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">英字配列のIME切り替え方法についての考察</h1>
+      <p class="text-muted">Sep 10, 2015</p>
+
+    </div>
+    <div class="post-content">
+      
+
+<p><center><img src="http://www.rickynews.com/images/articles/20150910/macbook.jpg" alt="macbook" /></center></p>
+
+<p>日本語であればIMEの言語切り替えというのは避けて通れません。
+自分の1日のキーボードのタッチを分析してみても、「英数」と「かな」の切り替え作業を相当しています。ましてVimなどのツールを利用する場合、移動がコマンドに切り替わるため、Vim上で例えば日本語の文書を書くなどする場合であれば、さらに余分に切り替えていかなければなりません。</p>
+
+<p>極論英語だけで思考も文書も全てやりとり出来れば超高速に物事が進むと思います。しかし、この文書を日本語で読むことが快適に感じる皆様の通り、日本をベースに育ってしまった以上、我々の思考のベースは日本語にあり、この世界観の中で無理やり英語で全てを完結させるのは非常に難しいです。</p>
+
+<p>このような「かな」と「英数」の切り替えをキーボードでやらなければならない、という前提を立てた時にどのようなキーボードの切り替え方法がスムーズに出来るのか今回考えてみました。</p>
+
+<h2 id="前提として英字配列キーボード">前提として英字配列キーボード</h2>
+
+<p>プログラマーの方であれば、英字のキーボードを愛する人は多いと思います。ムダな刻印がなくてシンプルという理由もあるかと思いますが、一番大きな所はプログラミング自体が英語ベースで作られることもあり、どうしても英字配列のほうが便利です。</p>
+
+<p>英字配列のキーボードをMacで利用する場合、デフォルトでは切り替え方法が「Command + Space」となっているはずです。これ自体も非常にボタンが押しやすい箇所があり、なかなか便利です。ただ、なかなか不便な所もあります。</p>
+
+<h2 id="人間はあまり色々覚えられない">人間はあまり色々覚えられない</h2>
+
+<p>意外と多いイライラは「かな入力したいのに英数モードになってる」「英数を入力したいのに、かな入力モードになっている」ということだと思います。例えばAlfredなどを起動する場合でも、ショートカットから文字入力が起動しますが、基本的にアプリなどを立ち上げたい場合は半角英数モードで入力を開始したいはずです。ただそういう時に限り、日本語入力モードになっていたりします。</p>
+
+<p>もちろん意図する状態になっていないことに気づいてから、Command + Spaceで言語の切り替えを行うことは出来ます。しかしフラストレーションは非常にたまります。</p>
+
+<p>そもそも一つ前の言語が何かを把握していれば、なんらCommand + Spaceの動作でも問題ないはずです。しかし、文書を勢いよく書いていると全くそれがどちらなのか分からなくなります。画面に向かって張り付いているときは大丈夫ですが、<strong>例えば少しディスプレイから目を離したりするだけで、簡単にどちらの言語の状態なのか分からなくなります。</strong>それくらい人間の脳というは適当で注意を払いきれません。</p>
+
+<h2 id="言語の切り替え方法とその利点">言語の切り替え方法とその利点</h2>
+
+<p>こうした点からも日本語配列の「かな」ボタンのような挙動は非常に強力です。前回の状態など関係なしに、とりあえず日本語に切り替えてくれます。半角キーも同様で、状態を関係なしに必ず半角英数に切り替えてくれます。<strong>すなわちステートレスと言えます。</strong>そのため、もし前回の言語の状態を把握していればそのまま使えばいいですし、忘れてしまえばとりあえず「かな」ボタンを押すことで確実に日本語入力からスタート出来ることを保証できます。</p>
+
+<p>ではトグル挙動をする英字キーボードの動きは非効率でしょうか？こちらもこちらのメリットがあります。<strong>頭で考えなくても切り替えが出来ます。</strong>
+我々は文書を入力するタイミングで毎回「今から日本語を入力します」「今から英数を入力します」などと意識するのは多少負担がかかります。それであればボタンを一つに統合して、「今利用してる言語」「それじゃない言語」という切り替えにシンプルに統一したほうがより脳の負担がありません。</p>
+
+<h2 id="では最高の方法は何か">では最高の方法は何か</h2>
+
+<p>結論から言えば、<strong>２つの切り替え挙動をMIXした時に最高な切り替え方法を得ることが出来る</strong>。ということです。すなわち、「かな」「半角英数」の挙動と、デフォルトのトグル切り替えの挙動の両者をキーボードにアサインすればいいわけです。</p>
+
+<p>キーボードをタイプしていて言語の状態が何なのか忘れてしまった時であれば、「かな」「英数」キーを叩きゼロベースで言語を切替、理解している時であればトグル挙動で頭に負担を書けずに切り替えます。</p>
+
+<p>これを実現するためにはデフォルトの設定では出来ないため、<a href="https://pqrs.org/osx/karabiner/index.html.ja">Karabinar</a>というアプリケーションを利用します。
+<a href="http://www.rickynews.com/blog/2014/05/14/vim-speedup-strategy/">Vimの生産性を一撃で高めるシンプルなテクニック</a>の記事でもご紹介したOSのキーリピートを高められるツールです。</p>
+
+<p><img src="http://www.rickynews.com/images/articles/20150910/karabinar.png" alt="" /></p>
+
+<p>本当によくぞわかっている、という設定がデフォルトで内包されています。</p>
+
+<ul>
+<li>Command_L to Command_L + When you type Command_L only, send EISUU</li>
+<li>Command_R to Command_D + When you type Command_R only, send KANA</li>
+</ul>
+
+<p>左右のCommandキーを単体で叩いた時に、それぞれ「英数」「かな」を単体の独立したキーとして挙動してくれます。<strong>実はCommandキーというのは必ず組み合わせのキーコマンドを前提としているため、単体で叩くことは意外と使われていません。</strong>ここに我々が最もよく使う言語切替をアサインしてしまいます。</p>
+
+      <div class="sharing" style="text-align: right;">
+        <a href="http://b.hatena.ne.jp/entry/http://www.rickynews.com/blog/2015/09/10/how-should-we-change-the-ime/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+        <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.rickynews.com/blog/2015/09/10/how-should-we-change-the-ime/" data-via="" data-counturl="http://www.rickynews.com/blog/2015/09/10/how-should-we-change-the-ime/" >Tweet</a>
+        
+        <div class="fb-like" data-layout="button_count" style="line-height:0.5;"></div>
+      </div>
+    </div>
+
+
+    <div class="post-footer">
+      <a href="http://www.rickynews.com/post" class="btn btn-primary btn-block btn-lg">View All 76 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4 sidebar">
+    <section>
+
+  <h3 style="margin-top: 0px">RickyNews</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+  Tech News & Music
+    <a href='http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml'  target='blank'><img id='feedlyFollow' src='http://s3.feedly.com/img/follows/feedly-follow-rectangle-flat-small_2x.png' alt='follow us in feedly' width='66' height='20' style="border: none;"></a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+
+  <h3 style="margin-top: 0px">Author</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+    <a href="https://twitter.com/rksz" target="_blank" style="text-decoration: none;">@rksz</a><br />
+    Ho Chi Minh City & Tokyo
+  </div>
+
+</section>
+
+
+<section>
+  <h3>Popular Posts</h3>
+      <script language="javascript" type="text/javascript" src="http://b.hatena.ne.jp/js/widget.js" charset="utf-8"></script>
+      <script language="javascript" type="text/javascript">
+Hatena.BookmarkWidget.url   = "www.rickynews.com";
+Hatena.BookmarkWidget.sort  = "count";
+Hatena.BookmarkWidget.width = 0;
+Hatena.BookmarkWidget.num   = 5;
+Hatena.BookmarkWidget.theme = "hatenadiary";
+Hatena.BookmarkWidget.load();
+      </script>
+</section>
+
+
+<section>
+  <h3>Amazon</h3>
+  <ul>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/4781701973/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4781701973&linkCode=as2&tag=recommend7150-22">ハッカーの学校 - IPUSIRON</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4781701973" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/4478026548/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4478026548&linkCode=as2&tag=recommend7150-22">シフト――2035年、米国最高情報機関が予測する驚愕の未来</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4478026548" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00MB2STXK/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00MB2STXK&linkCode=as2&tag=recommend7150-22">プログラマの考え方がおもしろいほど身につく本　問題解決能力を鍛えよう！ (アスキー書籍)</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00MB2STXK" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/B0126I117E/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B0126I117E&linkCode=as2&tag=recommend7150-22">ヴァージン・ウェイ　Ｒ・ブランソンのリーダーシップを磨く教室</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B0126I117E" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00GSHI04M/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00GSHI04M&linkCode=as2&tag=recommend7150-22">闘うプログラマー［新装版］　ビル・ゲイツの野望を担った男達</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00GSHI04M" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+  </ul>
+</section>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          &copy; 2016.
+RickyNews
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <script src="http://www.rickynews.com/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+  </body>
+</html>
+

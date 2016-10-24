@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Toaw on RickyNews</title>
+    <link>http://www.rickynews.com/categories/toaw/</link>
+    <description>Recent content in Toaw on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 12 Mar 2016 13:33:16 +0900</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/toaw/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Topics of a week #1</title>
+      <link>http://www.rickynews.com/blog/2016/03/12/topics-of-a-week-1/</link>
+      <pubDate>Sat, 12 Mar 2016 13:33:16 +0900</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2016/03/12/topics-of-a-week-1/</guid>
+      <description>
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20160312/eyecatch_topics.jpg&#34; alt=&#34;Topics of a week #1&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;I randomly pick up my hot topics in this week.&lt;/p&gt;
+
+&lt;h2 id=&#34;osx-show-desktop-by-command-d-by-karabinar&#34;&gt;[OSX] &amp;ldquo;Show desktop by Command-D&amp;rdquo; by Karabinar&lt;/h2&gt;
+
+&lt;p&gt;I fell in love with this shortcut command at first sight because surprisingly, &amp;ldquo;Cmd + D&amp;rdquo; has not mainly been used to the other apps even in console applications for me. Letter “D&amp;rdquo; stands for, of course, the word Desktop. That’s definitely easy to remember.&lt;/p&gt;
+
+&lt;p&gt;When I would like to show desktop, I used to use the built-in hot corner. However, UI of moving cursor to the edge of screen is simple and doesn’t interrupt everything but sometime bothersome. This command has changed the game (&amp;hellip;for me)&lt;/p&gt;
+
+&lt;h2 id=&#34;tmux-tmux-pane-window-control-configure&#34;&gt;[Tmux] Tmux Pane &amp;amp; Window Control configure&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;## Window &amp;amp; Pane control
+bind -n C-right next-window
+bind -n C-left  previous-window
+bind -n C-down  select-pane -t :.+
+bind -n C-up    select-pane -t :.-
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;See my commit: &lt;a href=&#34;https://github.com/rksz/dotfiles/commit/1ffcba96f4d41332d4f220fb4da5b9c0e7ba388c&#34;&gt;https://github.com/rksz/dotfiles/commit/1ffcba96f4d41332d4f220fb4da5b9c0e7ba388c&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;We can move anywhere across panes &amp;amp; windows just using Ctrl + arrow on tmux. That’s definitely intuitive.&lt;/p&gt;
+
+&lt;h2 id=&#34;evernote-little-markdown-shortcut&#34;&gt;[Evernote] Little markdown shortcut&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$ Just type &amp;quot;```&amp;quot;
+$ Then quote block automatically starts.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I have never heard of this feature though, Evernote quietly added this feature as a part of new feature recently.
+Evernote has not had fully markdown feature still and only thing which markdown lovers can do is just pasting text from the other editors.&lt;/p&gt;
+
+&lt;p&gt;Evernote just provides a little feature still, but for me, this is quite enough to make document pretty.&lt;/p&gt;
+
+&lt;h2 id=&#34;game-papers-please&#34;&gt;[Game] Papers, Please&lt;/h2&gt;
+
+&lt;p&gt;Papers, Please: &lt;a href=&#34;http://papersplea.se/&#34;&gt;http://papersplea.se/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;
+&lt;div class=&#34;youtube&#34;&gt;
+  &lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/_QP5X6fcukM&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;An engineer friend of mine &lt;a href=&#34;http://aomoriringo.hateblo.jp/entry/2015/02/01/085828&#34;&gt;told me&lt;/a&gt; about this game a while ago and said that &amp;ldquo;The infrastructure engineers must play this game because this game reflects real world of our business and we can learn a lot of things&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;The gameplay of this, the player play role as an immigration officer for the fictional country of Arstotzka in the year 1982.&lt;/p&gt;
+
+&lt;p&gt;In the first phase, there’re less rules and easy to inspect arrivals. As time goes on, so many rules will be regulated and some unprecedentde incidents get to happen.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

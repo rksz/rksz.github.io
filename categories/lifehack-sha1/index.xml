@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lifehack Sha1 on RickyNews</title>
+    <link>http://www.rickynews.com/categories/lifehack-sha1/</link>
+    <description>Recent content in Lifehack Sha1 on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 26 Nov 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/lifehack-sha1/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>SHAハッシュをメールのZIPパスワードに活用する</title>
+      <link>http://www.rickynews.com/blog/2013/11/26/sha1-mail-password-hack/</link>
+      <pubDate>Tue, 26 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2013/11/26/sha1-mail-password-hack/</guid>
+      <description>&lt;p&gt;セキュアなメールを送るときに未だに利用する&lt;strong&gt;password zip&lt;/strong&gt;。1通目にzipパスワードを送信し、2通目にpasswordを送付するというのは割とビジネスシーンの慣習だと思います。(&lt;a href=&#34;http://d.hatena.ne.jp/teruyastar/20130623/1371978600&#34; target=&#34;_blank&#34;&gt;色々と賛否がある様子ですが。&lt;/a&gt;）しかしながら、パスワードを毎回検討するのは面倒なものです。&lt;/p&gt;
+
+&lt;p&gt;Macでは&lt;a href=&#34;http://www.apple.com/jp/downloads/dashboard/networking_security/randompassword.html&#34; target=&#34;_blank&#34;&gt;Random PASSWORD ダッシュボードウィジェット&lt;/a&gt;などを活用してパスワードを生成したりしておりました。とはいえ、作成したパスワードを紛失したりと、何かと不便なことも多いです。（特にどうでもいいファイル）&lt;/p&gt;
+
+&lt;p&gt;そこでhashをパスワードに利用すると便利です。bashなどでは組み込みで1発でhashを作成できるコマンドはありませんので、sha1コマンドを作成します。opensslが必要です。&lt;/p&gt;
+
+&lt;p&gt;コマンド:&lt;code&gt;sha1&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;#!/bin/sh
+# sha1 command
+# - opensslのバージョンにより、不要な文字列が出力されてしまうので、sedコマンドでトリミング。
+#
+echo -n &amp;quot;${1}&amp;quot; | openssl sha1 | sed &#39;s/^.* //&#39;
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上記をパスの通った所に配置してみます。その上で引数に適当な文字列を与えてあげれば完成です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sha1 foo
+# d277eadf6e478d63ace230aa92f11d5e2cbe2d62
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;すると見事にパスワードに利用できるような暗号化文字列が作成されます。&lt;/p&gt;
+
+&lt;p&gt;この手法の便利な所は簡単にセキュリティ強度が高まることです。簡単なパスワードであれば、一段階入れるだけで強度が飛躍的に向上しますし、従来パスワードとして渡すべき乱数であっても同様です。「送信先メールアドレス + 作成日付」などと自分の心の中でルールを決めておけば、簡単にパスワードを復元することも可能です。今回はsha1のみを利用しましたが、他のハッシュアルゴリズムを利用すればもっと長くすることも可能です。これだけの長さであれば、zip passwordの総当たり解析もほぼ不可能です。(SHA1のハッシュキーの長さは、160ビット。すなわち1.5極通り)&lt;/p&gt;
+
+&lt;p&gt;メールのpasswordに利用しましたが、これは他のユーザアカウント作成にも転用できます。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

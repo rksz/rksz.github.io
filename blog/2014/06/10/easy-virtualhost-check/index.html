@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://www.rickynews.com/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="http://www.rickynews.com/favicon.png">
+    <title>Hostsを設定しないで簡単にVirtualHostを検証する | RickyNews</title>
+    
+    <script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-46051188-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<meta property="og:title" content="Hostsを設定しないで簡単にVirtualHostを検証する | RickyNews" />
+<meta property="og:url"   content="http://www.rickynews.com/blog/2014/06/10/easy-virtualhost-check/" />
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="http://www.rickynews.com" class="navbar-brand">
+            <span class="visible_pc">
+              <img src="http://www.rickynews.com/images/logo.jpg" alt="logo" />
+            </span>
+            <span class="visible_sp">
+              RickyNews
+            </span>
+          </a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="http://www.rickynews.com/post">Archive</a></li>
+<li><a href="http://www.rickynews.com/atom.xml">RSS</a></li>
+<li><a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml">Feedly</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">Hostsを設定しないで簡単にVirtualHostを検証する</h1>
+      <p class="text-muted">Jun 10, 2014</p>
+
+    </div>
+    <div class="post-content">
+      
+
+<p style='text-align: center; margin-top:0px; font-size: small;'>
+  <img src="http://www.rickynews.com/images/articles/20140610/nohosts.jpg" alt=""><br />
+  Credit: <a href="https://www.flickr.com/photos/aigle_dore/">Moyan Brenn</a>
+  </p>
+
+<p>ステージング環境などで、クライアント側にHostsを設定して新環境の操作テストするケースも多いかと思います。</p>
+
+<p>Windowsであれば、<code>C:¥Windows¥System32¥drivers¥etc¥hosts</code>、Linux系マシンであれば、<code>/etc/hosts</code>です。
+  もちろん上記を管理するために、<a href="http://softwarefactory.jp/ja/products/hostsfilemanager/">Hosts Files Manager</a>や
+  <a href="http://www.redwinder.com/macapp/hoster/">Hoster</a>といったアプリを利用して効率的に作業されているかと思います。</p>
+
+<p>ただし、サーバの数が膨大になってくると上記の設定をするのもなかなかコストが増えてきます。
+  たとえば、特定ドメイン(myapp.mistdev.com)に対し、30台のマシンが待機しており、それをそれぞれについて検証したい場合など
+  30台を別々にHostsを切り替えてやるべきでしょうか？多くの場合は必要ないはずです。
+  テスト目的がブラウザで閲覧出来るUI/UXの検証以外であれば、うまくhostsを設定して、wget/curlしたのちgrep等などで達成できます。</p>
+
+<p>その方法はどうしたらよいでしょうか？</p>
+
+<h2 id="virtualhostはhostヘッダーだけ見ている">VirtualHostはHostヘッダーだけ見ている</h2>
+
+<p>既に結論が出ていますが、httpリクエストの<code>Host</code>の所だけをみて管理しています。仮に以下のURLアクセスすると、</p>
+
+<pre><code> http://myapp.mistdev.com/
+</code></pre>
+
+<p>hostsまたはDNS経由で名前解決を行い、下記のようになります。</p>
+
+<pre><code> http://192.168.33.101/ (Host:myapp.mistev.com)
+</code></pre>
+
+<p>それをサーバ側(apache等)が受信を行い、VirtualHostで分類して、各DocumentRootの中身を返すという仕組みです。</p>
+
+<p>主にブラウザから名前解決して利用するhttpではIPという仕組みをあまり意識しない方も多いと思います。
+  しかし、結局TCP/IPのルールの上で動いていることが理解できると思います。
+  また、VirtualHostを処理するサーバからしてみても、クライアント側から80アクセスを受信したが、
+  対応するhost名がない場合ので適当に一番上のWeb設定もレスポンスするという実装の仕組みも理解出来る気がします。</p>
+
+<h2 id="curl経由でアクセスする">curl経由でアクセスする</h2>
+
+<p>このルールがわかれば簡単です。Curlコマンドにはヘッダ付与オプションHがあるのでそれを利用するだけです。</p>
+
+<pre><code class="language-sh">$ curl -H &quot;Host:myapp.mistev.com&quot; http://192.168.33.101/
+$ curl -H &quot;Host:myapp.mistev.com&quot; http://192.168.33.102/
+$ curl -H &quot;Host:myapp.mistev.com&quot; http://192.168.33.103/
+</code></pre>
+
+<p>こうすることで、同一ドメインで違うIPのマシンを簡単に調査可能です。</p>
+
+<pre><code class="language-sh">$ curl -H &quot;Host:myapp.mistev.com&quot; http://192.168.33.101/ \
+    | grep &quot;someletter&quot;
+</code></pre>
+
+<p>grepをパイプして、文字列の出現の調査も簡単です。</p>
+
+<h2 id="サーバごとのスピードを調査する">サーバごとのスピードを調査する</h2>
+
+<p>curlのオプションを組み合わせることで各サーバのスピードを調査することも容易です。
+  基本的なcurlの速度調査方法は以下です。</p>
+
+<pre><code class="language-sh">$ curl -s -o /dev/null http://myapp.mistdev.com \
+    -w &quot;status: %{http_code}, time: %{time_total}\n&quot;
+</code></pre>
+
+<p><code>-s</code>にてsilentモード、<code>-o</code>にて出力先を指定(今回は/dev/nullで出力しない)、<code>-w</code>にて特定の形式でアウトプットが出来ます。</p>
+
+<p>今回の技を利用すれば、for文などと組み合わせて簡単に出来ます。</p>
+
+<pre><code class="language-sh">$ for ip in 101 102 103 104
+$ do
+$ curl -H &quot;Host:myapp.mistev.com&quot; http://192.168.33.${ip}/ \
+       -s -o /dev/null -w &quot;status: %{http_code}, time: %{time_total}\n&quot;
+$ done
+</code></pre>
+
+<p>curlにはその他色々なoptionがあるので、活用出来ます。是非効率のよい検証を。</p>
+
+      <div class="sharing" style="text-align: right;">
+        <a href="http://b.hatena.ne.jp/entry/http://www.rickynews.com/blog/2014/06/10/easy-virtualhost-check/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+        <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.rickynews.com/blog/2014/06/10/easy-virtualhost-check/" data-via="" data-counturl="http://www.rickynews.com/blog/2014/06/10/easy-virtualhost-check/" >Tweet</a>
+        
+        <div class="fb-like" data-layout="button_count" style="line-height:0.5;"></div>
+      </div>
+    </div>
+
+
+    <div class="post-footer">
+      <a href="http://www.rickynews.com/post" class="btn btn-primary btn-block btn-lg">View All 76 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4 sidebar">
+    <section>
+
+  <h3 style="margin-top: 0px">RickyNews</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+  Tech News & Music
+    <a href='http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml'  target='blank'><img id='feedlyFollow' src='http://s3.feedly.com/img/follows/feedly-follow-rectangle-flat-small_2x.png' alt='follow us in feedly' width='66' height='20' style="border: none;"></a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+
+  <h3 style="margin-top: 0px">Author</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+    <a href="https://twitter.com/rksz" target="_blank" style="text-decoration: none;">@rksz</a><br />
+    Ho Chi Minh City & Tokyo
+  </div>
+
+</section>
+
+
+<section>
+  <h3>Popular Posts</h3>
+      <script language="javascript" type="text/javascript" src="http://b.hatena.ne.jp/js/widget.js" charset="utf-8"></script>
+      <script language="javascript" type="text/javascript">
+Hatena.BookmarkWidget.url   = "www.rickynews.com";
+Hatena.BookmarkWidget.sort  = "count";
+Hatena.BookmarkWidget.width = 0;
+Hatena.BookmarkWidget.num   = 5;
+Hatena.BookmarkWidget.theme = "hatenadiary";
+Hatena.BookmarkWidget.load();
+      </script>
+</section>
+
+
+<section>
+  <h3>Amazon</h3>
+  <ul>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/4781701973/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4781701973&linkCode=as2&tag=recommend7150-22">ハッカーの学校 - IPUSIRON</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4781701973" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/4478026548/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4478026548&linkCode=as2&tag=recommend7150-22">シフト――2035年、米国最高情報機関が予測する驚愕の未来</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4478026548" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00MB2STXK/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00MB2STXK&linkCode=as2&tag=recommend7150-22">プログラマの考え方がおもしろいほど身につく本　問題解決能力を鍛えよう！ (アスキー書籍)</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00MB2STXK" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/B0126I117E/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B0126I117E&linkCode=as2&tag=recommend7150-22">ヴァージン・ウェイ　Ｒ・ブランソンのリーダーシップを磨く教室</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B0126I117E" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00GSHI04M/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00GSHI04M&linkCode=as2&tag=recommend7150-22">闘うプログラマー［新装版］　ビル・ゲイツの野望を担った男達</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00GSHI04M" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+  </ul>
+</section>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          &copy; 2016.
+RickyNews
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <script src="http://www.rickynews.com/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+  </body>
+</html>
+

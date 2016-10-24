@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://www.rickynews.com/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="http://www.rickynews.com/favicon.png">
+    <title>CaseStudy - 構築した別ネットワークマシンをどのように社内で疎通するか | RickyNews</title>
+    
+    <script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-46051188-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<meta property="og:title" content="CaseStudy - 構築した別ネットワークマシンをどのように社内で疎通するか | RickyNews" />
+<meta property="og:url"   content="http://www.rickynews.com/blog/2014/06/07/cs-how-to-test-different-segment/" />
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="http://www.rickynews.com" class="navbar-brand">
+            <span class="visible_pc">
+              <img src="http://www.rickynews.com/images/logo.jpg" alt="logo" />
+            </span>
+            <span class="visible_sp">
+              RickyNews
+            </span>
+          </a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="http://www.rickynews.com/post">Archive</a></li>
+<li><a href="http://www.rickynews.com/atom.xml">RSS</a></li>
+<li><a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml">Feedly</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">CaseStudy - 構築した別ネットワークマシンをどのように社内で疎通するか</h1>
+      <p class="text-muted">Jun 7, 2014</p>
+
+    </div>
+    <div class="post-content">
+      
+
+<p><img src="http://www.rickynews.com/images/articles/20140607/casestudy1.jpg" alt="" /></p>
+
+<p>本日よりCaseStudyシリーズを開始します。
+「このような状況下の中でどのようにして解決するか」を中心に解説します。</p>
+
+<p>経験者にとってはあたり前のことを共有し、初学者の理解を助け、
+また、経験者にとっては他手法を学ぶことでより効率よく作業することも学べるようなコンテンツにしてゆきたいと思います。
+特にインフラまで含めた知識は暗黙知となりやすいと思いますので、実例をきっかけに、インフラ知識の理解も
+深まると幸いです。</p>
+
+<h3 id="問題-構成した別ネットワークマシンを検証したい">問題: 構成した別ネットワークマシンを検証したい</h3>
+
+<p>データセンタに設置予定のマシンを社内で構築した。
+  ネットワーク設定を含めて構築しており、サーバをデータセンタに持って行ってLANケーブルを差し込むと動く所まで構築したい。
+  なお、データセンタのセグメントは<code>192.168.40.0/24</code>、社内環境のセグメントは<code>192.168.100.0/24</code>となっている。
+  データセンタの設置作業の時間は限られており、予めこのネットワークが接続出来るか確認したい。インストールOSはRHELを利用する。</p>
+
+<h3 id="解決">解決</h3>
+
+<p>今回のケースのポイントをシンプルに考えると、「リモートから該当サーバになんとか接続出来ること」がメインとして上がる。
+  一旦リモートから接続さえ出来てしまえば、あとはどうにでもなる。(もちろんネットワークの設定すら変更可能)
+  さてそのなんとか接続出来ることを確認すればどうすればよいか？</p>
+
+<p>一番のポイントは「<strong>同一サブネットの通信は直接やり取りしあう</strong>」という原則を思い出すことです。</p>
+
+<p>ルーティングというものは意外と厄介で、気をつけないポイントは多いです。
+  自分でVPNを構築したとして、双方に正しいルーティングがないと正常に通信がやりとり出来ません。
+  今回のケースであれば、データセンタ側のルータが<code>192.168.100.0/24</code>のルーティング設定されていないと、当然全く通信することが出来ません。
+  とりあえず疎通出来ればOKという原則に立ち返れば、ある程度適当でも色々可能です。</p>
+
+<h3 id="社内環境でのテスト">社内環境でのテスト</h3>
+
+<p>社内で予め<code>/etc/sysconfig/network-scripts/ifcfg-em2</code>を編集し、<code>192.168.40.100</code>としてセットアップします。
+  その後このIPアドレス自体がとりあえず外からpingが通るか検証したいとします。
+  ただし社内のセグメントは<code>192.168.100.0</code>で、勝手に<code>192.168.40.0/24</code>へのルーティングはルータにかかれています。どうすれば良いでしょうか？</p>
+
+<p>答えは簡単で、以下のようにするだけでOKです。</p>
+
+<ol>
+<li>設置対象のIPアドレスを設定して、社内のスイッチに接続する</li>
+<li>自分のPCのIPアドレスを適当に<code>192.168.40.bbb/24</code>と設定する。</li>
+</ol>
+
+<p>こうすることで、社内の<code>192.168.100.0/24</code>のHubを利用しながら、擬似的に接続することを検証可能です。</p>
+
+<p>まずルーティングをする際に、対象のIPアドレスが自分のサブネットに所属しているか調査します。
+  自分のARPテーブル(IP/Macアドレスの対照表)に存在しない場合、ブロードキャストしどこにマシンがあるかレスポンスしてもらいます。</p>
+
+<ol>
+<li>同一サブネットと判断した場合、ブロードキャストパケットを流す</li>
+<li>ブロードキャストパケットが届く範囲は同一サブネット(ルータを超えない)</li>
+</ol>
+
+<p>という原則のもと、通信を試みます。ブロードキャストし、スイッチに挿され適当に名乗っている40セグメント同士がやりとりするという仕組みです。
+  社内に接続していた新規設置のサーバがブロードキャストパケットを受信し、「これは自分のIPアドレスです。macアドレスです。」とレスポンスします。  その後めでたく、双方のARPテーブルにMacアドレスが記録され、イーサネットを通じ直接通信をし合います。</p>
+
+<p>スイッチ自体はL2と呼ばれる通り、IPアドレスなどは処理しません。Macアドレスのみを利用し、データのやりとりを行います。
+  なので、接続対象のPCのMacアドレスさえ分ければ通信が可能になります。</p>
+
+<h3 id="データセンタでの設置">データセンタでの設置</h3>
+
+<p>ここまで疎通が確認出来れば、あとは簡単です。持って行って接続だけすればOKです。</p>
+
+<p>VPN越しに直接通信出来ないケースがあっても問題ありません。セグメントとサブネットさえ一致していれば、
+  データセンタの別マシンにログインしたのちに、そこから横から入ることが出来る可能性が非常に高いです。
+  その後、ゆっくり設定を見直し、通信できるようにFIXすれば良いです。</p>
+
+<p>設置したあとに、「同一セグメントの他のマシンに接続出来るかだけを最低限確認する」というタスクであれば、
+  直接通信が社内に向かって届かないなどのケースがあっても、あたふたすることはなくなります。</p>
+
+<h3 id="最後に">最後に</h3>
+
+<p>もちろん準備して一発で接続できることにこしたことはありません。ただ、色々なテクニックを利用して、
+  時間が無い時に代替テクニックを知っていることは大きなアドバンテージです。</p>
+
+<p>「30秒だけデータセンタに入り込める。その間にリモートから接続出来る環境を用意してほしい」など、
+  会社からミッション・インポッシブル並みの要求が無いとも言えません。是非エンジニアとして準備をしておきましょう。</p>
+
+      <div class="sharing" style="text-align: right;">
+        <a href="http://b.hatena.ne.jp/entry/http://www.rickynews.com/blog/2014/06/07/cs-how-to-test-different-segment/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+        <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.rickynews.com/blog/2014/06/07/cs-how-to-test-different-segment/" data-via="" data-counturl="http://www.rickynews.com/blog/2014/06/07/cs-how-to-test-different-segment/" >Tweet</a>
+        
+        <div class="fb-like" data-layout="button_count" style="line-height:0.5;"></div>
+      </div>
+    </div>
+
+
+    <div class="post-footer">
+      <a href="http://www.rickynews.com/post" class="btn btn-primary btn-block btn-lg">View All 76 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4 sidebar">
+    <section>
+
+  <h3 style="margin-top: 0px">RickyNews</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+  Tech News & Music
+    <a href='http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml'  target='blank'><img id='feedlyFollow' src='http://s3.feedly.com/img/follows/feedly-follow-rectangle-flat-small_2x.png' alt='follow us in feedly' width='66' height='20' style="border: none;"></a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+
+  <h3 style="margin-top: 0px">Author</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+    <a href="https://twitter.com/rksz" target="_blank" style="text-decoration: none;">@rksz</a><br />
+    Ho Chi Minh City & Tokyo
+  </div>
+
+</section>
+
+
+<section>
+  <h3>Popular Posts</h3>
+      <script language="javascript" type="text/javascript" src="http://b.hatena.ne.jp/js/widget.js" charset="utf-8"></script>
+      <script language="javascript" type="text/javascript">
+Hatena.BookmarkWidget.url   = "www.rickynews.com";
+Hatena.BookmarkWidget.sort  = "count";
+Hatena.BookmarkWidget.width = 0;
+Hatena.BookmarkWidget.num   = 5;
+Hatena.BookmarkWidget.theme = "hatenadiary";
+Hatena.BookmarkWidget.load();
+      </script>
+</section>
+
+
+<section>
+  <h3>Amazon</h3>
+  <ul>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/4781701973/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4781701973&linkCode=as2&tag=recommend7150-22">ハッカーの学校 - IPUSIRON</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4781701973" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/4478026548/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4478026548&linkCode=as2&tag=recommend7150-22">シフト――2035年、米国最高情報機関が予測する驚愕の未来</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4478026548" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00MB2STXK/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00MB2STXK&linkCode=as2&tag=recommend7150-22">プログラマの考え方がおもしろいほど身につく本　問題解決能力を鍛えよう！ (アスキー書籍)</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00MB2STXK" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/B0126I117E/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B0126I117E&linkCode=as2&tag=recommend7150-22">ヴァージン・ウェイ　Ｒ・ブランソンのリーダーシップを磨く教室</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B0126I117E" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00GSHI04M/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00GSHI04M&linkCode=as2&tag=recommend7150-22">闘うプログラマー［新装版］　ビル・ゲイツの野望を担った男達</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00GSHI04M" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+  </ul>
+</section>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          &copy; 2016.
+RickyNews
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <script src="http://www.rickynews.com/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+  </body>
+</html>
+

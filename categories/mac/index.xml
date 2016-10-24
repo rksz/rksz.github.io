@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mac on RickyNews</title>
+    <link>http://www.rickynews.com/categories/mac/</link>
+    <description>Recent content in Mac on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 29 Sep 2015 20:36:54 +0700</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/mac/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>MacのDockの跳ねるアクションを消す方法</title>
+      <link>http://www.rickynews.com/blog/2015/09/29/stop-bouncing-effect-in-osx-dock/</link>
+      <pubDate>Tue, 29 Sep 2015 20:36:54 +0700</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2015/09/29/stop-bouncing-effect-in-osx-dock/</guid>
+      <description>&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20150929/bounce.jpg&#34; alt=&#34;bounce&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;最初は自動的に消えるようにしておりましたが、Dockを出しっぱなしにしたほうが効率が良いのではないか？
+と気づいてしまい、Dockを常に表示させるようにしました。凄い快適です。
+いちいちSpotlightやCommand Tabなどでキーで選択しなくても、クリックで必要なアプリに移動出来るのは楽です。
+&lt;a href=&#34;https://wirelesswire.jp/management_theory_by_programmer/201503220829.html&#34;&gt;ショートカットキーを叩くより、マウスでクリックしたほうが効率が良い&lt;/a&gt;なんて話もありますし。&lt;/p&gt;
+
+&lt;p&gt;さて本題のドックですが、便利なのです、常に表示させていると、通知のアイコンが跳ねるモーションが非常に集中力を削ぎます。
+遊びで使っているレベルであれば気にならない、むしろ「メッセージがきた！」と嬉しくなるような動きだとは思いますが、
+仕事で使う以上、Destructive以外のなにものでもありません。&lt;/p&gt;
+
+&lt;p&gt;この挙動は簡単にターミナルからOFFに出来ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ defaults write com.apple.dock no-bouncing -bool TRUE
+$ killall Dock
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Apple社にはデフォルトでこの挙動をOFFにしてくれること願います。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

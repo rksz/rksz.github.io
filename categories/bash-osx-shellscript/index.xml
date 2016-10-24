@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bash Osx Shellscript on RickyNews</title>
+    <link>http://www.rickynews.com/categories/bash-osx-shellscript/</link>
+    <description>Recent content in Bash Osx Shellscript on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 19 Jul 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/bash-osx-shellscript/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Macで少し生産性の上がるBashエイリアス集</title>
+      <link>http://www.rickynews.com/blog/2014/07/19/useful-bash-aliases/</link>
+      <pubDate>Sat, 19 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2014/07/19/useful-bash-aliases/</guid>
+      <description>
+
+&lt;p style=&#39;text-align: center; margin-top:0px; font-size: small;&#39;&gt;
+  &lt;img src=&#34;http://www.rickynews.com/images/articles/20140719/bashaliases.jpg&#34; alt=&#34;&#34;&gt;&lt;br /&gt;
+  &lt;a href=&#34;https://www.flickr.com/photos/qualityandstyle/&#34;&gt;Qualityandstyle&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Macでは基本的にターミナルを開けばShellでコントロール可能です。
+これがあるから使っている！という人も多いかと思います。
+Finderをターミナルにドラッグドロップするとパスが表示されたりなど、
+CUIとGUIの親和性も非常に高いです。さて個人的に作成した便利なエイリアス達を紹介します。&lt;/p&gt;
+
+&lt;p&gt;基本的に&lt;code&gt;~/.bashrc&lt;/code&gt;や&lt;code&gt;~/.zshrc&lt;/code&gt;などに下記の行をコピーすれば動く簡単な仕様です。&lt;/p&gt;
+
+&lt;h2 id=&#34;md-linux-macosx&#34;&gt;md [Linux/MacOSX]&lt;/h2&gt;
+
+&lt;p&gt;カレントディレクトリにあるmarkdownファイルを全てvimバッファに載せ開きます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;alias &#39;md&#39;=&#39;vim ./*.md&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;複数バッファを同時に開きますが、あまりその動きは想定していません。
+現在のGitのプロジェクト等ではMarkdown形式のREADMEファイルなどが必ず置かれていると思います。
+そういったディレクトリに移動して、ホームポジションに近い&lt;code&gt;md&lt;/code&gt;というコマンドで簡単に開けることを期待しています。
+とりあえずファイルが沢山あるディレクトリでも移動して&lt;code&gt;md&lt;/code&gt;と打てば何かしらその場にあるドキュメントファイルを開けるので
+あまり考えなくて良いです。
+Vimを開いた後では&lt;code&gt;:bn&lt;/code&gt;や&lt;code&gt;:bp&lt;/code&gt;などでバッファの前後を開けますので次々に移動させ任意のファイルを確認します。&lt;/p&gt;
+
+&lt;p&gt;個人的にはvimをターミナルで利用するため指定していますが、openコマンドを組み合わせて
+他のエディタでも良いかもしれません。&lt;/p&gt;
+
+&lt;h2 id=&#34;dic-linux-macosx&#34;&gt;dic [Linux/MacOSX]&lt;/h2&gt;
+
+&lt;p&gt;引数の単語の和訳を出力します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;dic () {
+  w3m &amp;quot;http://ejje.weblio.jp/content/$1&amp;quot; | grep &amp;quot;用例&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ややハック気味なプログラムです。weblioのWebサイトをCUIブラウザで出力させ、
+「用例」の箇所を抜き出します。動作はこのような感じです。&lt;code&gt;w3m&lt;/code&gt;コマンドはbrew等でインストール可能です。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20140719/dic.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;ただの単語の和訳というよりは用例=フレーズというのがポイントです。
+ピンポイントに和訳を出されてもすぐ忘れてしまいますので流れで覚えます。
+たまにノイズも入るのでそこは微調整を個別にしてください。&lt;/p&gt;
+
+&lt;h2 id=&#34;sha1-linux-macosx&#34;&gt;sha1 [Linux/MacOSX]&lt;/h2&gt;
+
+&lt;p&gt;引数として渡される文字列のsha1のハッシュを返します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;alias sha1=&#39;echo -n &amp;quot;${1}&amp;quot; | openssl sha1 | sed &amp;quot;s/^.* //&amp;quot;&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;opensslの種類によって出力される文字列に揺れがあるため、
+sedで切り取りをしています。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20140719/sha1.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;ただのハッシュ値ですが、手元でサクっと生成できると意外に便利です。
+適当な文字列を叩き込んで簡単なパスワード代わりに利用可能です。&lt;/p&gt;
+
+&lt;p&gt;自分のSaltなど用意すれば、自分だけ思い出すことが可能なパスワードも簡単に生成
+可能です。システム開発などで基本的に使うテクニックですが、
+簡単にCUI上から出来ることで実生活にも役立ちます。&lt;/p&gt;
+
+&lt;h2 id=&#34;up-linux-macosx&#34;&gt;up [Linux/MacOSX]&lt;/h2&gt;
+
+&lt;p&gt;一つ上のディレクトリにCDして、リストを表示させます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;alias up=&amp;quot;cd ..; ls -l&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;大したことはないですが、自分のコマンドをヒストリ解析した結果この流れの作業をよくやっていたため、作成して使っています。
+「移動先でどのようなディレクトリがあるのか？」というのをすぐにフィードバックが得られるので
+非常に便利です。&lt;code&gt;cd ..&lt;/code&gt;より&lt;code&gt;up&lt;/code&gt;のほうがキーの配置も近いので、楽です。&lt;/p&gt;
+
+&lt;p&gt;cdする時にlsを合わせて出力してくれるものもあっても良いかもしれませんが、
+個人的にはあまり使いません。そもそもディレクトリを下るときはファイルの中身がある程度推測できますし、
+ディレクトリの上に移動するときはフォルダ一覧も見えるような流れにすれば、
+「上に移動=表示」「下に移動=そのまま」とディレクトリの移動方向が明確になるので混乱が少ないです。&lt;/p&gt;
+
+&lt;h2 id=&#34;f-macosx&#34;&gt;f [MacOSX]&lt;/h2&gt;
+
+&lt;p&gt;ターミナルのカレントディレクトリをFinderで開きます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;alias f=&amp;quot;open .&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こちら有名ですが、
+Macのopenコマンドを利用することで簡単にカレントディレクトリを開くことが出来ます。
+ファイルの移動や日本語ファイルの取り扱いなどGUIのほうが早く作業できるケースなど多いと思います。
+このコマンドを叩くことでシームレスに移動可能です。
+GUIが得意な領域はGUIを使って高速作業です。&lt;/p&gt;
+
+&lt;h2 id=&#34;cdf-macosx&#34;&gt;cdf [MacOSX]&lt;/h2&gt;
+
+&lt;p&gt;Finderのアクティブウィンドウのパスにターミナルで移動します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;cdf () {
+        target=`osascript -e &#39;tell application &amp;quot;Finder&amp;quot; to if (count of Finder windows) &amp;gt; 0 then get POSIX path of (target of front Finder window as text)&#39;`
+        if [ &amp;quot;$target&amp;quot; != &amp;quot;&amp;quot; ]
+        then
+                cd &amp;quot;$target&amp;quot;
+                pwd
+        else
+                echo &#39;No Finder window found&#39; &amp;gt;&amp;amp;2
+        fi
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;fコマンドの逆で、今のFinderのカレントパスに移動します。GUIで作業した後など、
+シームレスに移動可能です。以下がもう少し詳しいかと思います。&lt;/p&gt;
+
+&lt;p&gt;jumping to the finder location in terminal
+&lt;a href=&#34;http://blog.glidenote.com/blog/2013/02/26/jumping-to-the-finder-location-in-terminal/&#34;&gt;http://blog.glidenote.com/blog/2013/02/26/jumping-to-the-finder-location-in-terminal/&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;z-j-linux-macosx&#34;&gt;z(j) [Linux/MacOSX]&lt;/h2&gt;
+
+&lt;p&gt;過去のコマンドヒストリからファジーに移動してくれます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;brew install z
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;z work
+# cd /Users/Myname/workspace してくれる
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;断片さえ記憶していれば移動してくれます。とりあえずターミナルを立ち上げてworkspaceに移動しています。
+同様の&lt;code&gt;j&lt;/code&gt;というコマンドもありますが、インストールが手間なのといまこちらのほうが
+更新も多いので、&lt;code&gt;z&lt;/code&gt;に乗り換えました。ただ、&lt;code&gt;j&lt;/code&gt;のほうが指の位置が近いため、以下も設置します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;alias j=&amp;quot;z&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;自分のケースであれば、&lt;code&gt;j&lt;/code&gt;コマンドを利用して、適当に移動したあと&lt;code&gt;f&lt;/code&gt;コマンドを利用してFinderを開きます。
+Finderで色々やった後、iTermを再度アクティブにさせ&lt;code&gt;cdf&lt;/code&gt;をしてターミナルに戻ります。
+また必要になれば&lt;code&gt;f&lt;/code&gt;をしてFinderを開きます。
+まさにGUIとCUIをハイブリッド生活になれるとなかなか戻れません。&lt;/p&gt;
+
+&lt;h2 id=&#34;jj-linux-macosx&#34;&gt;jj [Linux/MacOSX]&lt;/h2&gt;
+
+&lt;p&gt;カレントパス以下のディレクトリでGrepマッチしたディレクトリに移動します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;jj () {
+    if [ $1 ]; then
+        JUMPDIR=$(find . -type d -maxdepth 1 | grep $1 | tail -1)
+        if [[ -d $JUMPDIR &amp;amp;&amp;amp; -n $JUMPDIR ]]; then
+            cd $JUMPDIR
+        else
+            echo &amp;quot;directory not found&amp;quot;
+        fi
+    fi
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;見えているディレクトリを適当にコマンド叩いて移動したいことも多いかと思います。
+ただ&lt;code&gt;YYYYMMDD_Dirname&lt;/code&gt;のようなディレクトリルールで配置されている箇所はBashのTab補完が
+あまり便利ではないです。確実に年あたりの所でサジェストが一度止まるからです。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20140719/jj3.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;ただディレクトリ名自体はユニークなものにしているケースも多いと思いますので、
+うまく唯一マッチングするような文字列を組み合わせて移動するようにします。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20140719/jj.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;cleanup-linux-macosx&#34;&gt;cleanup [Linux/MacOSX]&lt;/h2&gt;
+
+&lt;p&gt;カレントディレクトリ以下にある空ディレクトリを削除します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;cleanup () {
+    find . -type d -maxdepth 2 -empty -exec rmdir -v {} \; 2&amp;gt;/dev/null
+    find . -type d -maxdepth 2 -empty -exec rmdir -v {} \; 2&amp;gt;/dev/null
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;意外と出来てしまう空ディレクトリ。こちらのコマンドで安全に削除です。
+Finderで作業中でもターミナルをアクティブにさせたのち、&lt;code&gt;cdf&lt;/code&gt;を行い、
+該当ディレクトリへ移動し、このコマンドを発行です。&lt;/p&gt;
+
+&lt;p&gt;リカーシヴに全部強制削除だと何か不安が残るため、
+経験則的に2階層だけ削除するように設定しています。
+不足があればコマンドを何度か叩けば問題ありません。&lt;/p&gt;
+
+&lt;h2 id=&#34;ssheuc-linux-macosx&#34;&gt;ssheuc [Linux/MacOSX]&lt;/h2&gt;
+
+&lt;p&gt;OS設定がEUC-JPのサーバにUTF8環境から文字化けせずに接続します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;alias ssheuc=&#39;TERM=xterm cocot -t UTF-8 -p EUC-JP ssh &#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;tmuxなど基本的にUTF-8しか表示をサポートしておりません。
+その時に困るのが他の文字コードを利用しているサーバです。
+それを&lt;code&gt;cocot&lt;/code&gt;を利用することで、全て表示をUTF8に統一させ文字化けを回避できます。
+tmuxでもpaneを分割してその中でeuc-jpのサーバに文字化けなくアクセスが出来るようになります。&lt;/p&gt;
+
+&lt;p&gt;Macであればbrewでインストール可能です。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

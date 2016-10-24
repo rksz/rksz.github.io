@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Thought Brain Lifehack on RickyNews</title>
+    <link>http://www.rickynews.com/categories/thought-brain-lifehack/</link>
+    <description>Recent content in Thought Brain Lifehack on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 30 Nov 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/thought-brain-lifehack/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>忘れたコマンドを調べる前にやるべきシンプルな習慣</title>
+      <link>http://www.rickynews.com/blog/2013/11/30/think-before-you-do/</link>
+      <pubDate>Sat, 30 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2013/11/30/think-before-you-do/</guid>
+      <description>
+
+&lt;p&gt;&lt;img src=&#34;http://s1.rickynews.com/img/think_before_you_do.jpg&#34; alt=&#34;think&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;エンジニアにおいてよく出てくる問題は「記憶力の限界」である。技術者として働きたての人間ほど「日に日により
+記憶力が落ちている」と感じる人が多いのではなかろうか。&lt;/p&gt;
+
+&lt;p&gt;今やインターネットで全ての物事は調べ放題、さらにLinuxであればManualコマンドなど色々とリファレンスも充実している。
+Googleの日常化により世の中の価値観も、「覚えていること」より「情報の引き出し方」にシフトしている印象を受ける。
+&lt;strong&gt;ただし、この中に大きな落とし穴が潜んでいることを大多数の人間が気づいていない。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;コンピュータのコマンドというのは、ある程度ルールがあるにせよ、基本的に開発者が「こうやって使って下さい」
+と命名させた集合体であり、普段よく利用するもの以外は忘れてしまうことも多い。
+その前提にたつと、コマンドを忘れた時などは、&lt;strong&gt;中級レベルのエンジニアほど「すぐにマニュアルを引く」という行為にたどり着きやすい。&lt;/strong&gt;これはコマンドに限らず、何かシステム側でエラーが発生した時も同様であり、「エラー文面をそのままGoogleに貼り付ける」という行為になる。&lt;/p&gt;
+
+&lt;p&gt;するとこれは何を意味しているのだろうか？&lt;strong&gt;結論は簡単。思考という貴重なプロセスが抜け落ちているのである。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;ただ、出てきた問題に対して機械的に調べているだけなので、一切思考をもしておらず、なおかつ導き出された答えもコピーして貼り付けるだけ。一連の行為は「思考の絡まない作業」なので、記憶にも残らない。結果として、また時間が経つと同様のマニュアルを引く行為を繰り返す。&lt;/p&gt;
+
+&lt;h2 id=&#34;改善するシンプルな習慣&#34;&gt;改善するシンプルな習慣&lt;/h2&gt;
+
+&lt;p&gt;この状況を改善するシンプルな習慣がある。&lt;strong&gt;それは「調べる前に予想する」ことである。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;コマンドのオプションが忘れてしまった時も「✕✕というオプションだったかもしれない」と一歩踏みとどまって考える。&lt;/strong&gt;
+そして予想したあとに、実際に調べてそれが正しいかを検討する。この正誤の結果はどちらでも良い結果になる。
+正解であれば、短期記憶としてうろ覚えだった記憶の再度出現により、長期記憶になるきっかけになる。
+一方で間違えだった場合も、人間の脳というものは間違ったことを記憶しやすいので、結局として間違いと正解が結びつき、
+長期記憶に結びつきやすい。&lt;/p&gt;
+
+&lt;h4 id=&#34;武道と記憶力の関係&#34;&gt;武道と記憶力の関係&lt;/h4&gt;
+
+&lt;p&gt;空手の稽古では道場の師範に「作業を予想しろ」とよく言われる。空手の稽古でも「型」と
+呼ばれる練習の基本形があり、基本的に覚えていないといけない。とはいえ、初心者には覚える量も膨大で簡単にはいかない。
+その上、稽古で覚えきれなかった場合では、道場生にこっそり尋ねる以外は、調べる術がない。
+そんな中苦しんでいた自分を「作業を予想しろ」という師範の言葉が、救ってくれた。
+&lt;strong&gt;常に予想することで、あっという間に覚えきってしまったのである。&lt;/strong&gt;
+そして、予想を毎回することで裏に隠れる意味なども考えることになるので、思考力も向上していると感じる。&lt;/p&gt;
+
+&lt;p&gt;インターネットのお陰で安易に答えにたどり着けてしまう手前、昔なら当たり前のようにやっていた「考える」という行為が
+抜け落ちやすくなっている。そういう状況下の中、意識して「予想」することで、一歩周りから抜け出せるかもしれない。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

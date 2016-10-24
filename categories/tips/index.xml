@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tips on RickyNews</title>
+    <link>http://www.rickynews.com/categories/tips/</link>
+    <description>Recent content in Tips on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 20 Sep 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/tips/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Tmpディレクトリの活用法について改めて考える</title>
+      <link>http://www.rickynews.com/blog/2014/09/20/importance-of-temporary-directories/</link>
+      <pubDate>Sat, 20 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2014/09/20/importance-of-temporary-directories/</guid>
+      <description>
+
+&lt;p style=&#39;text-align: center; margin-top:0px; font-size: small;&#39;&gt;
+  &lt;img src=&#34;http://www.rickynews.com/images/articles/20140920/temporary.jpg&#34; alt=&#34;&#34;&gt;&lt;br /&gt;
+  &lt;a href=&#34;https://www.flickr.com/photos/dominicspics/&#34;&gt;Dominic Alves&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;普段何気なく利用している&lt;code&gt;/tmp&lt;/code&gt;と&lt;code&gt;/var/tmp&lt;/code&gt;。
+意識して使い分けてる方も分けてない方もいらっしゃるかと思います。
+Linuxのファイルシステムとしての存在意義や、一時フォルダとしての機能を改めて意識すると
+非常に便利な存在です。&lt;/p&gt;
+
+&lt;h2 id=&#34;tmpと-var-tmpの違い&#34;&gt;/tmpと/var/tmpの違い&lt;/h2&gt;
+
+&lt;p&gt;「/tmpと/var/tmpの違いについて述べよ」・・・インフラエンジニアの入社試験の問題に出てきそうですね。
+さて単純な解答ですが、システム的なことを言えば以下あたりです。(RHEL)&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;/tmp&lt;/th&gt;
+&lt;th&gt;/var/tmp&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;再起動時にファイルが削除される&lt;/td&gt;
+&lt;td&gt;再起動しても消えない&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;10日間アクセスが無い場合削除&lt;/td&gt;
+&lt;td&gt;30日間アクセスが無い場合削除&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;どちらもディレクトリ配下はtmpwatchコマンドにより監視されファイルの削除が組み込まれています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ cat /etc/cron.daily/tmpwatch
+#! /bin/sh
+flags=-umc
+/usr/sbin/tmpwatch &amp;quot;$flags&amp;quot; -x /tmp/.X11-unix -x /tmp/.XIM-unix \
+        -x /tmp/.font-unix -x /tmp/.ICE-unix -x /tmp/.Test-unix \
+        -X &#39;/tmp/hsperfdata_*&#39; 10d /tmp
+/usr/sbin/tmpwatch &amp;quot;$flags&amp;quot; 30d /var/tmp
+for d in /var/{cache/man,catman}/{cat?,X11R6/cat?,local/cat?}; do
+    if [ -d &amp;quot;$d&amp;quot; ]; then
+        /usr/sbin/tmpwatch &amp;quot;$flags&amp;quot; -f 30d &amp;quot;$d&amp;quot;
+    fi
+done
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;個人的には&lt;code&gt;/tmp&lt;/code&gt;は「&lt;strong&gt;見返すことのない、ファイル名も適当で良いような一時ファイル&lt;/strong&gt;」、
+&lt;code&gt;/var/tmp&lt;/code&gt;は「&lt;strong&gt;また参照するかもしれない、ファイル名がある一時ファイル(sqlのdumpなど)&lt;/strong&gt;」
+として使い分けています。&lt;/p&gt;
+
+&lt;p&gt;ある程度ルールを持って配置しておくと後々参照する時に楽です。&lt;/p&gt;
+
+&lt;h2 id=&#34;ファイルを取得する時にあえて一時ディレクトリを経由させる&#34;&gt;ファイルを取得する時にあえて一時ディレクトリを経由させる&lt;/h2&gt;
+
+&lt;p&gt;リモートマシンにSSHにてログインしていて、
+そこで操作しているファイルを他サーバの任意のワーキングディレクトリにコピーしたいとします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ ssh user@192.168.33.102
+$ cd /etc/httpd/
+$ ls httpd.conf #このファイルを別サーバの特定のディレクトリにコピーしたい
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こういった状況下の時にどのようにすれば楽でしょうか？&lt;/p&gt;
+
+&lt;p&gt;直接転送したいとすれば、&lt;code&gt;pwd&lt;/code&gt;をしたのち、SSH用のIPアドレスもメモしてフルパスを入力します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ scp httpd.conf root@192.168.33.105:/root/project/httpd-conf-update/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ただしこの手法はやや面倒です。パスのコピーのために画面の行き来が必要ですし、
+なにせ、もし何か入力ミスがあると、その場所を探すのが大変です。&lt;/p&gt;
+
+&lt;p&gt;この場合、&lt;strong&gt;まず何も考えずにとにかく&lt;code&gt;/tmp&lt;/code&gt;へ転送をさせます。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ scp httpd.conf root@192.168.33.105:/tmp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;その後に転送先のサーバで&lt;code&gt;mv&lt;/code&gt;をさせます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ cd /root/project/httpd-conf-update/
+$
+$ mv /tmp/h[tab]
+$ mv /tmp/http.conf ./
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ログインしているサーバであれば、tabキーによるパスのサジェストももちろん利用できるので、
+スムーズにファイルパスを取得することが出来ます。
+「&lt;code&gt;/tmp&lt;/code&gt;ディレクトリは消えても良いファイルを置いている」という前提を立てていれば、
+心置きなく転送することが出来ます。&lt;/p&gt;
+
+&lt;p&gt;複数サーバの操作の場合、2画面以上開いて作業されている方も多いはずです。
+そういった場合、とりあえず&lt;code&gt;/tmp&lt;/code&gt;にコピーするというルールさえあれば、&lt;/p&gt;
+
+&lt;p&gt;たった&lt;code&gt;/tmp&lt;/code&gt;というたった固定の4文字を打つだけで、面倒なディレクトリパス問題を
+気にしないで済みます。&lt;/p&gt;
+
+&lt;h3 id=&#34;ローカルmacにもコピーしたい場合のお勧め手法&#34;&gt;ローカルMacにもコピーしたい場合のお勧め手法&lt;/h3&gt;
+
+&lt;p&gt;tmux等のsend-keysのエイリアスを予め用意し、
+固定値のPATHにコピーしてしまう仕組みを作ると簡単です。
+ここでのお勧めは&lt;code&gt;/tmp&lt;/code&gt;ではなく、ユーザのホームをリンク先にしてしまうことです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;~/.tmux.conf
+bind R send-keys &#39;Ricky@192.168.33.101:/Users/Ricky/&#39; C-m
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ scp httpd.conf [C-b R]
+$
+$ scp httpd.conf Ricky@192.168.33.101:/Users/Ricky/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ユーザのホームディレクトリ&lt;code&gt;/Users/[Username]&lt;/code&gt;は&lt;code&gt;~/&lt;/code&gt;でも同値となりますので、&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ mv ~/httpd.conf .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;もっと少ない文字列でとて簡単に手元にデータを持ってくることが可能です。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.rickynews.com/blog/2014/07/19/useful-bash-aliases/&#34;&gt;Macで少し生産性の上がるBashエイリアス集&lt;/a&gt;でも解説した、現在開いているFinderのPATHに移動する&lt;code&gt;cdf&lt;/code&gt;コマンドと組み合わせれば、
+開いているFinderディレクトリに簡単にリモートファイルを取得することが出来ます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ cdf
+/Users/Ricky/Projects/01_Main/20140910_httpd_conf_update
+$ mv ~/ht [tab]
+$ mv ~/httpd.conf . #データ取得完了
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;シェルスクリプトとしての-tmpの存在意義&#34;&gt;シェルスクリプトとしての/tmpの存在意義&lt;/h2&gt;
+
+&lt;p&gt;シェルスクリプトでも活用法が沢山あります。
+あまり有名ではないですが、
+Linuxでは実は既にデフォルトで&lt;code&gt;mktemp&lt;/code&gt;というテンポラリファイルPATHをランダムで作ってくれるとても便利な
+コマンドがあります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ mktemp
+/tmp/tmp.PZ5TDqVte4
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;何か複数にまたがったファイルを集計したい場合、mktempを経由すれば簡単です。
+任意のサーバにあるApacheのアクセスログのユニークIP数を集計してみます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;main () {
+  tmp=$(mktemp)
+  for server in 192.168.33.201 192.168.33.202
+  do
+    scp $server:/var/log/httpd/access_log.20140920 /tmp/$server
+    cat /tmp/$server &amp;gt;&amp;gt;$tmp
+  done
+
+  #複数サーバのapacheログのuniq ip数の集計
+  awk &#39;{ print $1 }&#39; $tmp | sort -u | wc -l
+}
+
+main $@
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;いったんファイルを取ってきて、それを&lt;code&gt;cat&lt;/code&gt;コマンドで結合、
+結合ファイルを集計するという流れです。
+「集計してほしい」と依頼が到着した時に、サクッとtmpファイルにコピー、
+内容を結合したものを集計して出せるとなかなか素敵です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;main () {
+  tmp=$(mktemp)
+  sort import_mysql_text.tsv &amp;gt;$tmp
+}
+
+main $@
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;MySQLなどの場合は予めsortされたファイルをインポートすると高速なことは有名です。
+「一瞬ソートする」というアクションもmktempコマンドさえあれば心置きなく出来ます。&lt;/p&gt;
+
+&lt;h2 id=&#34;bashのrsync用のエイリアスとして用意する&#34;&gt;BashのRsync用のエイリアスとして用意する&lt;/h2&gt;
+
+&lt;p&gt;以下のグローバルエイリアスを&lt;code&gt;~/.bashrc&lt;/code&gt;などに設定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;alias -g R=&amp;quot;| rsync -av --files-from=- . /tmp/&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;「Gitファイルで差分のものだけディレクトリ構成を残して取得したい」などのリクエストの時に便利です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ git diff --name-only HEAD~~~ R #Rがグローバルエイリアスでパイプ&amp;amp;Rsyncしてくれる
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上記を書き込むだけでディレクトリ構成をキープして、&lt;code&gt;/tmp&lt;/code&gt;以下に簡単にコピー出来ます。
+あとはこの記事で記載の通り、/tmpからTabによるPathのサジェストを利用して手元にコピーです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;mv /tmp/co [tab]
+mv /tmp/copied_file .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;最後に&#34;&gt;最後に&lt;/h2&gt;
+
+&lt;p&gt;たかがtmpディレクトリですが、活用出来ればなかなか強力です。
+もっと便利な活用方法等ありましたら是非共有お願いします。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

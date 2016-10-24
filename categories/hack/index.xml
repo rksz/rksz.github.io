@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hack on RickyNews</title>
+    <link>http://www.rickynews.com/categories/hack/</link>
+    <description>Recent content in Hack on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 20 Sep 2015 16:35:11 +0700</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/hack/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>キーボードの入力スピードを高める方法</title>
+      <link>http://www.rickynews.com/blog/2015/09/20/improve-speed-of-touch-typing/</link>
+      <pubDate>Sun, 20 Sep 2015 16:35:11 +0700</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2015/09/20/improve-speed-of-touch-typing/</guid>
+      <description>
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20150920/keyboard.jpg&#34; alt=&#34;keyboard&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;文字の正確な入力スピードはそのまま仕事のスピードにも直結します。スピードの定義は以下の2つで表現出来ます。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;キーボードを早く打つ&lt;/li&gt;
+&lt;li&gt;ミスをしない&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;特に後者の「ミスをしない」というのが重要であるというのが一般的です。&lt;/p&gt;
+
+&lt;p&gt;そんな私ですが、恥ずかしながらキーボードのタイプミスがなかなか多くて悩みのタネでした。タッチタイピングは当たり前ですが、いかんせん精度が低く、文字を入力しても6歩進んで2歩戻るような感じでした。入力文字はあっていても、変換で違う文字で確定してしまい、バックスペースで勢いよく戻るのも日常茶飯事でした。&lt;/p&gt;
+
+&lt;p&gt;さすがにこれは致命的であると感じ、ある数点を意識するようにしました。
+そこからというものの、大分改善してきました。全ての方に役立つか分かりませんが、恐らく同じような状況の人もいると思いますので、ブログという形で残そうかと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;1-押すべきキーが何か意識してタイプする&#34;&gt;1. 押すべきキーが何か意識してタイプする&lt;/h2&gt;
+
+&lt;p&gt;無意識に触っているキーが全て正しければよいのですが、それが間違っているので結果ミスタイプとなっています。自分の場合では、実際にいまどの指がどのキーを叩くべきなのか、明示的に意識することで、かなりタイプの精度が改善してきました。&lt;/p&gt;
+
+&lt;p&gt;ミスのパターンには以下の2種類があると思います。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;そもそも何の文字を打てばいいか、ちゃんと分かっていない状態でタイプをしている&lt;/li&gt;
+&lt;li&gt;入力すべき文字は明確だが、単純に押し間違えている。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;そもそもキーのタイピング以前に、「何の文字を打てばいいのか分かっていないで、とりあえずキーを叩いている」ということが多いことが自分の行動を観察していて分かりました。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;すなわち自分の頭のアイディアの具体化のプロセスがそのままキーボードのタイピングと直結してしまっている状態です。&lt;/strong&gt;自分のアイディアを言語化するプロセスはごく一般的です。しかし、それをキーボードのタイピングと一緒にしまうと、やはりミスが増えてしまいます。&lt;/p&gt;
+
+&lt;p&gt;その言語化のプロセスをキーボードではなく、独り言という形に変換させ、独り言をぶつぶつ唱えながらキーボードを叩けばもう少し改善しそうですが、さすがにそれは迷惑もかかる所なので、一歩キーボードを叩く前に、自分の意識として「何を打つべきか」ということを考えてから叩いてやると改善されました。&lt;/p&gt;
+
+&lt;h2 id=&#34;2-画面に表示される文字をしっかり見る&#34;&gt;2. 画面に表示される文字をしっかり見る&lt;/h2&gt;
+
+&lt;p&gt;当たり前なのですが、意外と重要です。ちゃんと画面を見て、何の文字が入力されているかを把握することで、ミスタイプを減らすことが出来ます。&lt;/p&gt;
+
+&lt;p&gt;画面に出てくるものはそのまま自分が入力したもののフィードバック結果です。画面上に間違った文字が打たれているのに、どんどんキーを叩き続け、そして、ぱっと画面を意識した時に、間違えていることに気づき、バックスペースなどでどんどん戻る人も多いと思います。私がまさにこれでした。&lt;/p&gt;
+
+&lt;p&gt;それに加え、日本語は文字の変換というプロセスがあるため、例えタイピングの文字が正解だとしても、変換で間違えてしまうケースが多々有ります。それを解消できる手段はやはり画面を注意深く見るしか基本的にはありません。&lt;/p&gt;
+
+&lt;p&gt;常に画面をしっかり見ていれば、チクセントミハイでいう「フロー状態」のように、
+常に自分の入力したものが正しいのか間違っているのかフィードバックを脳へ送ることが出来ます。すなわちどんどんキータイピングの精度が上がってくることになります。&lt;/p&gt;
+
+&lt;p&gt;ちょっとタッチタイピングが出来るようになった段階で、かなりの人はキーボードの意識をやめ、ぼんやりとタイピングをして、ぼんやりと画面の結果を見るようになってしまいます。ここを初心にかえり、しっかりとディスプレイを眺めて、自分が叩いているタイピング結果が正しいのか否かしっかり把握することで、精度をより高められると感じます。&lt;/p&gt;
+
+&lt;h2 id=&#34;世界のタイピングの達人たち&#34;&gt;世界のタイピングの達人たち&lt;/h2&gt;
+
+&lt;p&gt;&lt;center&gt;
+&lt;div class=&#34;youtube&#34;&gt;
+  &lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/8pUspop-Cfs&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;この記事を書きながら昔に流行った動画を思い出しました。このレベルに到達出来る気は全くしません笑。恐るべしインドです。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.amazon.co.jp/gp/product/B008GXQWOG/ref=as_li_ss_tl?ie=UTF8&amp;camp=247&amp;creative=7399&amp;creativeASIN=B008GXQWOG&amp;linkCode=as2&amp;tag=recommend7150-22&#34;&gt;PFU Happy Hacking Keyboard Professional2 Type-S 白（英語配列）&lt;/a&gt;&lt;img src=&#34;http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&amp;l=as2&amp;o=9&amp;a=B008GXQWOG&#34; width=&#34;1&#34; height=&#34;1&#34; border=&#34;0&#34; alt=&#34;&#34; style=&#34;border:none !important; margin:0px !important;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>都市名を付与して書類をクールに変貌させる</title>
+      <link>http://www.rickynews.com/blog/2015/08/19/city-makes-the-documents-cool-and-sexy/</link>
+      <pubDate>Wed, 19 Aug 2015 21:30:57 +0900</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2015/08/19/city-makes-the-documents-cool-and-sexy/</guid>
+      <description>
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20150819/tokyo.jpg&#34; alt=&#34;tokyo&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;エクセルなどの書類であえて都市名を使うと簡単に、それっぽく、カッコ良くなります。&lt;/p&gt;
+
+&lt;h2 id=&#34;都市名を使った資料の比較&#34;&gt;都市名を使った資料の比較&lt;/h2&gt;
+
+&lt;p&gt;架空の定例MTGの表をExcelで構築しました。まず普通のバージョンです。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20150819/ss1.png&#34; alt=&#34;table&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;特に普通です。次に都市名と標準時間を利用したバージョンです。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20150819/ss2.png&#34; alt=&#34;table&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;一気にグローバルな洗練された集団のような資料に早変わりです。&lt;/strong&gt;もちろん海外に拠点があればそれを記載すると思いますが、拠点が日本にしかなくても、
+このように都市だけでも記載するだけで何かそれっぽくなります。&lt;/p&gt;
+
+&lt;h2 id=&#34;都市名-クール-の不思議&#34;&gt;「都市名＝クール」の不思議&lt;/h2&gt;
+
+&lt;p&gt;都市などの名前の「洗練されたイメージ」というのは世界共通のようです。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;
+&lt;div class=&#34;youtube&#34;&gt;
+  &lt;iframe width=&#34;616&#34; height=&#34;300&#34; src=&#34;https://www.youtube.com/embed/5xIUeNJIrak&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;Brett Dominoの&lt;strong&gt;How To Make A Hit Pop Song, Pt. 2&lt;/strong&gt;のビデオでは、
+「クールでセクシーそうな単語」をGoogle検索で出して流行りそうなそれっぽいダンス・ミュージックを作るという荒業を紹介しています。
+そこでもTokyoやLondonといった都市名がクールな単語として利用されています。&lt;/p&gt;
+
+&lt;p&gt;先人が築いたこの都市のカッコイイイメージを、ミュージシャンだけでなく、我々も書類などでガンガン利用していきましょう。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

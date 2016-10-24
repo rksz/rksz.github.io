@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tmux Vim Productivity on RickyNews</title>
+    <link>http://www.rickynews.com/categories/tmux-vim-productivity/</link>
+    <description>Recent content in Tmux Vim Productivity on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 28 Jul 2014 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/tmux-vim-productivity/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>VimのNERDTreeがTmuxの移動を加速させる [動画付き]</title>
+      <link>http://www.rickynews.com/blog/2014/07/28/vim-nerdtree-accelerates-tmux/</link>
+      <pubDate>Mon, 28 Jul 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2014/07/28/vim-nerdtree-accelerates-tmux/</guid>
+      <description>
+
+&lt;p style=&#39;text-align: center; margin-top:0px; font-size: small;&#39;&gt;
+  &lt;img src=&#34;http://www.rickynews.com/images/articles/20140728/tree.jpg&#34; alt=&#34;&#34;&gt;&lt;br /&gt;
+  &lt;a href=&#34;https://www.flickr.com/photos/tomm/3247643900/in/photostream/&#34;&gt;Tom Maisey&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;TmuxとVimを併用されている方も多くいらっしゃると思います。
+実はこの2つを組み合わせると移動がすごい便利になります。
+意外とVim + Tmuxの組み合わせ技の記事は無いため、書こうと思います。&lt;/p&gt;
+
+&lt;p&gt;Vimでいえば、ターミナル派とGVim派の2流派に分かれると思いますが、
+もっぱら私はターミナル派です。なぜならTmuxとの親和性が良いからです。
+エディタでコードを書きながら、すぐにMySQLなどコンソールに叩くことも簡単です。
+たまにあのGVim特有の滑かで早い描画に戻りたくなることもありますが、これはトレードオフと思いぐっと我慢しています。&lt;/p&gt;
+
+&lt;h2 id=&#34;vimでのコマンドライン&#34;&gt;Vimでのコマンドライン&lt;/h2&gt;
+
+&lt;p&gt;もちろんVimでもシェルのコマンドはデフォルトで叩けます。
+EXモードに移行し、エクスクラメーションマークをつければコマンドを実行可能です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:!mv file.txt file.backup.txt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/Shougo/vimshell.vim&#34;&gt;Vimshell&lt;/a&gt;などをプラグインすれば、
+Vimでも対話的にシェルを叩くことが可能になります。
+GVimなどを利用してそこから、同じUIでシェルを叩きたい人にはもってこいです。&lt;/p&gt;
+
+&lt;p&gt;ただ個人的な感想でいえば、インストールはしておりますが、あまり利用していません。
+やはりターミナルの作業はターミナルでやったほうがiTermなどのターミナルアプリの設定調整の恩恵も大きくうけられますし、
+Tmuxのほうがよりダイナミックにウインドウ移動、ローテーション、サイズ変更が可能です。&lt;/p&gt;
+
+&lt;p&gt;もっとも・・・どちらもツールはツールなので、気に入ったものを使いこなすことがベストだと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;vim-nerdtreeについて考察&#34;&gt;Vim NERDTreeについて考察&lt;/h2&gt;
+
+&lt;p&gt;ご存知、&lt;a href=&#34;https://github.com/scrooloose/nerdtree&#34;&gt;NERDTree&lt;/a&gt;はVimのツリー型エクスプローラプラグインです。
+EXモードで&lt;code&gt;NERDTree&lt;/code&gt;と叩くだけでファイルツリーをグラフィカルに表示してくれます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20140728/nerdtree.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;コマンドラインでは分かりにくいフォルダ構成ですが、NERDTreeだけあれば、
+簡単にGUI風にファイルの一覧を取ることが出来ます。iTerm側の設定でマウスレポーティングを有効にすれば、ターミナル起動のVimであろうとマウスでクリックすることでで、
+NERDTreeを開くことも可能です。もはやこれはCUIと呼べるのか謎です。&lt;/p&gt;
+
+&lt;p&gt;本題に戻り、Linux系では&lt;code&gt;tree&lt;/code&gt;というコマンドでファイルのツリー構造を出力することも可能です。しかし別にその一覧を見たところで移動も出来ないですし、
+あくまでドキュメント作成用のコマンドの位置づけだと感じています。&lt;/p&gt;
+
+&lt;p&gt;私は&lt;code&gt;.vimrc&lt;/code&gt;に下記のような設定を追加しております。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;quot;------------------------------------------------------------
+&amp;quot; NERD-Tree.vim
+&amp;quot;------------------------------------------------------------
+nnoremap &amp;lt;silent&amp;gt; &amp;lt;Leader&amp;gt;n :NERDTreeToggle&amp;lt;CR&amp;gt;
+nnoremap &amp;lt;silent&amp;gt; &amp;lt;Leader&amp;gt;N :CD&amp;lt;CR&amp;gt;:NERDTree&amp;lt;CR&amp;gt;
+let NERDTreeShowHidden=1
+
+command! -nargs=? -complete=dir -bang CD  call s:ChangeCurrentDir(&#39;&amp;lt;args&amp;gt;&#39;, &#39;&amp;lt;bang&amp;gt;&#39;)
+function! s:ChangeCurrentDir(directory, bang)
+    if a:directory == &#39;&#39;
+        lcd %:p:h
+    else
+        execute &#39;lcd&#39; . a:directory
+    endif
+
+    if a:bang == &#39;&#39;
+        pwd
+    endif
+endfunction
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;Leader + n&lt;/code&gt;でNERDTree自体をトグル表示させ、
+&lt;code&gt;Leader + N&lt;/code&gt;で開いているファイルバッファにcdで移動させ、そこのファイル一覧を表示させています。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Unite&lt;/code&gt;などの利用して、Fuzzyに移動したのち、&lt;code&gt;Leader + N&lt;/code&gt;を利用して自分自身ごと
+該当ファイルのあるディレクトリに移動します。
+微調整あれば、NERDTreeの(up a dir)をクリックしたり、ディレクトリ自体をクリックして、移動します。
+そのタイミングでは通常の&lt;code&gt;Leader + n&lt;/code&gt;を利用すれば、ツリー構造を変更させずNERDTreeを
+トグル表示させることが可能です。意識して使い分けると非常に便利です。&lt;/p&gt;
+
+&lt;h2 id=&#34;nerdtreeとtmux&#34;&gt;NERDTreeとTmux&lt;/h2&gt;
+
+&lt;p&gt;基本技ですがNERDTreeではツリーに移動した後に&lt;code&gt;cd&lt;/code&gt;とコマンドを叩くと、そのPATHにVim内部で移動します。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20140728/nerdtree-cd.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;NERDTree: CWD is now: xxx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Vim内部でPATH移動をするとどうなるかというと、EXモードでコマンドを叩く時にそのPATHが基準となります。なので簡単に&lt;code&gt;:! rm file.txt&lt;/code&gt;といったアクションが可能となります。普通のコマンドラインで移動するよりも、自分がどこに居るかツリー構造でわかるため、作業がわかりやすいです。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;実はこのVimの内部PATH移動はTmuxのSplit Paneにも引き継がれます。&lt;/strong&gt;すなわち、NERDTreeでcdさせて、tmuxのsplit paneを行うと、そのパスを開いてくれます。&lt;/p&gt;
+
+&lt;p&gt;ソースコードなどを作業しているときは非常に快適です。
+NERDTreeのcdで移動したのち、tmuxのpaneを開き、そこでBashなどのコマンドを簡単に呼び出すことが可能です。&lt;/p&gt;
+
+&lt;h2 id=&#34;unite-nerdtree-tmux-コンビネーション&#34;&gt;Unite &amp;amp; NERDTree &amp;amp; Tmux コンビネーション&lt;/h2&gt;
+
+&lt;p&gt;上記の一連の流れを組み合わせるととても早く任意のディレクトリに移動出来ます。&lt;/p&gt;
+
+&lt;p&gt;Uniteのヒストリを開いたのち、&lt;code&gt;NERDTree + CD&lt;/code&gt;させパスを移動します。
+その後、Tmuxでsplit paneをすれば、簡単に最近使ったファイルの箇所に移動可能です。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20140728/tmux-nerdtree.gif&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;上記の動画では、&lt;code&gt;/tmp&lt;/code&gt;配下から&lt;code&gt;~/dotfiles/bin&lt;/code&gt;へcdし、新しいTmux paneを作成しています。最後にbreak paneも実行し、新WindowとしてTmux上で完結しています。&lt;/p&gt;
+
+&lt;p&gt;(なおこちらのTmuxはVersion1.8です。1.9系以上ではTmuxでのデフォルト挙動が変わっているなど可能性もありますので、色々ご注意下さい。)&lt;/p&gt;
+
+&lt;h2 id=&#34;最後に&#34;&gt;最後に&lt;/h2&gt;
+
+&lt;p&gt;前回記事の&lt;a href=&#34;http://www.rickynews.com/blog/2014/07/19/useful-bash-aliases/&#34;&gt;Macで少し生産性の上がるBashエイリアス集&lt;/a&gt;
+にて解説した&lt;code&gt;cdf&lt;/code&gt;、&lt;code&gt;f&lt;/code&gt;、&lt;code&gt;j&lt;/code&gt;、&lt;code&gt;jj&lt;/code&gt;コマンドなどと組み合わせればさらに威力が増します。
+ターミナル上で高速で移動したのち、vimで起動させそこを起点に作業開始させます。
+すなわち、今回説明したVimからの移動とは逆パターンです。&lt;/p&gt;
+
+&lt;p&gt;私の例でいえば、両方ともケースバイケースで使い分けております。
+autojump(j/z)コマンドであれば、コマンドラインから一発で最近に作業したディレクトリに移動出来ます。
+Uniteの場合ではand検索も出来るのである程度自分が意図する移動先ディレクトリを確認しながら向かうことが出来ます。長らく使ってみると、「たぶん、これautojumpだと一発でいけないかもな」「考えなくていいから、Vim経由にしょう」などフィーリングで感じられるようになるはずです。&lt;/p&gt;
+
+&lt;p&gt;是非、空気を吸うようなフィーリングで移動出来るようにトレーニングしましょう。
+楽しい世界が待っております。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

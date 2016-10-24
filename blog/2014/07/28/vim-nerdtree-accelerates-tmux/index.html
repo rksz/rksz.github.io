@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://www.rickynews.com/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="http://www.rickynews.com/favicon.png">
+    <title>VimのNERDTreeがTmuxの移動を加速させる [動画付き] | RickyNews</title>
+    
+    <script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-46051188-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<meta property="og:title" content="VimのNERDTreeがTmuxの移動を加速させる [動画付き] | RickyNews" />
+<meta property="og:url"   content="http://www.rickynews.com/blog/2014/07/28/vim-nerdtree-accelerates-tmux/" />
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="http://www.rickynews.com" class="navbar-brand">
+            <span class="visible_pc">
+              <img src="http://www.rickynews.com/images/logo.jpg" alt="logo" />
+            </span>
+            <span class="visible_sp">
+              RickyNews
+            </span>
+          </a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="http://www.rickynews.com/post">Archive</a></li>
+<li><a href="http://www.rickynews.com/atom.xml">RSS</a></li>
+<li><a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml">Feedly</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">VimのNERDTreeがTmuxの移動を加速させる [動画付き]</h1>
+      <p class="text-muted">Jul 28, 2014</p>
+
+    </div>
+    <div class="post-content">
+      
+
+<p style='text-align: center; margin-top:0px; font-size: small;'>
+  <img src="http://www.rickynews.com/images/articles/20140728/tree.jpg" alt=""><br />
+  <a href="https://www.flickr.com/photos/tomm/3247643900/in/photostream/">Tom Maisey</a>
+</p>
+
+<p>TmuxとVimを併用されている方も多くいらっしゃると思います。
+実はこの2つを組み合わせると移動がすごい便利になります。
+意外とVim + Tmuxの組み合わせ技の記事は無いため、書こうと思います。</p>
+
+<p>Vimでいえば、ターミナル派とGVim派の2流派に分かれると思いますが、
+もっぱら私はターミナル派です。なぜならTmuxとの親和性が良いからです。
+エディタでコードを書きながら、すぐにMySQLなどコンソールに叩くことも簡単です。
+たまにあのGVim特有の滑かで早い描画に戻りたくなることもありますが、これはトレードオフと思いぐっと我慢しています。</p>
+
+<h2 id="vimでのコマンドライン">Vimでのコマンドライン</h2>
+
+<p>もちろんVimでもシェルのコマンドはデフォルトで叩けます。
+EXモードに移行し、エクスクラメーションマークをつければコマンドを実行可能です。</p>
+
+<pre><code>:!mv file.txt file.backup.txt
+</code></pre>
+
+<p><a href="https://github.com/Shougo/vimshell.vim">Vimshell</a>などをプラグインすれば、
+Vimでも対話的にシェルを叩くことが可能になります。
+GVimなどを利用してそこから、同じUIでシェルを叩きたい人にはもってこいです。</p>
+
+<p>ただ個人的な感想でいえば、インストールはしておりますが、あまり利用していません。
+やはりターミナルの作業はターミナルでやったほうがiTermなどのターミナルアプリの設定調整の恩恵も大きくうけられますし、
+Tmuxのほうがよりダイナミックにウインドウ移動、ローテーション、サイズ変更が可能です。</p>
+
+<p>もっとも・・・どちらもツールはツールなので、気に入ったものを使いこなすことがベストだと思います。</p>
+
+<h2 id="vim-nerdtreeについて考察">Vim NERDTreeについて考察</h2>
+
+<p>ご存知、<a href="https://github.com/scrooloose/nerdtree">NERDTree</a>はVimのツリー型エクスプローラプラグインです。
+EXモードで<code>NERDTree</code>と叩くだけでファイルツリーをグラフィカルに表示してくれます。</p>
+
+<p><img src="http://www.rickynews.com/images/articles/20140728/nerdtree.png" alt=""></p>
+
+<p>コマンドラインでは分かりにくいフォルダ構成ですが、NERDTreeだけあれば、
+簡単にGUI風にファイルの一覧を取ることが出来ます。iTerm側の設定でマウスレポーティングを有効にすれば、ターミナル起動のVimであろうとマウスでクリックすることでで、
+NERDTreeを開くことも可能です。もはやこれはCUIと呼べるのか謎です。</p>
+
+<p>本題に戻り、Linux系では<code>tree</code>というコマンドでファイルのツリー構造を出力することも可能です。しかし別にその一覧を見たところで移動も出来ないですし、
+あくまでドキュメント作成用のコマンドの位置づけだと感じています。</p>
+
+<p>私は<code>.vimrc</code>に下記のような設定を追加しております。</p>
+
+<pre><code>&quot;------------------------------------------------------------
+&quot; NERD-Tree.vim
+&quot;------------------------------------------------------------
+nnoremap &lt;silent&gt; &lt;Leader&gt;n :NERDTreeToggle&lt;CR&gt;
+nnoremap &lt;silent&gt; &lt;Leader&gt;N :CD&lt;CR&gt;:NERDTree&lt;CR&gt;
+let NERDTreeShowHidden=1
+
+command! -nargs=? -complete=dir -bang CD  call s:ChangeCurrentDir('&lt;args&gt;', '&lt;bang&gt;')
+function! s:ChangeCurrentDir(directory, bang)
+    if a:directory == ''
+        lcd %:p:h
+    else
+        execute 'lcd' . a:directory
+    endif
+
+    if a:bang == ''
+        pwd
+    endif
+endfunction
+</code></pre>
+
+<p><code>Leader + n</code>でNERDTree自体をトグル表示させ、
+<code>Leader + N</code>で開いているファイルバッファにcdで移動させ、そこのファイル一覧を表示させています。</p>
+
+<p><code>Unite</code>などの利用して、Fuzzyに移動したのち、<code>Leader + N</code>を利用して自分自身ごと
+該当ファイルのあるディレクトリに移動します。
+微調整あれば、NERDTreeの(up a dir)をクリックしたり、ディレクトリ自体をクリックして、移動します。
+そのタイミングでは通常の<code>Leader + n</code>を利用すれば、ツリー構造を変更させずNERDTreeを
+トグル表示させることが可能です。意識して使い分けると非常に便利です。</p>
+
+<h2 id="nerdtreeとtmux">NERDTreeとTmux</h2>
+
+<p>基本技ですがNERDTreeではツリーに移動した後に<code>cd</code>とコマンドを叩くと、そのPATHにVim内部で移動します。</p>
+
+<p><img src="http://www.rickynews.com/images/articles/20140728/nerdtree-cd.png" alt=""></p>
+
+<pre><code>NERDTree: CWD is now: xxx
+</code></pre>
+
+<p>Vim内部でPATH移動をするとどうなるかというと、EXモードでコマンドを叩く時にそのPATHが基準となります。なので簡単に<code>:! rm file.txt</code>といったアクションが可能となります。普通のコマンドラインで移動するよりも、自分がどこに居るかツリー構造でわかるため、作業がわかりやすいです。</p>
+
+<p><strong>実はこのVimの内部PATH移動はTmuxのSplit Paneにも引き継がれます。</strong>すなわち、NERDTreeでcdさせて、tmuxのsplit paneを行うと、そのパスを開いてくれます。</p>
+
+<p>ソースコードなどを作業しているときは非常に快適です。
+NERDTreeのcdで移動したのち、tmuxのpaneを開き、そこでBashなどのコマンドを簡単に呼び出すことが可能です。</p>
+
+<h2 id="unite-nerdtree-tmux-コンビネーション">Unite &amp; NERDTree &amp; Tmux コンビネーション</h2>
+
+<p>上記の一連の流れを組み合わせるととても早く任意のディレクトリに移動出来ます。</p>
+
+<p>Uniteのヒストリを開いたのち、<code>NERDTree + CD</code>させパスを移動します。
+その後、Tmuxでsplit paneをすれば、簡単に最近使ったファイルの箇所に移動可能です。</p>
+
+<p><img src="http://www.rickynews.com/images/articles/20140728/tmux-nerdtree.gif" alt=""></p>
+
+<p>上記の動画では、<code>/tmp</code>配下から<code>~/dotfiles/bin</code>へcdし、新しいTmux paneを作成しています。最後にbreak paneも実行し、新WindowとしてTmux上で完結しています。</p>
+
+<p>(なおこちらのTmuxはVersion1.8です。1.9系以上ではTmuxでのデフォルト挙動が変わっているなど可能性もありますので、色々ご注意下さい。)</p>
+
+<h2 id="最後に">最後に</h2>
+
+<p>前回記事の<a href="http://www.rickynews.com/blog/2014/07/19/useful-bash-aliases/">Macで少し生産性の上がるBashエイリアス集</a>
+にて解説した<code>cdf</code>、<code>f</code>、<code>j</code>、<code>jj</code>コマンドなどと組み合わせればさらに威力が増します。
+ターミナル上で高速で移動したのち、vimで起動させそこを起点に作業開始させます。
+すなわち、今回説明したVimからの移動とは逆パターンです。</p>
+
+<p>私の例でいえば、両方ともケースバイケースで使い分けております。
+autojump(j/z)コマンドであれば、コマンドラインから一発で最近に作業したディレクトリに移動出来ます。
+Uniteの場合ではand検索も出来るのである程度自分が意図する移動先ディレクトリを確認しながら向かうことが出来ます。長らく使ってみると、「たぶん、これautojumpだと一発でいけないかもな」「考えなくていいから、Vim経由にしょう」などフィーリングで感じられるようになるはずです。</p>
+
+<p>是非、空気を吸うようなフィーリングで移動出来るようにトレーニングしましょう。
+楽しい世界が待っております。</p>
+
+      <div class="sharing" style="text-align: right;">
+        <a href="http://b.hatena.ne.jp/entry/http://www.rickynews.com/blog/2014/07/28/vim-nerdtree-accelerates-tmux/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+        <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.rickynews.com/blog/2014/07/28/vim-nerdtree-accelerates-tmux/" data-via="" data-counturl="http://www.rickynews.com/blog/2014/07/28/vim-nerdtree-accelerates-tmux/" >Tweet</a>
+        
+        <div class="fb-like" data-layout="button_count" style="line-height:0.5;"></div>
+      </div>
+    </div>
+
+
+    <div class="post-footer">
+      <a href="http://www.rickynews.com/post" class="btn btn-primary btn-block btn-lg">View All 76 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4 sidebar">
+    <section>
+
+  <h3 style="margin-top: 0px">RickyNews</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+  Tech News & Music
+    <a href='http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.rickynews.com%2Fatom.xml'  target='blank'><img id='feedlyFollow' src='http://s3.feedly.com/img/follows/feedly-follow-rectangle-flat-small_2x.png' alt='follow us in feedly' width='66' height='20' style="border: none;"></a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+
+  <h3 style="margin-top: 0px">Author</h3>
+  <div style="padding-top: .4em; margin-bottom:.5em">
+    <a href="https://twitter.com/rksz" target="_blank" style="text-decoration: none;">@rksz</a><br />
+    Ho Chi Minh City & Tokyo
+  </div>
+
+</section>
+
+
+<section>
+  <h3>Popular Posts</h3>
+      <script language="javascript" type="text/javascript" src="http://b.hatena.ne.jp/js/widget.js" charset="utf-8"></script>
+      <script language="javascript" type="text/javascript">
+Hatena.BookmarkWidget.url   = "www.rickynews.com";
+Hatena.BookmarkWidget.sort  = "count";
+Hatena.BookmarkWidget.width = 0;
+Hatena.BookmarkWidget.num   = 5;
+Hatena.BookmarkWidget.theme = "hatenadiary";
+Hatena.BookmarkWidget.load();
+      </script>
+</section>
+
+
+<section>
+  <h3>Amazon</h3>
+  <ul>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/4781701973/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4781701973&linkCode=as2&tag=recommend7150-22">ハッカーの学校 - IPUSIRON</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4781701973" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/4478026548/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4478026548&linkCode=as2&tag=recommend7150-22">シフト――2035年、米国最高情報機関が予測する驚愕の未来</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=4478026548" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00MB2STXK/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00MB2STXK&linkCode=as2&tag=recommend7150-22">プログラマの考え方がおもしろいほど身につく本　問題解決能力を鍛えよう！ (アスキー書籍)</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00MB2STXK" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a  href="http://www.amazon.co.jp/gp/product/B0126I117E/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B0126I117E&linkCode=as2&tag=recommend7150-22">ヴァージン・ウェイ　Ｒ・ブランソンのリーダーシップを磨く教室</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B0126I117E" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+    <li>
+      <a href="http://www.amazon.co.jp/gp/product/B00GSHI04M/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=B00GSHI04M&linkCode=as2&tag=recommend7150-22">闘うプログラマー［新装版］　ビル・ゲイツの野望を担った男達</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=recommend7150-22&l=as2&o=9&a=B00GSHI04M" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+    </li>
+  </ul>
+</section>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          &copy; 2016.
+RickyNews
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <script src="http://www.rickynews.com/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+  </body>
+</html>
+

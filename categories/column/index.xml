@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Column on RickyNews</title>
+    <link>http://www.rickynews.com/categories/column/</link>
+    <description>Recent content in Column on RickyNews</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 26 Jan 2016 19:23:48 +0700</lastBuildDate>
+    <atom:link href="http://www.rickynews.com/categories/column/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Phan Thietと動画という未来</title>
+      <link>http://www.rickynews.com/blog/2016/01/26/phan-thiet-with-video/</link>
+      <pubDate>Tue, 26 Jan 2016 19:23:48 +0700</pubDate>
+      
+      <guid>http://www.rickynews.com/blog/2016/01/26/phan-thiet-with-video/</guid>
+      <description>
+
+&lt;p&gt;先週末、休日を使って、ベトナム中部のPhan Thietに旅をしてきました。
+といっても、社員旅行の一貫で、ベトナム人の同僚との旅行です。
+この旅でふと「全部旅の記録を動画にしてみたらどうなのか」と思いつき、やってみたところ、これがとんでもなく面白い。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://www.rickynews.com/images/articles/20160126/sand.jpg&#34; alt=&#34;mui ne the sand dunes&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;インターネットビジネス界隈も動画の時代&#34;&gt;インターネットビジネス界隈も動画の時代&lt;/h2&gt;
+
+&lt;p&gt;2016年の今はまさに動画ビジネスが全盛です。静止 is over という状態で、
+「なんでも動画にすれば、なんでも面白くなるだろう」という状態です。&lt;/p&gt;
+
+&lt;p&gt;動画Gifが再度脚光を浴び、広告のアドネットワークも動画に切り替わり、
+動画の需要が増えると伴に、韓国&lt;a href=&#34;https://www.shakr.com&#34;&gt;Shakr&lt;/a&gt;のような動画を簡単に作れるプラットフォームや
+動画制作のクラウドソースにフォーカスをした&lt;a href=&#34;http://viibar.com/&#34;&gt;Viibar&lt;/a&gt;のような企業も出てきています。
+個人で本格的な動画制作をしたい！と思えば&lt;a href=&#34;http://www.adobe.com/jp/products/aftereffects.html&#34;&gt;AdobeのAfter Effects&lt;/a&gt;すら月2,180円で利用出来てしまいます。&lt;/p&gt;
+
+&lt;p&gt;エンジニア視点で言えば、Amazon S3やBlob Storageといった、メンテナンスなしに、
+実質無制限にデータを放り込めるようなサービスが登場し、ベンチャー企業もアイディアさえあれば、誰でも参入出来るようになってきました。
+むしろ、エンジニア1人ですらこういったサービスを作ることすら可能な時代です。&lt;/p&gt;
+
+&lt;p&gt;さらにエンドユーザ視点であれば、誰でもiPhoneで十分に高画質な動画も撮影できるし、
+GoProのような小型のアクションカムで水中を4K画質で撮影可能です。&lt;/p&gt;
+
+&lt;p&gt;とにかく、供給側もエンドユーザ側もコストと敷居が爆発的に下がり、とんでもないチャンスが広がっています。&lt;/p&gt;
+
+&lt;h2 id=&#34;旅を全て動画にしてみた&#34;&gt;旅を全て動画にしてみた&lt;/h2&gt;
+
+&lt;p&gt;旅で記念撮影をする所を、3秒〜10秒程度の動画に全部切り替えてみたところ、これが面白い。
+当たり前ですが、コンテンツがリッチなんですね。視覚にも音にも訴えかけてきます。
+なんか写真を撮りたくなってしまうが、二度と見返すことのないような風景写真であっても、
+それが音と動きがあるだけで、とんでもなく面白くなります。その時の情景が浮かんできます。&lt;/p&gt;
+
+&lt;p&gt;あと、ウェアラブルデバイスの良さの時にも語られる点ですが、動画だとみんなの自然体を映像に収めることが出来ます。
+写真で３・２・１・・・・と構えたものより、自然体の映像の方が何倍も面白いです。
+写真の「ポーズ」という、非日常の一瞬よりも、切りだされた日常のほうがよっぽど見ていて楽しいです。&lt;/p&gt;
+
+&lt;h2 id=&#34;価値観変化と未来&#34;&gt;価値観変化と未来&lt;/h2&gt;
+
+&lt;p&gt;今までの自分の感覚だと、動画というと、「カメラを構えて、数分間撮影するもの」という先入観がありました。
+ただ、今回からiPhoneで写真の感覚で3〜10秒くらいのものを撮ってみても、十分面白い。
+よく考えると、Vineだったり、Gif動画だったり短いものも日常的に見ているわけで、
+冷静に何故自分がやらなかったのか疑問にすらなってきます。&lt;/p&gt;
+
+&lt;p&gt;iPhone6Sのコマーシャルあたりから「長押しすると動画が見れる」というUIを打ち出していますが、
+これもいずれ、デファクトスタンダードになるのでしょうか。
+楽天市場の商品すら、全部動画になり、静止画というのが昔で言う白黒映像的な存在になる日も近いような気も。&lt;/p&gt;
+
+&lt;p&gt;なんかワクワクする未来を見れた気がしました。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
